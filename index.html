@@ -12,9 +12,11 @@
     h2{font-size:19px;margin:0 0 14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
     input,textarea,select,button{font:inherit;padding:11px;border:1px solid #cbd5e1;border-radius:9px;width:100%;margin:5px 0}
     textarea{min-height:75px}button{background:#1d4ed8;color:white;border:0;cursor:pointer;font-weight:bold}button.secondary{background:#475569}button.danger{background:#b91c1c}
+    button.linkbtn{background:transparent;color:#1d4ed8;text-decoration:underline;padding:5px;width:auto}
     .row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:130px}.product{border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;background:white}
     .product img{width:100%;height:155px;object-fit:cover;background:#e2e8f0}.product .info{padding:12px}.price{font-weight:bold;color:#1d4ed8}
     .muted{color:#64748b;font-size:13px}.hidden{display:none!important}.notice{padding:10px;border-radius:9px;background:#eff6ff;color:#1e40af;margin:8px 0}
+    .error{background:#fef2f2;color:#991b1b}.success{background:#ecfdf5;color:#065f46}
     table{width:100%;border-collapse:collapse}th,td{text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;font-size:14px}
     @media(max-width:600px){header{padding:18px}.wrap{margin:16px auto}h1{font-size:21px}}
   </style>
@@ -36,9 +38,21 @@
     <form id="loginForm">
       <input id="email" type="email" placeholder="ایمیل مدیر" required>
       <input id="password" type="password" placeholder="رمز عبور" required>
-      <button>ورود به پنل</button>
+      <button id="loginButton">ورود به پنل</button>
     </form>
-    <p id="loginMsg" class="muted"></p>
+    <button type="button" id="forgotButton" class="linkbtn">رمز عبورم را فراموش کرده‌ام</button>
+    <p id="loginMsg" class="muted" aria-live="polite"></p>
+  </section>
+
+  <section id="resetPanel" class="card hidden">
+    <h2>تعیین رمز عبور جدید</h2>
+    <p class="muted">رمز جدید را وارد و برای تأیید دوباره تکرار کن.</p>
+    <form id="resetForm">
+      <input id="newPassword" type="password" minlength="8" autocomplete="new-password" placeholder="رمز جدید (حداقل ۸ نویسه)" required>
+      <input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" placeholder="تکرار رمز جدید" required>
+      <button id="resetButton">ذخیره رمز جدید</button>
+    </form>
+    <p id="resetMsg" class="muted" aria-live="polite"></p>
   </section>
 
   <section id="adminPanel" class="hidden">
@@ -75,7 +89,6 @@
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-// نشانی پروژه و کلید عمومی Supabase
 const SUPABASE_URL = 'https://snkdwaatcjmqdhkxiasa.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_5o05x-xTjWYSTGXDBdE-Ug_jwZwASAI';
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -84,17 +97,96 @@ const $ = id => document.getElementById(id);
 const money = n => Number(n || 0).toLocaleString('fa-IR') + ' تومان';
 const safe = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let editingId = null;
+let recoveryMode = false;
+
+function setMessage(el, text, kind='') {
+  el.textContent = text;
+  el.className = kind ? `notice ${kind}` : 'muted';
+}
+function siteRedirectUrl() {
+  return window.location.origin + window.location.pathname;
+}
+function showRecoveryForm() {
+  recoveryMode = true;
+  $('loginPanel').classList.add('hidden');
+  $('adminPanel').classList.add('hidden');
+  $('adminToggle').classList.add('hidden');
+  $('resetPanel').classList.remove('hidden');
+  $('resetMsg').textContent = '';
+}
+function clearRecoveryMarker() {
+  const cleanUrl = window.location.pathname + window.location.search;
+  window.history.replaceState({}, document.title, cleanUrl);
+}
 
 $('adminToggle').onclick = () => $('loginPanel').classList.toggle('hidden');
+
+$('forgotButton').onclick = async () => {
+  const email = $('email').value.trim();
+  if (!email) {
+    setMessage($('loginMsg'), 'ابتدا ایمیل حساب مدیر را در کادر ایمیل وارد کن.');
+    $('email').focus();
+    return;
+  }
+  setMessage($('loginMsg'), 'در حال ارسال لینک بازیابی…');
+  const { error } = await db.auth.resetPasswordForEmail(email, {
+    redirectTo: siteRedirectUrl()
+  });
+  if (error) {
+    setMessage($('loginMsg'), 'ارسال لینک انجام نشد: ' + error.message, 'error');
+  } else {
+    setMessage($('loginMsg'), 'اگر این ایمیل در سامانه ثبت شده باشد، لینک بازیابی برای آن ارسال می‌شود. پوشه Spam را هم بررسی کن.', 'success');
+  }
+};
+
 $('loginForm').onsubmit = async e => {
   e.preventDefault();
-  $('loginMsg').textContent = 'در حال ورود…';
-  const {error} = await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});
-  if(error){$('loginMsg').textContent = 'ورود انجام نشد: ' + error.message;return;}
+  setMessage($('loginMsg'), 'در حال ورود…');
+  const {error} = await db.auth.signInWithPassword({
+    email:$('email').value.trim(),
+    password:$('password').value
+  });
+  if(error){setMessage($('loginMsg'), 'ورود انجام نشد: ' + error.message, 'error');return;}
   $('loginPanel').classList.add('hidden');
   await showAdmin();
 };
-$('logout').onclick = async () => {await db.auth.signOut();$('adminPanel').classList.add('hidden');$('adminToggle').classList.remove('hidden');};
+
+$('resetForm').onsubmit = async e => {
+  e.preventDefault();
+  const password = $('newPassword').value;
+  const confirm = $('confirmPassword').value;
+  if (password.length < 8) {
+    setMessage($('resetMsg'), 'رمز باید حداقل ۸ نویسه داشته باشد.', 'error');
+    return;
+  }
+  if (password !== confirm) {
+    setMessage($('resetMsg'), 'دو رمز واردشده یکسان نیستند.', 'error');
+    return;
+  }
+  $('resetButton').disabled = true;
+  $('resetButton').textContent = 'در حال ذخیره…';
+  const { error } = await db.auth.updateUser({ password });
+  $('resetButton').disabled = false;
+  $('resetButton').textContent = 'ذخیره رمز جدید';
+  if (error) {
+    setMessage($('resetMsg'), 'تغییر رمز انجام نشد: ' + error.message + ' — ممکن است لینک منقضی شده باشد؛ در این صورت یک لینک تازه درخواست کن.', 'error');
+    return;
+  }
+  setMessage($('resetMsg'), 'رمز جدید با موفقیت ذخیره شد. اکنون می‌توانی با رمز جدید وارد شوی.', 'success');
+  $('resetForm').classList.add('hidden');
+  await db.auth.signOut();
+  clearRecoveryMarker();
+  recoveryMode = false;
+  $('loginPanel').classList.remove('hidden');
+  $('adminToggle').classList.add('hidden');
+};
+
+$('logout').onclick = async () => {
+  await db.auth.signOut();
+  $('adminPanel').classList.add('hidden');
+  $('adminToggle').classList.remove('hidden');
+};
+
 async function loadProducts(){
   const {data,error}=await db.from('products').select('id,name,category,description,price,stock,image_url').eq('active',true).order('created_at',{ascending:false});
   if(error){$('products').innerHTML='<p>دریافت محصولات ناموفق بود. تنظیمات دسترسی جدول products را بررسی کنید.</p>';return;}
@@ -104,7 +196,7 @@ async function showAdmin(){
   const {data:{user}}=await db.auth.getUser();
   if(!user)return;
   const {data:allowed,error}=await db.rpc('is_admin');
-  if(error || allowed !== true){$('loginMsg').textContent='این حساب دسترسی مدیر ندارد.';await db.auth.signOut();return;}
+  if(error || allowed !== true){setMessage($('loginMsg'),'این حساب دسترسی مدیر ندارد.','error');await db.auth.signOut();return;}
   $('adminPanel').classList.remove('hidden');$('adminToggle').classList.add('hidden');
   await loadProducts();await loadManageProducts();await loadOrders();
 }
@@ -139,8 +231,29 @@ async function loadOrders(){
   if(error){$('orders').textContent='خطا در دریافت سفارش‌ها: '+error.message;return;}
   $('orders').innerHTML=data.length?`<table><thead><tr><th>شماره</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th></tr></thead><tbody>${data.map(o=>`<tr><td>${o.id}</td><td>${safe(o.customer_name)}<br><small>${safe(o.phone)}</small></td><td>${money(o.total_amount)}</td><td>${safe(o.status)}</td><td>${new Date(o.created_at).toLocaleDateString('fa-IR')}</td></tr>`).join('')}</tbody></table>`:'هنوز سفارشی ثبت نشده است.';
 }
-const {data:{session}}=await db.auth.getSession();
-if(session) await showAdmin();
+
+// لینک بازیابی Supabase پس از تأیید به همین صفحه برمی‌گردد.
+// رویداد PASSWORD_RECOVERY مطمئن‌ترین علامت برای نمایش فرم تعیین رمز جدید است.
+db.auth.onAuthStateChange((event) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    showRecoveryForm();
+  }
+});
+
+const urlHash = new URLSearchParams(window.location.hash.slice(1));
+const urlError = urlHash.get('error_description') || urlHash.get('error');
+if (urlError) {
+  $('loginPanel').classList.remove('hidden');
+  $('adminToggle').classList.add('hidden');
+  setMessage($('loginMsg'), 'لینک بازیابی معتبر نیست یا منقضی شده است. از گزینه «رمز عبورم را فراموش کرده‌ام» یک لینک تازه درخواست کن.', 'error');
+} else {
+  const {data:{session}} = await db.auth.getSession();
+  if (urlHash.get('type') === 'recovery' || (session && urlHash.get('access_token'))) {
+    showRecoveryForm();
+  } else if (session) {
+    await showAdmin();
+  }
+}
 await loadProducts();
 </script>
 </body>
