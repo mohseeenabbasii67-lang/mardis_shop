@@ -119,7 +119,9 @@ function clearRecoveryMarker() {
   window.history.replaceState({}, document.title, cleanUrl);
 }
 
-$('adminToggle').onclick = () => $('loginPanel').classList.toggle('hidden');
+$('adminToggle').addEventListener('click', () => {
+  $('loginPanel').classList.toggle('hidden');
+});
 
 $('forgotButton').onclick = async () => {
   const email = $('email').value.trim();
