@@ -1,32 +1,147 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مردیس شاپ | فروشگاه اینترنتی</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f5f7fb;color:#182235}
-header{background:#142b4a;color:white;padding:24px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.logo{font-size:27px;font-weight:bold;color:#ffd166}nav a{color:white;text-decoration:none;margin:0 10px}
-.hero{padding:55px 6%;background:linear-gradient(135deg,#183b66,#2673a8);color:white}
-.hero h1{font-size:34px;margin:0 0 14px}.hero p{font-size:18px;line-height:2}
-main{padding:28px 6%}.cats,.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
-.card{background:white;border-radius:14px;padding:20px;box-shadow:0 5px 20px #152b4a12}
-.cat{font-size:20px;text-align:center}.product h3{margin-top:0}.price{color:#087f5b;font-weight:bold;font-size:18px}
-button{background:#1769aa;color:white;border:0;border-radius:8px;padding:10px 16px;cursor:pointer}
-footer{text-align:center;padding:25px;background:#142b4a;color:white;margin-top:30px}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>مردیس شاپ</title>
+  <style>
+    :root{font-family:Tahoma,Arial,sans-serif;color:#202533;background:#f5f7fb}
+    *{box-sizing:border-box}body{margin:0}header{background:#172554;color:white;padding:22px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    h1{margin:0;font-size:25px}header p{margin:7px 0 0;color:#dbeafe}.wrap{max-width:1100px;margin:26px auto;padding:0 16px}
+    .card{background:white;border:1px solid #e5e7eb;border-radius:14px;padding:18px;margin-bottom:18px;box-shadow:0 3px 14px #1725540a}
+    h2{font-size:19px;margin:0 0 14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+    input,textarea,select,button{font:inherit;padding:11px;border:1px solid #cbd5e1;border-radius:9px;width:100%;margin:5px 0}
+    textarea{min-height:75px}button{background:#1d4ed8;color:white;border:0;cursor:pointer;font-weight:bold}button.secondary{background:#475569}button.danger{background:#b91c1c}
+    .row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:130px}.product{border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;background:white}
+    .product img{width:100%;height:155px;object-fit:cover;background:#e2e8f0}.product .info{padding:12px}.price{font-weight:bold;color:#1d4ed8}
+    .muted{color:#64748b;font-size:13px}.hidden{display:none!important}.notice{padding:10px;border-radius:9px;background:#eff6ff;color:#1e40af;margin:8px 0}
+    table{width:100%;border-collapse:collapse}th,td{text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;font-size:14px}
+    @media(max-width:600px){header{padding:18px}.wrap{margin:16px auto}h1{font-size:21px}}
+  </style>
 </head>
 <body>
-<header><div class="logo">مردیس شاپ</div><nav><a href="#cats">دسته‌بندی‌ها</a><a href="#products">محصولات</a><a href="#contact">تماس</a></nav></header>
-<section class="hero"><h1>به مردیس شاپ خوش آمدید</h1><p>فروشگاه اینترنتی قطعات یدکی، لوازم الکتریکی، پوشاک و کالاهای متنوع<br>محصولات مورد نیازتان را در یک جا پیدا کنید.</p></section>
-<main>
-<h2 id="cats">دسته‌بندی محصولات</h2><div class="cats">
-<div class="card cat">🚗 قطعات یدکی</div><div class="card cat">💡 لوازم الکتریکی</div><div class="card cat">👕 پوشاک</div><div class="card cat">🛍️ سایر کالاها</div></div>
-<h2 id="products" style="margin-top:35px">محصولات نمونه</h2><div class="products">
-<div class="card product"><h3>قطعه یدکی خودرو</h3><p>نمونه محصول؛ اطلاعات و قیمت را بعداً تکمیل کنید.</p><div class="price">قیمت: تماس بگیرید</div></div>
-<div class="card product"><h3>لامپ LED</h3><p>نمونه محصول لوازم الکتریکی.</p><div class="price">قیمت: تماس بگیرید</div></div>
-<div class="card product"><h3>تی‌شرت</h3><p>نمونه محصول پوشاک.</p><div class="price">قیمت: تماس بگیرید</div></div>
-</div></main>
-<footer id="contact">مردیس شاپ | اطلاعات تماس و محصولات واقعی در آینده اضافه می‌شوند.</footer>
-</body></html>
+<header>
+  <div><h1>مردیس شاپ</h1><p>فروشگاه آنلاین مردیس</p></div>
+  <button id="adminToggle" style="width:auto;background:#fff;color:#172554">ورود مدیر</button>
+</header>
+<main class="wrap">
+  <section class="card">
+    <h2>محصولات فروشگاه</h2>
+    <p class="muted">محصولات فعال فروشگاه در این بخش نمایش داده می‌شوند.</p>
+    <div id="products" class="grid"><p>در حال دریافت محصولات…</p></div>
+  </section>
+
+  <section id="loginPanel" class="card hidden">
+    <h2>ورود مدیر فروشگاه</h2>
+    <form id="loginForm">
+      <input id="email" type="email" placeholder="ایمیل مدیر" required>
+      <input id="password" type="password" placeholder="رمز عبور" required>
+      <button>ورود به پنل</button>
+    </form>
+    <p id="loginMsg" class="muted"></p>
+  </section>
+
+  <section id="adminPanel" class="hidden">
+    <div class="card">
+      <div class="row" style="align-items:center"><h2 style="flex:2">پنل مدیریت مردیس</h2><button id="logout" class="secondary" style="max-width:150px">خروج</button></div>
+      <div id="adminMsg" class="notice">وارد پنل مدیریت شده‌اید.</div>
+    </div>
+    <div class="card">
+      <h2>افزودن محصول</h2>
+      <form id="productForm">
+        <div class="grid">
+          <input id="pname" placeholder="نام محصول" required>
+          <input id="pcategory" placeholder="دسته‌بندی (مثلاً لوازم برقی)" required>
+          <input id="pprice" type="number" min="0" step="1" placeholder="قیمت به تومان" required>
+          <input id="pstock" type="number" min="0" step="1" placeholder="موجودی" value="1" required>
+          <input id="pimage" type="url" placeholder="آدرس تصویر (اختیاری)">
+        </div>
+        <textarea id="pdescription" placeholder="توضیحات محصول"></textarea>
+        <button>ثبت محصول</button>
+      </form>
+    </div>
+    <div class="card">
+      <h2>مدیریت محصولات</h2>
+      <div id="manageProducts">در حال بارگذاری…</div>
+    </div>
+    <div class="card">
+      <h2>سفارش‌های ثبت‌شده</h2>
+      <p class="muted">در این نسخه سفارش‌های ثبت‌شده در پایگاه داده برای مدیر نمایش داده می‌شوند.</p>
+      <div id="orders">در حال بارگذاری…</div>
+    </div>
+  </section>
+  <p class="muted">برای خرید و ثبت سفارش، درگاه پرداخت و ثبت سفارش امن باید جداگانه راه‌اندازی شود. فعلاً این نسخه نمایش محصولات و مدیریت مدیر را فراهم می‌کند.</p>
+</main>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+// نشانی پروژه و کلید عمومی Supabase
+const SUPABASE_URL = 'https://snkdwaatcjmqdhkxiasa.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_5o05x-xTjWYSTGXDBdE-Ug_jwZwASAI';
+const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const $ = id => document.getElementById(id);
+const money = n => Number(n || 0).toLocaleString('fa-IR') + ' تومان';
+const safe = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let editingId = null;
+
+$('adminToggle').onclick = () => $('loginPanel').classList.toggle('hidden');
+$('loginForm').onsubmit = async e => {
+  e.preventDefault();
+  $('loginMsg').textContent = 'در حال ورود…';
+  const {error} = await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});
+  if(error){$('loginMsg').textContent = 'ورود انجام نشد: ' + error.message;return;}
+  $('loginPanel').classList.add('hidden');
+  await showAdmin();
+};
+$('logout').onclick = async () => {await db.auth.signOut();$('adminPanel').classList.add('hidden');$('adminToggle').classList.remove('hidden');};
+async function loadProducts(){
+  const {data,error}=await db.from('products').select('id,name,category,description,price,stock,image_url').eq('active',true).order('created_at',{ascending:false});
+  if(error){$('products').innerHTML='<p>دریافت محصولات ناموفق بود. تنظیمات دسترسی جدول products را بررسی کنید.</p>';return;}
+  $('products').innerHTML = data.length ? data.map(p=>`<article class="product">${p.image_url?`<img src="${safe(p.image_url)}" alt="${safe(p.name)}">`:`<div style="height:155px;background:#e2e8f0;display:grid;place-items:center;color:#64748b">بدون تصویر</div>`}<div class="info"><b>${safe(p.name)}</b><p class="muted">${safe(p.category||'')}</p><p>${safe(p.description||'')}</p><div class="price">${money(p.price)}</div><small class="muted">موجودی: ${Number(p.stock||0).toLocaleString('fa-IR')}</small></div></article>`).join('') : '<p>هنوز محصولی ثبت نشده است.</p>';
+}
+async function showAdmin(){
+  const {data:{user}}=await db.auth.getUser();
+  if(!user)return;
+  const {data:allowed,error}=await db.rpc('is_admin');
+  if(error || allowed !== true){$('loginMsg').textContent='این حساب دسترسی مدیر ندارد.';await db.auth.signOut();return;}
+  $('adminPanel').classList.remove('hidden');$('adminToggle').classList.add('hidden');
+  await loadProducts();await loadManageProducts();await loadOrders();
+}
+async function loadManageProducts(){
+  const {data,error}=await db.from('products').select('*').order('created_at',{ascending:false});
+  if(error){$('manageProducts').textContent='خطا در دریافت محصولات: '+error.message;return;}
+  $('manageProducts').innerHTML=data.length?`<table><thead><tr><th>محصول</th><th>قیمت</th><th>موجودی</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody>${data.map(p=>`<tr><td>${safe(p.name)}</td><td>${money(p.price)}</td><td>${p.stock}</td><td>${p.active?'فعال':'غیرفعال'}</td><td><button data-edit="${p.id}" class="secondary">ویرایش</button> <button data-del="${p.id}" class="danger">حذف</button></td></tr>`).join('')}</tbody></table>`:'محصولی ثبت نشده است.';
+  $('manageProducts').querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editProduct(data.find(p=>String(p.id)===b.dataset.edit)));
+  $('manageProducts').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>deleteProduct(b.dataset.del));
+}
+function editProduct(p){
+  editingId=p.id;$('pname').value=p.name||'';$('pcategory').value=p.category||'';$('pprice').value=p.price||0;$('pstock').value=p.stock||0;$('pimage').value=p.image_url||'';$('pdescription').value=p.description||'';
+  $('productForm').querySelector('button').textContent='ذخیره تغییرات';
+  window.scrollTo({top:$('productForm').getBoundingClientRect().top+window.scrollY-20,behavior:'smooth'});
+}
+$('productForm').onsubmit=async e=>{
+  e.preventDefault();
+  const item={name:$('pname').value.trim(),category:$('pcategory').value.trim(),price:Number($('pprice').value),stock:Number($('pstock').value),image_url:$('pimage').value.trim()||null,description:$('pdescription').value.trim(),active:true};
+  const result=editingId?await db.from('products').update(item).eq('id',editingId):await db.from('products').insert(item);
+  if(result.error){$('adminMsg').textContent='خطا: '+result.error.message;return;}
+  editingId=null;$('productForm').reset();$('pstock').value=1;$('productForm').querySelector('button').textContent='ثبت محصول';
+  $('adminMsg').textContent='محصول با موفقیت ذخیره شد.';await loadProducts();await loadManageProducts();
+};
+async function deleteProduct(id){
+  if(!confirm('این محصول حذف شود؟'))return;
+  const {error}=await db.from('products').delete().eq('id',id);
+  if(error){$('adminMsg').textContent='خطا در حذف: '+error.message;return;}
+  await loadProducts();await loadManageProducts();
+}
+async function loadOrders(){
+  const {data,error}=await db.from('orders').select('id,customer_name,phone,address,total_amount,status,created_at').order('created_at',{ascending:false});
+  if(error){$('orders').textContent='خطا در دریافت سفارش‌ها: '+error.message;return;}
+  $('orders').innerHTML=data.length?`<table><thead><tr><th>شماره</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th></tr></thead><tbody>${data.map(o=>`<tr><td>${o.id}</td><td>${safe(o.customer_name)}<br><small>${safe(o.phone)}</small></td><td>${money(o.total_amount)}</td><td>${safe(o.status)}</td><td>${new Date(o.created_at).toLocaleDateString('fa-IR')}</td></tr>`).join('')}</tbody></table>`:'هنوز سفارشی ثبت نشده است.';
+}
+const {data:{session}}=await db.auth.getSession();
+if(session) await showAdmin();
+await loadProducts();
+</script>
+</body>
+</html>
