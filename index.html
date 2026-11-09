@@ -5,33 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>مردیس شاپ</title>
   <style>
-    :root{font-family:Tahoma,Arial,sans-serif;color:#202533;background:#f5f7fb}
-    *{box-sizing:border-box}body{margin:0}header{background:#172554;color:white;padding:22px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-    h1{margin:0;font-size:25px}header p{margin:7px 0 0;color:#dbeafe}.wrap{max-width:1100px;margin:26px auto;padding:0 16px}
-    .card{background:white;border:1px solid #e5e7eb;border-radius:14px;padding:18px;margin-bottom:18px;box-shadow:0 3px 14px #1725540a}
-    h2{font-size:19px;margin:0 0 14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-    input,textarea,select,button{font:inherit;padding:11px;border:1px solid #cbd5e1;border-radius:9px;width:100%;margin:5px 0}
-    textarea{min-height:75px}button{background:#1d4ed8;color:white;border:0;cursor:pointer;font-weight:bold}button.secondary{background:#475569}button.danger{background:#b91c1c}
-    button.linkbtn{background:transparent;color:#1d4ed8;text-decoration:underline;padding:5px;width:auto}
-    .row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:130px}.product{border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;background:white}
-    .product img{width:100%;height:155px;object-fit:cover;background:#e2e8f0}.product .info{padding:12px}.price{font-weight:bold;color:#1d4ed8}
-    .muted{color:#64748b;font-size:13px}.hidden{display:none!important}.notice{padding:10px;border-radius:9px;background:#eff6ff;color:#1e40af;margin:8px 0}
-    .error{background:#fef2f2;color:#991b1b}.success{background:#ecfdf5;color:#065f46}
-    table{width:100%;border-collapse:collapse}th,td{text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;font-size:14px}
-    @media(max-width:600px){header{padding:18px}.wrap{margin:16px auto}h1{font-size:21px}}
+:root{font-family:Tahoma,Arial,sans-serif;color:#102b40;background:#f4f7fb;--navy:#062b45;--teal:#087f89;--teal2:#08a6a3;--gold:#f4bd55;--ink:#102b40;--muted:#647789;--line:#e3eaf0}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#f7f9fc,#eef3f8);color:var(--ink)}
+.topbar{background:var(--navy);color:#edf7fb;padding:9px 5%;display:flex;justify-content:space-between;gap:12px;font-size:13px}
+header{background:#fff;padding:18px 5%;display:grid;grid-template-columns:1fr minmax(220px,1.4fr) auto;align-items:center;gap:24px;border-bottom:1px solid var(--line)}
+.brand h1{margin:0;font-size:29px;color:var(--navy);font-weight:900}.brand p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.searchbox{display:flex;align-items:center;background:#f7f9fc;border:1px solid #e1e8ef;border-radius:30px;overflow:hidden}.searchbox input{border:0;background:transparent;outline:0;margin:0;min-width:0}.search-icon{background:var(--navy);color:white;padding:13px 18px;font-size:18px}
+.header-actions button{width:auto;margin:0;padding:11px 17px;background:var(--gold);color:var(--navy);border-radius:24px}
+nav{background:var(--navy);color:white;padding:0 5%;display:flex;gap:28px;align-items:center;min-height:48px;border-bottom:3px solid var(--teal2);font-size:14px;font-weight:bold;overflow-x:auto;white-space:nowrap}nav a{padding:14px 0;color:white;text-decoration:none}nav a:hover{color:#ffda8a}
+.wrap{max-width:1320px;margin:25px auto;padding:0 22px}
+.hero{position:relative;overflow:hidden;border-radius:22px;min-height:275px;padding:36px 5%;display:grid;grid-template-columns:1fr 1.2fr 1fr;align-items:center;gap:18px;color:white;background:radial-gradient(circle at 18% 20%,#0a9b9c 0,transparent 28%),linear-gradient(115deg,#05283f,#087b83 54%,#05283f);box-shadow:0 14px 30px #062b4526}
+.hero-art{font-size:76px;text-align:center;filter:drop-shadow(0 10px 12px #001c2c66);z-index:1}.hero-copy{text-align:center;z-index:1}.hero-copy h2{font-size:clamp(28px,4vw,48px);margin:0 0 12px;color:white;font-weight:900}.hero-copy p{font-size:17px;line-height:1.9;margin:0 0 20px;color:#e4ffff}.hero-btn{display:inline-block;background:linear-gradient(135deg,#ffda8a,var(--gold));color:#17344a;border-radius:30px;padding:13px 27px;font-weight:bold;text-decoration:none}
+.hero-points{z-index:1;display:grid;gap:15px;font-size:17px;font-weight:bold}.hero-points span:before{content:"✓";display:inline-grid;place-items:center;width:27px;height:27px;border-radius:50%;background:var(--gold);color:var(--navy);margin-left:10px}
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:18px 0 28px}.feature{background:white;border:1px solid var(--line);border-radius:15px;padding:17px 12px;text-align:center;box-shadow:0 5px 15px #062b4509;font-weight:bold;color:var(--navy)}.feature b{display:block;font-size:24px;margin-bottom:7px}
+.card{background:white;border:1px solid var(--line);border-radius:17px;padding:20px;margin-bottom:18px;box-shadow:0 7px 22px #062b450b}h2{font-size:20px;margin:0 0 14px;color:var(--navy)}.section-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.section-heading h2{margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}input,textarea,select,button{font:inherit;padding:11px;border:1px solid #d4dfe8;border-radius:10px;width:100%;margin:5px 0}input:focus,textarea:focus,select:focus{outline:2px solid #0aa3a344;border-color:var(--teal)}textarea{min-height:75px}
+button{background:var(--teal);color:white;border:0;cursor:pointer;font-weight:bold}button.secondary{background:#526779}button.danger{background:#b91c1c}button.linkbtn{background:transparent;color:var(--teal);text-decoration:underline;padding:5px;width:auto}.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:130px}
+.product{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:white;box-shadow:0 5px 16px #062b4510;transition:transform .2s,box-shadow .2s}.product:hover{transform:translateY(-4px);box-shadow:0 12px 24px #062b4520}.product img{width:100%;height:220px;object-fit:contain;background:#f8fafc;display:block;padding:10px}.product .info{padding:14px}.product .info b{color:var(--navy);font-size:15px}.price{font-weight:bold;color:#078b91;margin:10px 0}
+.muted{color:var(--muted);font-size:13px}.hidden{display:none!important}.notice{padding:10px;border-radius:9px;background:#e9f8f8;color:#075e68;margin:8px 0}.error{background:#fef2f2;color:#991b1b}.success{background:#ecfdf5;color:#065f46}table{width:100%;border-collapse:collapse}th,td{text-align:right;padding:10px;border-bottom:1px solid var(--line);font-size:14px}
+footer{margin-top:32px;background:var(--navy);color:#eaf5fa;padding:25px 5%;text-align:center}footer strong{color:#ffda8a;font-size:18px}
+@media(max-width:800px){header{grid-template-columns:1fr auto;gap:12px;padding:15px 4%}.searchbox{grid-column:1/-1;grid-row:2}.brand h1{font-size:24px}nav{gap:17px;padding:0 4%}.hero{grid-template-columns:1fr 1fr;padding:28px 5%;min-height:240px}.hero-art{font-size:54px}.hero-points{font-size:14px}.features{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.topbar{justify-content:center;text-align:center}.topbar span:nth-child(2){display:none}header{grid-template-columns:1fr auto}.brand h1{font-size:21px}.header-actions button{font-size:12px;padding:10px}nav{font-size:13px;gap:20px}.wrap{margin:15px auto;padding:0 12px}.hero{grid-template-columns:1fr;text-align:center;padding:25px 18px;gap:10px}.hero-art{font-size:48px;order:2}.hero-copy{order:1}.hero-points{order:3;justify-items:center;gap:8px}.hero-copy p{font-size:14px}.features{gap:9px}.feature{font-size:12px;padding:13px 7px}.feature b{font-size:20px}.card{padding:15px}.product img{height:210px}.grid{grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}th,td{padding:7px;font-size:12px}}
   </style>
 </head>
 <body>
+<div class="topbar"><span>پشتیبانی و پاسخ‌گویی به‌زودی فعال می‌شود</span><span>خرید آسان، با اطمینان کامل</span><span>فروشگاه آنلاین مردیس</span></div>
 <header>
-  <div><h1>مردیس شاپ</h1><p>فروشگاه آنلاین مردیس</p></div>
-  <button id="adminToggle" type="button" style="width:auto;background:#fff;color:#172554" onclick="document.getElementById('loginPanel').classList.toggle('hidden')">ورود مدیر</button>
+  <div class="brand"><h1>مردیس شاپ</h1><p>انتخاب هوشمندانه شما</p></div>
+  <div class="searchbox"><input type="search" placeholder="جستجو در محصولات..." aria-label="جستجو در محصولات"><span class="search-icon">⌕</span></div>
+  <div class="header-actions"><button id="adminToggle" type="button" onclick="document.getElementById('loginPanel').classList.toggle('hidden')">ورود مدیر</button></div>
 </header>
+<nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a href="#features">مزایای خرید</a><a href="#siteFooter">تماس و پشتیبانی</a></nav>
 <main class="wrap">
-  <section class="card">
-    <h2>محصولات فروشگاه</h2>
-    <p class="muted">محصولات فعال فروشگاه در این بخش نمایش داده می‌شوند.</p>
-    <div id="products" class="grid"><p>در حال دریافت محصولات…</p></div>
-  </section>
+  <section class="hero"><div class="hero-art" aria-hidden="true">🛍️ 🎁</div><div class="hero-copy"><h2>مردیس شاپ</h2><p>فروشگاه آنلاین محصولات باکیفیت<br>تجربه‌ای ساده و دلنشین از خرید</p><a class="hero-btn" href="#productsSection">همین حالا محصولات را ببینید</a></div><div class="hero-points"><span>تضمین کیفیت محصولات</span><span>تجربه خرید آسان</span><span>پشتیبانی مشتریان</span></div></section>
+  <section id="features" class="features"><div class="feature"><b>✦</b>انتخاب محصولات باکیفیت</div><div class="feature"><b>➜</b>تجربه خرید آسان</div><div class="feature"><b>◉</b>اطلاع‌رسانی شفاف</div><div class="feature"><b>♡</b>توجه به رضایت مشتری</div></section>
+  <section id="productsSection" class="card"><div class="section-heading"><h2>محصولات فروشگاه</h2><span class="muted">محصولات منتخب مردیس شاپ</span></div><p class="muted">محصولات فعال فروشگاه در این بخش نمایش داده می‌شوند.</p><div id="products" class="grid"><p>در حال دریافت محصولات…</p></div></section>
 
   <section id="loginPanel" class="card hidden">
     <h2>ورود مدیر فروشگاه</h2>
@@ -91,6 +99,7 @@
   </section>
   <p class="muted">برای خرید و ثبت سفارش، درگاه پرداخت و ثبت سفارش امن باید جداگانه راه‌اندازی شود. فعلاً این نسخه نمایش محصولات و مدیریت مدیر را فراهم می‌کند.</p>
 </main>
+<footer id="siteFooter"><strong>مردیس شاپ</strong><p>آدرس، شماره تماس و راه‌های پشتیبانی پس از دریافت اطلاعات واقعی فروشگاه در این بخش درج می‌شود.</p><small>© مردیس شاپ</small></footer>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
