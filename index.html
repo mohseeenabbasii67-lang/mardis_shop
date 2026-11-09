@@ -68,8 +68,13 @@
           <input id="pcategory" placeholder="دسته‌بندی (مثلاً لوازم برقی)" required>
           <input id="pprice" type="number" min="0" step="1" placeholder="قیمت به تومان" required>
           <input id="pstock" type="number" min="0" step="1" placeholder="موجودی" value="1" required>
-          <input id="pimage" type="url" placeholder="آدرس تصویر (اختیاری)">
+          <label style="display:block">
+            <span class="muted">تصویر محصول (اختیاری، حداکثر ۵ مگابایت)</span>
+            <input id="pimageFile" type="file" accept="image/*">
+          </label>
         </div>
+        <img id="pimagePreview" class="hidden" alt="پیش‌نمایش تصویر محصول" style="max-width:180px;max-height:180px;object-fit:contain;border:1px solid #e5e7eb;border-radius:10px;margin:8px 0">
+        <p class="muted">برای ذخیره تصویر، ابتدا باید فضای product-images در Supabase Storage ساخته و عمومی شود.</p>
         <textarea id="pdescription" placeholder="توضیحات محصول"></textarea>
         <button>ثبت محصول</button>
       </form>
@@ -98,6 +103,45 @@ const money = n => Number(n || 0).toLocaleString('fa-IR') + ' تومان';
 const safe = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let editingId = null;
 let recoveryMode = false;
+let currentImageUrl = null;
+
+$('pimageFile').addEventListener('change', () => {
+  const file = $('pimageFile').files[0];
+  const preview = $('pimagePreview');
+  if (!file) {
+    preview.classList.add('hidden');
+    preview.removeAttribute('src');
+    return;
+  }
+  if (!file.type.startsWith('image/')) {
+    alert('لطفاً یک فایل تصویری انتخاب کن.');
+    $('pimageFile').value = '';
+    preview.classList.add('hidden');
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    alert('حجم تصویر باید حداکثر ۵ مگابایت باشد.');
+    $('pimageFile').value = '';
+    preview.classList.add('hidden');
+    return;
+  }
+  preview.src = URL.createObjectURL(file);
+  preview.classList.remove('hidden');
+});
+
+async function uploadProductImage(file) {
+  if (!file) return currentImageUrl;
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+  const path = `${crypto.randomUUID()}-${safeName}`;
+  const { error } = await db.storage.from('product-images').upload(path, file, {
+    cacheControl: '3600',
+    upsert: false,
+    contentType: file.type
+  });
+  if (error) throw error;
+  const { data } = db.storage.from('product-images').getPublicUrl(path);
+  return data.publicUrl;
+}
 
 function setMessage(el, text, kind='') {
   el.textContent = text;
@@ -208,17 +252,38 @@ async function loadManageProducts(){
   $('manageProducts').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>deleteProduct(b.dataset.del));
 }
 function editProduct(p){
-  editingId=p.id;$('pname').value=p.name||'';$('pcategory').value=p.category||'';$('pprice').value=p.price||0;$('pstock').value=p.stock||0;$('pimage').value=p.image_url||'';$('pdescription').value=p.description||'';
+  editingId=p.id;currentImageUrl=p.image_url||null;
+  $('pname').value=p.name||'';$('pcategory').value=p.category||'';$('pprice').value=p.price||0;$('pstock').value=p.stock||0;$('pimageFile').value='';$('pdescription').value=p.description||'';
+  const preview=$('pimagePreview');
+  if(currentImageUrl){preview.src=currentImageUrl;preview.classList.remove('hidden');}else{preview.removeAttribute('src');preview.classList.add('hidden');}
   $('productForm').querySelector('button').textContent='ذخیره تغییرات';
   window.scrollTo({top:$('productForm').getBoundingClientRect().top+window.scrollY-20,behavior:'smooth'});
 }
 $('productForm').onsubmit=async e=>{
   e.preventDefault();
-  const item={name:$('pname').value.trim(),category:$('pcategory').value.trim(),price:Number($('pprice').value),stock:Number($('pstock').value),image_url:$('pimage').value.trim()||null,description:$('pdescription').value.trim(),active:true};
-  const result=editingId?await db.from('products').update(item).eq('id',editingId):await db.from('products').insert(item);
-  if(result.error){$('adminMsg').textContent='خطا: '+result.error.message;return;}
-  editingId=null;$('productForm').reset();$('pstock').value=1;$('productForm').querySelector('button').textContent='ثبت محصول';
-  $('adminMsg').textContent='محصول با موفقیت ذخیره شد.';await loadProducts();await loadManageProducts();
+  const submitButton=$('productForm').querySelector('button');
+  submitButton.disabled=true;
+  submitButton.textContent='در حال ذخیره محصول…';
+  try {
+    const selectedFile=$('pimageFile').files[0];
+    if(selectedFile && (!selectedFile.type.startsWith('image/') || selectedFile.size>5*1024*1024)) {
+      throw new Error('تصویر باید از نوع عکس و حداکثر ۵ مگابایت باشد.');
+    }
+    const imageUrl=selectedFile?await uploadProductImage(selectedFile):currentImageUrl;
+    const item={name:$('pname').value.trim(),category:$('pcategory').value.trim(),price:Number($('pprice').value),stock:Number($('pstock').value),image_url:imageUrl||null,description:$('pdescription').value.trim(),active:true};
+    const result=editingId?await db.from('products').update(item).eq('id',editingId):await db.from('products').insert(item);
+    if(result.error) throw result.error;
+    editingId=null;currentImageUrl=null;$('productForm').reset();$('pstock').value=1;
+    $('pimagePreview').removeAttribute('src');$('pimagePreview').classList.add('hidden');
+    submitButton.textContent='ثبت محصول';
+    $('adminMsg').textContent='محصول با موفقیت ذخیره شد.';await loadProducts();await loadManageProducts();
+  } catch(error) {
+    $('adminMsg').textContent='خطا در ذخیره محصول یا آپلود تصویر: '+(error.message||error);
+  } finally {
+    submitButton.disabled=false;
+    if(!editingId) submitButton.textContent='ثبت محصول';
+    else submitButton.textContent='ذخیره تغییرات';
+  }
 };
 async function deleteProduct(id){
   if(!confirm('این محصول حذف شود؟'))return;
