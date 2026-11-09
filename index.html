@@ -24,8 +24,7 @@
 <body>
 <header>
   <div><h1>مردیس شاپ</h1><p>فروشگاه آنلاین مردیس</p></div>
- <button id="adminToggle" type="button" style="width:auto;background:#fff;color:#172554"
-onclick="document.getElementById('loginPanel').classList.toggle('hidden')">ورود مدیر</button>
+  <button id="adminToggle" type="button" style="width:auto;background:#fff;color:#172554" onclick="document.getElementById('loginPanel').classList.toggle('hidden')">ورود مدیر</button>
 </header>
 <main class="wrap">
   <section class="card">
@@ -41,7 +40,7 @@ onclick="document.getElementById('loginPanel').classList.toggle('hidden')">ور�
       <input id="password" type="password" placeholder="رمز عبور" required>
       <button id="loginButton">ورود به پنل</button>
     </form>
-    <button type="button" id="forgotButton" class="linkbtn">رمز عبورم را فراموش کرده‌ام</button>
+    <button type="button" id="forgotButton" class="linkbtn" onclick="window.mardisForgotPassword && window.mardisForgotPassword()">رمز عبورم را فراموش کرده‌ام</button>
     <p id="loginMsg" class="muted" aria-live="polite"></p>
   </section>
 
@@ -120,11 +119,9 @@ function clearRecoveryMarker() {
   window.history.replaceState({}, document.title, cleanUrl);
 }
 
-$('adminToggle').addEventListener('click', () => {
-  $('loginPanel').classList.toggle('hidden');
-});
+$('adminToggle').onclick = () => $('loginPanel').classList.toggle('hidden');
 
-$('forgotButton').onclick = async () => {
+window.mardisForgotPassword = async () => {
   const email = $('email').value.trim();
   if (!email) {
     setMessage($('loginMsg'), 'ابتدا ایمیل حساب مدیر را در کادر ایمیل وارد کن.');
@@ -235,6 +232,8 @@ async function loadOrders(){
   $('orders').innerHTML=data.length?`<table><thead><tr><th>شماره</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th></tr></thead><tbody>${data.map(o=>`<tr><td>${o.id}</td><td>${safe(o.customer_name)}<br><small>${safe(o.phone)}</small></td><td>${money(o.total_amount)}</td><td>${safe(o.status)}</td><td>${new Date(o.created_at).toLocaleDateString('fa-IR')}</td></tr>`).join('')}</tbody></table>`:'هنوز سفارشی ثبت نشده است.';
 }
 
+// لینک بازیابی Supabase پس از تأیید به همین صفحه برمی‌گردد.
+// رویداد PASSWORD_RECOVERY مطمئن‌ترین علامت برای نمایش فرم تعیین رمز جدید است.
 db.auth.onAuthStateChange((event) => {
   if (event === 'PASSWORD_RECOVERY') {
     showRecoveryForm();
@@ -243,23 +242,19 @@ db.auth.onAuthStateChange((event) => {
 
 const urlHash = new URLSearchParams(window.location.hash.slice(1));
 const urlError = urlHash.get('error_description') || urlHash.get('error');
-
 if (urlError) {
   $('loginPanel').classList.remove('hidden');
   $('adminToggle').classList.add('hidden');
-  setMessage(
-    $('loginMsg'),
-    'لینک بازیابی نامعتبر یا منقضی شده است.',
-    'error'
-  );
+  setMessage($('loginMsg'), 'لینک بازیابی معتبر نیست یا منقضی شده است. از گزینه «رمز عبورم را فراموش کرده‌ام» یک لینک تازه درخواست کن.', 'error');
 } else {
-  const { data: { session } } = await db.auth.getSession();
-
-  if (urlHash.get('type') === 'recovery') {
+  const {data:{session}} = await db.auth.getSession();
+  if (urlHash.get('type') === 'recovery' || (session && urlHash.get('access_token'))) {
     showRecoveryForm();
   } else if (session) {
     await showAdmin();
   }
 }
-
 await loadProducts();
+</script>
+</body>
+</html>
