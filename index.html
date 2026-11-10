@@ -289,6 +289,40 @@ function editProduct(p){
   if(currentImageUrl){preview.src=currentImageUrl;preview.classList.remove('hidden');}else{preview.removeAttribute('src');preview.classList.add('hidden');}
   $('productForm').querySelector('button').textContent='ذخیره تغییرات';
   window.scrollTo({top:$('productForm').getBoundingClientRect().top+window.scrollY-20,behavior:'smooth'});
+} function jalaliToISO(value) {
+    if (!value || !value.trim()) return null;
+
+    const match = value.trim().match(
+        /^(\d{4})[/-](\d{1,2})[/-](\d{1,2})\s*[-، ]\s*(\d{1,2}):(\d{2})$/
+    );
+
+    if (!match) {
+        throw new Error('تاریخ را به شکل 1405/08/20 - 14:30 وارد کنید.');
+    }
+
+    const jy = Number(match[1]);
+    const jm = Number(match[2]);
+    const jd = Number(match[3]);
+    const hour = Number(match[4]);
+    const minute = Number(match[5]);
+
+    if (!jalaali.isValidJalaaliDate(jy, jm, jd)) {
+        throw new Error('تاریخ شمسی معتبر نیست.');
+    }
+
+    if (hour > 23 || minute > 59) {
+        throw new Error('ساعت واردشده معتبر نیست.');
+    }
+
+    const g = jalaali.toGregorian(jy, jm, jd);
+
+    return new Date(
+        g.gy,
+        g.gm - 1,
+        g.gd,
+        hour,
+        minute
+    ).toISOString();
 }
 $('productForm').onsubmit=async e=>{
   e.preventDefault();
@@ -314,12 +348,8 @@ const item = {
     discount_price: $('pDiscountPrice').value
         ? Number($('pDiscountPrice').value)
         : null,
-    discount_start: $('pDiscountStart').value
-        ? new Date($('pDiscountStart').value).toISOString()
-        : null,
-    discount_end: $('pDiscountEnd').value
-        ? new Date($('pDiscountEnd').value).toISOString()
-        : null,
+    discount_start: jalaliToISO($('pDiscountStart').value),
+    discount_end: jalaliToISO($('pDiscountEnd').value),
     image_url: imageUrl || null,
     description: $('pdescription').value.trim(),
     active: true
