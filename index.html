@@ -338,6 +338,29 @@ $('productForm').onsubmit=async e=>{
     ```javascript
 const unique = $('pUnique').checked;
 
+const discountEnabled = $('pDiscountActive').checked;
+const originalPrice = Number($('pprice').value);
+const discountPrice = Number($('pDiscountPrice').value);
+const discountStart = $('pDiscountStart').value.trim();
+const discountEnd = $('pDiscountEnd').value.trim();
+
+if (discountEnabled) {
+    if (!discountPrice || discountPrice <= 0 || discountPrice >= originalPrice) {
+        throw new Error('قیمت تخفیف باید بیشتر از صفر و کمتر از قیمت اصلی باشد.');
+    }
+
+    if (!discountStart || !discountEnd) {
+        throw new Error('تاریخ شروع و پایان تخفیف را وارد کنید.');
+    }
+
+    const startISO = jalaliToISO(discountStart);
+    const endISO = jalaliToISO(discountEnd);
+
+    if (new Date(endISO) <= new Date(startISO)) {
+        throw new Error('تاریخ پایان باید بعد از تاریخ شروع باشد.');
+    }
+}
+```
 const item = {
     name: $('pname').value.trim(),
     category: $('pcategory').value.trim(),
