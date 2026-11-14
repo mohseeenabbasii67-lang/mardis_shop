@@ -75,7 +75,7 @@ footer{margin-top:32px;background:var(--navy);color:#eaf5fa;padding:25px 5%;text
         <div class="grid">
           <input id="pname" placeholder="نام محصول" required>
           <input id="pcategory" placeholder="دسته‌بندی (مثلاً لوازم برقی)" required>
-        ```html
+        
 <input id="pprice" type="number" min="0" step="1" placeholder="قیمت به تومان" required>
 
 <input id="pstock" type="number" min="0" step="1" placeholder="موجودی" value="1" required>
@@ -97,7 +97,7 @@ footer{margin-top:32px;background:var(--navy);color:#eaf5fa;padding:25px 5%;text
 
 <label>پایان تخفیف</label>
 <input id="pDiscountEnd" type="text" placeholder="مثلاً 1405/08/25 - 23:59">
-```
+
           <label style="display:block">
             <span class="muted">تصویر محصول (اختیاری، حداکثر ۵ مگابایت)</span>
             <input id="pimageFile" type="file" accept="image/*">
@@ -335,7 +335,7 @@ $('productForm').onsubmit=async e=>{
       throw new Error('تصویر باید از نوع عکس و حداکثر ۵ مگابایت باشد.');
     }
     const imageUrl=selectedFile?await uploadProductImage(selectedFile):currentImageUrl;
-    ```javascript
+    
 const unique = $('pUnique').checked;
 
 const discountEnabled = $('pDiscountActive').checked;
@@ -360,7 +360,7 @@ if (discountEnabled) {
         throw new Error('تاریخ پایان باید بعد از تاریخ شروع باشد.');
     }
 }
-```
+
 const item = {
     name: $('pname').value.trim(),
     category: $('pcategory').value.trim(),
@@ -377,7 +377,7 @@ const item = {
     description: $('pdescription').value.trim(),
     active: true
 };
-```
+
     const result=editingId?await db.from('products').update(item).eq('id',editingId):await db.from('products').insert(item);
     if(result.error) throw result.error;
     editingId=null;currentImageUrl=null;$('productForm').reset();$('pstock').value=1;
