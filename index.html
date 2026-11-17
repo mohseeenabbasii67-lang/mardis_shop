@@ -48,6 +48,15 @@ body {
     .product{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:white;box-shadow:0 5px 16px #062b4510;transition:transform .2s,box-shadow .2s}.product:hover{transform:translateY(-4px);box-shadow:0 12px 24px #062b4520}.product img{width:100%;height:220px;object-fit:contain;background:#f8fafc;display:block;padding:10px}.product .info{padding:14px}.product .info b{color:var(--navy);font-size:15px}.price{font-weight:bold;color:#078b91;margin:10px 0}.old-price{color:#8a98a5;text-decoration:line-through;font-size:13px;margin-right:8px}.badge{display:inline-block;background:#fff3d7;color:#815500;border-radius:20px;padding:4px 9px;font-size:12px;margin:4px 0}
     .muted{color:var(--muted);font-size:13px}.hidden{display:none!important}.notice{padding:10px;border-radius:9px;background:#e9f8f8;color:#075e68;margin:8px 0}.error{background:#fef2f2;color:#991b1b}.success{background:#ecfdf5;color:#065f46}table{width:100%;border-collapse:collapse}th,td{text-align:right;padding:10px;border-bottom:1px solid var(--line);font-size:14px}td button{width:auto;padding:7px 12px;margin:2px}
     footer{margin-top:32px;background:var(--navy);color:#eaf5fa;padding:25px 5%;text-align:center}footer strong{color:#ffda8a;font-size:18px}
+
+    .cart-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+    .cart-line{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+    .cart-line button{width:auto;min-width:36px;padding:6px 10px;margin:0}
+    .cart-line .qty{display:flex;align-items:center;gap:6px}
+    .cart-total{font-size:18px;font-weight:900;color:var(--navy);margin-top:12px}
+    .product .add-cart{margin-top:10px}
+    @media(max-width:700px){.cart-layout{grid-template-columns:1fr}.cart-line{grid-template-columns:1fr auto}.cart-line .qty{grid-column:1/-1}}
+
     @media(max-width:800px){header{grid-template-columns:1fr auto;gap:12px;padding:15px 4%}.searchbox{grid-column:1/-1;grid-row:2}.brand h1{font-size:24px}nav{gap:17px;padding:0 4%}.hero{grid-template-columns:1fr 1fr;padding:28px 5%;min-height:240px}.hero-art{font-size:54px}.hero-points{font-size:14px}.features{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:520px){.topbar{justify-content:center;text-align:center}.topbar span:nth-child(2){display:none}header{grid-template-columns:1fr auto}.brand h1{font-size:21px}.header-actions button{font-size:12px;padding:10px}nav{font-size:13px;gap:20px}.wrap{margin:15px auto;padding:0 12px}.hero{grid-template-columns:1fr;text-align:center;padding:25px 18px;gap:10px}.hero-art{font-size:48px;order:2}.hero-copy{order:1}.hero-points{order:3;justify-items:center;gap:8px}.hero-copy p{font-size:14px}.features{gap:9px}.feature{font-size:12px;padding:13px 7px}.feature b{font-size:20px}.card{padding:15px}.product img{height:210px}.grid{grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}th,td{padding:7px;font-size:12px}}
   </style>
@@ -64,6 +73,29 @@ body {
     <section class="hero"><div class="hero-art" aria-hidden="true">🛍️ 🎁</div><div class="hero-copy"><h2>مردیس شاپ</h2><p>فروشگاه آنلاین محصولات باکیفیت<br>تجربه‌ای ساده و دلنشین از خرید</p><a class="hero-btn" href="#productsSection">همین حالا محصولات را ببینید</a></div><div class="hero-points"><span>تضمین کیفیت محصولات</span><span>تجربه خرید آسان</span><span>پشتیبانی مشتریان</span></div></section>
     <section id="features" class="features"><div class="feature"><b>✦</b>انتخاب محصولات باکیفیت</div><div class="feature"><b>➜</b>تجربه خرید آسان</div><div class="feature"><b>◉</b>اطلاع‌رسانی شفاف</div><div class="feature"><b>♡</b>توجه به رضایت مشتری</div></section>
     <section id="productsSection" class="card"><div class="section-heading"><h2>محصولات فروشگاه</h2><span class="muted">محصولات منتخب مردیس شاپ</span></div><p class="muted">محصولات فعال فروشگاه در این بخش نمایش داده می‌شوند.</p><div id="products" class="grid"><p>در حال دریافت محصولات…</p></div></section>
+
+    <section id="cartSection" class="card">
+      <div class="section-heading"><h2>سبد خرید</h2><span id="cartCount" class="muted">۰ محصول</span></div>
+      <div class="cart-layout">
+        <div>
+          <div id="cartItems"><p class="muted">سبد خرید شما خالی است.</p></div>
+          <div id="cartTotal" class="cart-total">جمع کل تقریبی: ۰ تومان</div>
+        </div>
+        <div>
+          <h3 style="margin-top:0;color:var(--navy)">اطلاعات تحویل سفارش</h3>
+          <form id="checkoutForm">
+            <input id="checkoutName" type="text" maxlength="120" placeholder="نام و نام خانوادگی" autocomplete="name" required>
+            <input id="checkoutPhone" type="tel" maxlength="30" placeholder="شماره تماس" autocomplete="tel" required>
+            <textarea id="checkoutAddress" maxlength="1000" placeholder="نشانی کامل برای تحویل سفارش" autocomplete="street-address" required></textarea>
+            <input id="checkoutPostal" type="text" maxlength="30" placeholder="کد پستی (اختیاری)" autocomplete="postal-code">
+            <button id="checkoutButton" type="submit">ثبت سفارش</button>
+          </form>
+          <p class="muted">پرداخت آنلاین در این مرحله فعال نیست. پس از ثبت سفارش، برای هماهنگی با شما تماس گرفته می‌شود.</p>
+          <p id="checkoutMessage" aria-live="polite" class="muted"></p>
+        </div>
+      </div>
+    </section>
+
     <section id="loginPanel" class="card hidden">
       <h2>ورود مدیر فروشگاه</h2>
       <form id="loginForm"><input id="email" type="email" placeholder="ایمیل مدیر" autocomplete="username" required><input id="password" type="password" placeholder="رمز عبور" autocomplete="current-password" required><button id="loginButton">ورود به پنل</button></form>
@@ -100,7 +132,7 @@ body {
       <div class="card"><h2>مدیریت محصولات</h2><div id="manageProducts">در حال بارگذاری…</div></div>
       <div class="card"><h2>سفارش‌های ثبت‌شده</h2><p class="muted">در این نسخه سفارش‌های ثبت‌شده در پایگاه داده برای مدیر نمایش داده می‌شوند.</p><div id="orders">در حال بارگذاری…</div></div>
     </section>
-    <p class="muted">برای خرید و ثبت سفارش، درگاه پرداخت و ثبت سفارش امن باید جداگانه راه‌اندازی شود. فعلاً این نسخه نمایش محصولات و مدیریت مدیر را فراهم می‌کند.</p>
+    <p class="muted">ثبت سفارش بدون پرداخت آنلاین فعال است. وضعیت سفارش‌ها در پنل مدیریت قابل مشاهده است؛ درگاه پرداخت در مرحله بعد اضافه می‌شود.</p>
   </main>
   <footer id="siteFooter"><strong>مردیس شاپ</strong><p>آدرس، شماره تماس و راه‌های پشتیبانی پس از دریافت اطلاعات واقعی فروشگاه در این بخش درج می‌شود.</p><small>© مردیس شاپ</small></footer>
 
@@ -116,7 +148,68 @@ body {
     const TEHRAN_OFFSET_MINUTES = 210;
     let editingId = null;
     let currentImageUrl = null;
+
     let productCache = [];
+    const CART_STORAGE_KEY = 'mardis_shop_cart_v1';
+    let cart = readCart();
+
+    function readCart() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
+        if (!Array.isArray(parsed)) return [];
+        return parsed.filter(x => Number.isSafeInteger(Number(x.product_id)) && Number(x.product_id) > 0 &&
+          Number.isSafeInteger(Number(x.quantity)) && Number(x.quantity) > 0)
+          .map(x => ({ product_id: Number(x.product_id), quantity: Number(x.quantity) }));
+      } catch { return []; }
+    }
+    function saveCart() {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+      renderCart();
+    }
+    function cartProduct(productId) {
+      return productCache.find(p => String(p.id) === String(productId));
+    }
+    function addToCart(productId) {
+      const product = cartProduct(productId);
+      if (!product) { alert('این محصول در دسترس نیست. صفحه را تازه‌سازی کنید.'); return; }
+      const current = cart.find(x => x.product_id === Number(product.id));
+      const nextQty = (current?.quantity || 0) + 1;
+      if (Number(product.stock || 0) < nextQty) { alert('موجودی این محصول کافی نیست.'); return; }
+      if (product.is_unique && nextQty > 1) { alert('از این محصول تک‌نسخه‌ای فقط یک عدد قابل سفارش است.'); return; }
+      if (current) current.quantity = nextQty;
+      else cart.push({ product_id: Number(product.id), quantity: 1 });
+      saveCart();
+      $('cartSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    function changeCartQuantity(productId, delta) {
+      const line = cart.find(x => x.product_id === Number(productId));
+      if (!line) return;
+      const product = cartProduct(productId);
+      const nextQty = line.quantity + delta;
+      if (nextQty <= 0) cart = cart.filter(x => x.product_id !== Number(productId));
+      else {
+        if (!product || nextQty > Number(product.stock || 0)) { alert('موجودی کافی نیست.'); return; }
+        if (product.is_unique && nextQty > 1) { alert('از محصول تک‌نسخه‌ای فقط یک عدد قابل سفارش است.'); return; }
+        line.quantity = nextQty;
+      }
+      saveCart();
+    }
+    function renderCart() {
+      const count = cart.reduce((sum, line) => sum + line.quantity, 0);
+      $('cartCount').textContent = `${count.toLocaleString('fa-IR')} محصول`;
+      let total = 0;
+      const rows = cart.map(line => {
+        const product = cartProduct(line.product_id);
+        if (!product) return `<div class="cart-line"><span>محصول شماره ${line.product_id} (در حال بررسی)</span><span class="qty"><button type="button" data-remove="${line.product_id}" class="danger">حذف</button></span></div>`;
+        const unitPrice = effectiveDiscount(product) ? Number(product.discount_price) : Number(product.price);
+        total += unitPrice * line.quantity;
+        return `<div class="cart-line"><span><b>${safe(product.name)}</b><br><small class="muted">${money(unitPrice)} برای هر عدد</small></span><span class="qty"><button type="button" data-minus="${line.product_id}" aria-label="کم کردن">−</button><b>${line.quantity.toLocaleString('fa-IR')}</b><button type="button" data-plus="${line.product_id}" aria-label="زیاد کردن">+</button></span><button type="button" data-remove="${line.product_id}" class="danger">حذف</button></div>`;
+      }).join('');
+      $('cartItems').innerHTML = rows || '<p class="muted">سبد خرید شما خالی است.</p>';
+      $('cartTotal').textContent = `جمع کل تقریبی: ${money(total)}`;
+      $('checkoutButton').disabled = cart.length === 0;
+    }
+
 
     function normalizeDigits(value) {
       return String(value ?? '').replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
@@ -164,7 +257,7 @@ body {
       const uniqueBadge = product.is_unique ? '<span class="badge">تک‌نسخه‌ای</span>' : '';
       const discountBadge = discounted ? '<span class="badge">تخفیف فعال</span>' : '';
       const oldPrice = discounted ? `<span class="old-price">${money(product.price)}</span>` : '';
-      return `<article class="product">${image}<div class="info"><b>${safe(product.name)}</b><p class="muted">${safe(product.category || '')}</p>${uniqueBadge}${discountBadge}<p>${safe(product.description || '')}</p><div class="price">${money(shownPrice)} ${oldPrice}</div><small class="muted">موجودی: ${Number(product.stock || 0).toLocaleString('fa-IR')}</small></div></article>`;
+      return `<article class="product">${image}<div class="info"><b>${safe(product.name)}</b><p class="muted">${safe(product.category || '')}</p>${uniqueBadge}${discountBadge}<p>${safe(product.description || '')}</p><div class="price">${money(shownPrice)} ${oldPrice}</div><small class="muted">موجودی: ${Number(product.stock || 0).toLocaleString('fa-IR')}</small><button type="button" class="add-cart" data-add-cart="${safe(product.id)}" ${Number(product.stock || 0) < 1 ? 'disabled' : ''}>افزودن به سبد خرید</button></div></article>`;
     }
 
     $('pimageFile').addEventListener('change', () => {
@@ -238,8 +331,73 @@ body {
       const term = $('productSearch').value.trim().toLocaleLowerCase();
       const filtered = productCache.filter(p => !term || [p.name, p.category, p.description].some(v => String(v || '').toLocaleLowerCase().includes(term)));
       $('products').innerHTML = filtered.length ? filtered.map(productCard).join('') : '<p>محصولی مطابق جستجوی شما پیدا نشد.</p>';
+      renderCart();
     }
     $('productSearch').addEventListener('input', renderProducts);
+
+
+    $('products').addEventListener('click', event => {
+      const button = event.target.closest('[data-add-cart]');
+      if (button) addToCart(button.dataset.addCart);
+    });
+    $('cartItems').addEventListener('click', event => {
+      const plus = event.target.closest('[data-plus]');
+      const minus = event.target.closest('[data-minus]');
+      const remove = event.target.closest('[data-remove]');
+      if (plus) changeCartQuantity(plus.dataset.plus, 1);
+      if (minus) changeCartQuantity(minus.dataset.minus, -1);
+      if (remove) {
+        cart = cart.filter(x => x.product_id !== Number(remove.dataset.remove));
+        saveCart();
+      }
+    });
+    $('checkoutForm').onsubmit = async event => {
+      event.preventDefault();
+      if (!cart.length) { setMessage($('checkoutMessage'), 'سبد خرید خالی است.', 'error'); return; }
+      const customerName = $('checkoutName').value.trim();
+      const phone = $('checkoutPhone').value.trim();
+      const address = $('checkoutAddress').value.trim();
+      const postalCode = $('checkoutPostal').value.trim();
+      if (!customerName || !phone || !address) {
+        setMessage($('checkoutMessage'), 'نام، شماره تماس و نشانی را کامل وارد کنید.', 'error');
+        return;
+      }
+      const button = $('checkoutButton');
+      button.disabled = true;
+      button.textContent = 'در حال ثبت سفارش…';
+      setMessage($('checkoutMessage'), 'در حال بررسی موجودی و ثبت سفارش…');
+      try {
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/create-order`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+          body: JSON.stringify({
+            customer_name: customerName,
+            phone,
+            address,
+            postal_code: postalCode,
+            items: cart.map(line => ({ product_id: line.product_id, quantity: line.quantity }))
+          })
+        });
+        let result = {};
+        try { result = await response.json(); } catch {}
+        if (!response.ok || result.success === false) {
+          throw new Error(result.error || 'ثبت سفارش انجام نشد. لطفاً دوباره تلاش کنید.');
+        }
+        const orderId = result.order_id ?? result.order?.order_id ?? '';
+        cart = [];
+        saveCart();
+        $('checkoutForm').reset();
+        setMessage($('checkoutMessage'),
+          `سفارش شما با موفقیت ثبت شد${orderId ? `؛ شماره سفارش: ${orderId}` : ''}. وضعیت سفارش: در انتظار بررسی. پرداخت آنلاین فعلاً فعال نیست.`,
+          'success');
+        await loadProducts();
+      } catch (error) {
+        setMessage($('checkoutMessage'), error.message || 'خطا در ارتباط با سرور ثبت سفارش.', 'error');
+      } finally {
+        button.disabled = cart.length === 0;
+        button.textContent = 'ثبت سفارش';
+      }
+    };
 
     async function showAdmin() {
       const { data: { user } } = await db.auth.getUser();
@@ -360,6 +518,7 @@ body {
       if (urlHash.get('type') === 'recovery' || (session && urlHash.get('access_token'))) showRecoveryForm();
       else if (session) await showAdmin();
     }
+    renderCart();
     await loadProducts();
   </script>
 </body>
