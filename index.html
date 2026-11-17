@@ -106,6 +106,7 @@ body {
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    import { toGregorian, toJalaali, isValidJalaaliDate } from 'https://cdn.jsdelivr.net/npm/jalaali-js@1.2.8/+esm';
     const SUPABASE_URL = 'https://snkdwaatcjmqdhkxiasa.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_5o05x-xTjWYSTGXDBdE-Ug_jwZwASAI';
     const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -127,9 +128,9 @@ body {
       if (!match) throw new Error('تاریخ را به شکل 1405/08/20 - 14:30 وارد کنید.');
       const [, jyS, jmS, jdS, hourS, minuteS] = match;
       const jy = Number(jyS), jm = Number(jmS), jd = Number(jdS), hour = Number(hourS), minute = Number(minuteS);
-      if (!window.jalaali || !jalaali.isValidJalaaliDate(jy, jm, jd)) throw new Error('تاریخ شمسی معتبر نیست.');
+      if (!isValidJalaaliDate(jy, jm, jd)) throw new Error('تاریخ شمسی معتبر نیست.');
       if (hour > 23 || minute > 59) throw new Error('ساعت واردشده معتبر نیست.');
-      const g = jalaali.toGregorian(jy, jm, jd);
+      const g = toGregorian(jy, jm, jd);
       // ورودی ساعت، ساعت رسمی تهران است؛ آن را مستقل از منطقه زمانی دستگاه به UTC تبدیل می‌کنیم.
       const utcMillis = Date.UTC(g.gy, g.gm - 1, g.gd, hour, minute) - TEHRAN_OFFSET_MINUTES * 60 * 1000;
       return new Date(utcMillis).toISOString();
@@ -140,7 +141,7 @@ body {
       if (Number.isNaN(date.getTime())) return '';
       const tehranDate = new Date(date.getTime() + TEHRAN_OFFSET_MINUTES * 60 * 1000);
       const gy = tehranDate.getUTCFullYear(), gm = tehranDate.getUTCMonth() + 1, gd = tehranDate.getUTCDate();
-      const j = jalaali.toJalaali(gy, gm, gd);
+      const j = toJalaali(gy, gm, gd);
       const hour = String(tehranDate.getUTCHours()).padStart(2, '0');
       const minute = String(tehranDate.getUTCMinutes()).padStart(2, '0');
       return `${j.jy}/${String(j.jm).padStart(2,'0')}/${String(j.jd).padStart(2,'0')} - ${hour}:${minute}`;
