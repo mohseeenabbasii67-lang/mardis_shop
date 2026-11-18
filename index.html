@@ -129,6 +129,30 @@ body {
     @media(max-width:800px){header{padding:15px 4%;gap:12px}.hero{grid-template-columns:1fr 1fr;min-height:270px}.hero-copy{text-align:center}.hero-art{min-height:170px}.hero-points{grid-column:1/-1;display:flex;justify-content:center;flex-wrap:wrap;gap:10px 18px}.hero-points span{font-size:12px}.hero-points span:before{width:21px;height:21px}.section-heading h2{font-size:22px}}
     @media(max-width:520px){.topbar{font-size:11px;padding:8px 10px}.brand-mark{width:40px;height:40px;border-radius:13px;font-size:22px}.brand h1{font-size:19px}.brand p{font-size:11px}.header-actions button{padding:9px 12px}.searchbox{min-height:43px}nav{gap:19px;padding:0 14px}.wrap{margin:15px auto;padding:0 12px}.hero{padding:24px 18px;border-radius:20px;grid-template-columns:1fr;gap:7px}.hero-copy{order:1}.hero-art{order:2;min-height:150px}.hero-points{order:3;display:grid;justify-items:start;grid-template-columns:1fr 1fr;width:100%;gap:8px}.hero-copy h2{font-size:31px}.hero-copy p{font-size:13px}.hero-monogram{width:100px;height:100px;border-radius:30px;font-size:62px}.hero-orbit{width:145px;height:145px}.orbit-two{width:175px;height:175px}.hero-art small{margin-top:8px}.card{padding:16px;border-radius:17px}.products-panel{margin-top:15px}.section-heading{align-items:flex-start;flex-direction:column;gap:10px}.section-heading h2{font-size:21px}.products-count{align-self:flex-start}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product{border-radius:14px}.product>img{height:155px;padding:10px}.product .info{padding:11px}.product .info>b{font-size:13px}.product .info>p:not(.muted){font-size:11px;min-height:40px}.price{font-size:14px}.product .add-cart{font-size:12px;padding:10px 5px}.features{gap:8px}.feature{padding:12px 6px;font-size:11px}.feature b{font-size:19px}.cart-layout>div{padding:12px}}
 
+
+    /* رسید ثبت سفارش */
+    .order-confirmation{position:fixed;inset:0;z-index:1200;background:#041d2bd9;display:grid;place-items:center;padding:18px}
+    .order-confirmation.hidden{display:none!important}
+    .order-confirmation-panel{width:min(620px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:22px;padding:26px;box-shadow:0 25px 80px #00131f66;border-top:6px solid var(--teal2)}
+    .confirmation-mark{width:64px;height:64px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#d9f6ec;color:#087f65;font-size:36px;font-weight:900}
+    .confirmation-title{text-align:center;color:#075e58;font-size:24px;margin:0 0 5px}
+    .confirmation-subtitle{text-align:center;color:var(--muted);margin:0 0 18px}
+    .confirmation-number{background:linear-gradient(135deg,#062b45,#087f89);color:white;border-radius:14px;padding:14px;text-align:center;margin:14px 0}
+    .confirmation-number small{display:block;color:#c9f4ed}.confirmation-number strong{font-size:25px;letter-spacing:1px}
+    .confirmation-items{border:1px solid var(--line);border-radius:13px;padding:12px;margin:14px 0}
+    .confirmation-item{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+    .confirmation-item:last-child{border-bottom:0}.confirmation-total{display:flex;justify-content:space-between;gap:10px;font-weight:900;color:var(--navy);font-size:17px;padding-top:10px}
+    .confirmation-status{background:#fff5d9;color:#765000;border-radius:12px;padding:11px 13px;font-size:13px;margin:14px 0}
+    .confirmation-actions{display:flex;gap:10px;margin-top:18px}.confirmation-actions button{margin:0}
+    #shippingReturns{background:linear-gradient(135deg,#062b45 0%,#075c67 52%,#087f89 100%);border:0;color:#efffff;box-shadow:0 14px 32px #062b4526}
+    #shippingReturns h2{color:#fff;font-size:23px}
+    #shippingReturns .info-tile{background:#ffffff12;border:1px solid #b9f2e833;color:#efffff;backdrop-filter:blur(4px)}
+    #shippingReturns .info-tile h3{color:#8ff1df}
+    #shippingReturns .info-tile p{color:#f0ffff}
+    #shippingReturns .muted{color:#d2eeed}
+    #shippingReturns .info-tile:before{content:"✓";display:inline-grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#b9f4e5;color:#075c67;font-weight:900;margin-bottom:7px}
+    @media(max-width:520px){.order-confirmation-panel{padding:19px}.confirmation-title{font-size:20px}.confirmation-actions{flex-direction:column}.confirmation-number strong{font-size:21px}}
+
   </style>
 </head>
 <body>
@@ -170,6 +194,17 @@ body {
   <div class="product-dialog-panel">
     <button type="button" id="closeProductDialog" class="dialog-close" aria-label="بستن">×</button>
     <div id="productDialogContent"></div>
+  </div>
+</div>
+<div id="orderConfirmation" class="order-confirmation hidden" role="dialog" aria-modal="true" aria-labelledby="confirmationTitle">
+  <div class="order-confirmation-panel">
+    <div class="confirmation-mark" aria-hidden="true">✓</div>
+    <h2 id="confirmationTitle" class="confirmation-title">درخواست خرید شما ثبت شد</h2>
+    <p class="confirmation-subtitle">از اعتماد شما به مردیس‌شاپ سپاسگزاریم.</p>
+    <div class="confirmation-number"><small>شماره سفارش</small><strong id="confirmationOrderId">—</strong></div>
+    <div id="confirmationItems" class="confirmation-items"></div>
+    <div class="confirmation-status">وضعیت سفارش: <b>در انتظار بررسی</b><br>پرداخت آنلاین فعلاً فعال نیست. پشتیبانی برای بررسی موجودی و هماهنگی مراحل بعد با شما تماس می‌گیرد.</div>
+    <div class="confirmation-actions"><button type="button" id="confirmationClose">بازگشت به فروشگاه</button><button type="button" id="confirmationContact" class="secondary">اطلاعات تماس پشتیبانی</button></div>
   </div>
 </div>
 
@@ -580,6 +615,37 @@ body {
         saveCart();
       }
     });
+    function showOrderConfirmation(orderId, orderedLines) {
+      const lines = orderedLines.map(line => {
+        const product = cartProduct(line.product_id);
+        const name = product?.name || `محصول شماره ${line.product_id}`;
+        const unitPrice = product ? (effectiveDiscount(product) ? Number(product.discount_price) : Number(product.price)) : 0;
+        return { name, quantity: line.quantity, unitPrice, subtotal: unitPrice * line.quantity };
+      });
+      const total = lines.reduce((sum, line) => sum + line.subtotal, 0);
+      $('confirmationOrderId').textContent = String(orderId || 'ثبت‌شده');
+      $('confirmationItems').innerHTML = lines.map(line =>
+        `<div class="confirmation-item"><span>${safe(line.name)} × ${line.quantity.toLocaleString('fa-IR')}</span><b>${money(line.subtotal)}</b></div>`
+      ).join('') + `<div class="confirmation-total"><span>جمع تقریبی اقلام</span><span>${money(total)}</span></div>`;
+      $('orderConfirmation').classList.remove('hidden');
+      $('confirmationClose').focus();
+    }
+    function closeOrderConfirmation() {
+      $('orderConfirmation').classList.add('hidden');
+      $('productsSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    $('confirmationClose').addEventListener('click', closeOrderConfirmation);
+    $('confirmationContact').addEventListener('click', () => {
+      $('orderConfirmation').classList.add('hidden');
+      $('contactSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    $('orderConfirmation').addEventListener('click', event => {
+      if (event.target === $('orderConfirmation')) closeOrderConfirmation();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !$('orderConfirmation').classList.contains('hidden')) closeOrderConfirmation();
+    });
+
     $('checkoutForm').onsubmit = async event => {
       event.preventDefault();
       if (!cart.length) { setMessage($('checkoutMessage'), 'سبد خرید خالی است.', 'error'); return; }
@@ -591,6 +657,7 @@ body {
         setMessage($('checkoutMessage'), 'نام، شماره تماس و نشانی را کامل وارد کنید.', 'error');
         return;
       }
+      const orderedLines = cart.map(line => ({ product_id: line.product_id, quantity: line.quantity }));
       const button = $('checkoutButton');
       button.disabled = true;
       button.textContent = 'در حال ثبت سفارش…';
@@ -612,13 +679,12 @@ body {
         if (!response.ok || result.success === false) {
           throw new Error(result.error || 'ثبت سفارش انجام نشد. لطفاً دوباره تلاش کنید.');
         }
-        const orderId = result.order_id ?? result.order?.order_id ?? '';
+        const orderId = result.order_id ?? result.order?.order_id ?? result.id ?? '';
         cart = [];
         saveCart();
         $('checkoutForm').reset();
-        setMessage($('checkoutMessage'),
-          `سفارش شما با موفقیت ثبت شد${orderId ? `؛ شماره سفارش: ${orderId}` : ''}. وضعیت سفارش: در انتظار بررسی. پرداخت آنلاین فعلاً فعال نیست.`,
-          'success');
+        setMessage($('checkoutMessage'), 'سفارش با موفقیت ثبت شد. رسید سفارش نمایش داده شده است.', 'success');
+        showOrderConfirmation(orderId, orderedLines);
         await loadProducts();
       } catch (error) {
         setMessage($('checkoutMessage'), error.message || 'خطا در ارتباط با سرور ثبت سفارش.', 'error');
