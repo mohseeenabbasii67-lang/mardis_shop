@@ -68,19 +68,88 @@ body {
 
     @media(max-width:800px){header{grid-template-columns:1fr auto;gap:12px;padding:15px 4%}.searchbox{grid-column:1/-1;grid-row:2}.brand h1{font-size:24px}nav{gap:17px;padding:0 4%}.hero{grid-template-columns:1fr 1fr;padding:28px 5%;min-height:240px}.hero-art{font-size:54px}.hero-points{font-size:14px}.features{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:520px){.topbar{justify-content:center;text-align:center}.topbar span:nth-child(2){display:none}header{grid-template-columns:1fr auto}.brand h1{font-size:21px}.header-actions button{font-size:12px;padding:10px}nav{font-size:13px;gap:20px}.wrap{margin:15px auto;padding:0 12px}.hero{grid-template-columns:1fr;text-align:center;padding:25px 18px;gap:10px}.hero-art{font-size:48px;order:2}.hero-copy{order:1}.hero-points{order:3;justify-items:center;gap:8px}.hero-copy p{font-size:14px}.features{gap:9px}.feature{font-size:12px;padding:13px 7px}.feature b{font-size:20px}.card{padding:15px}.product img{height:210px}.grid{grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}th,td{padding:7px;font-size:12px}}
+
+    .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+    .info-tile{background:#f7fafc;border:1px solid var(--line);border-radius:13px;padding:15px}
+    .info-tile h3{margin:0 0 8px;color:var(--navy);font-size:16px}
+    .contact-link{display:inline-block;margin:5px 8px 5px 0;padding:8px 13px;border-radius:22px;background:#e8f7f6;color:#075e68;text-decoration:none;font-weight:bold}
+    .social-placeholder{display:inline-block;margin:5px 8px 5px 0;padding:8px 13px;border:1px dashed #9aabb8;border-radius:22px;color:var(--muted);text-decoration:none}
+    .policy-list{padding-right:22px;margin:8px 0}
+    .policy-list li{margin:7px 0}
+
   </style>
 </head>
 <body>
-  <div class="topbar"><span>پشتیبانی و پاسخ‌گویی به‌زودی فعال می‌شود</span><span>خرید آسان، با اطمینان کامل</span><span>فروشگاه آنلاین مردیس</span></div>
+  <div class="topbar"><span>پشتیبانی مردیس‌شاپ: ۰۹۳۳۷۲۲۴۵۰۰ | ۰۹۳۶۹۴۳۶۵۶۲</span><span>ارسال به تمام شهرهای ایران</span><span>فروشگاه آنلاین مردیس</span></div>
   <header>
     <div class="brand"><h1>مردیس شاپ</h1><p>انتخاب هوشمندانه شما</p></div>
     <div class="searchbox"><input id="productSearch" type="search" placeholder="جستجو در محصولات..." aria-label="جستجو در محصولات"><span class="search-icon">⌕</span></div>
     <div class="header-actions"><button id="adminToggle" type="button">ورود مدیر</button></div>
   </header>
-  <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a href="#features">مزایای خرید</a><a href="#siteFooter">تماس و پشتیبانی</a></nav>
+  <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a href="#features">مزایای خرید</a><a href="#aboutSection">درباره مردیس</a><a href="#contactSection">تماس با ما</a><a href="#purchaseRules">قوانین خرید</a><a href="#shippingReturns">ارسال و مرجوعی</a></nav>
   <main class="wrap">
-    <section class="hero"><div class="hero-art" aria-hidden="true">🛍️ 🎁</div><div class="hero-copy"><h2>مردیس شاپ</h2><p>فروشگاه آنلاین محصولات باکیفیت<br>تجربه‌ای ساده و دلنشین از خرید</p><a class="hero-btn" href="#productsSection">همین حالا محصولات را ببینید</a></div><div class="hero-points"><span>تضمین کیفیت محصولات</span><span>تجربه خرید آسان</span><span>پشتیبانی مشتریان</span></div></section>
+    <section class="hero"><div class="hero-art" aria-hidden="true">🛍️ 🎁</div><div class="hero-copy"><h2>مردیس شاپ</h2><p>فروشگاه اینترنتی همه‌منظوره<br>تنوعی رو به گسترش، خریدی ساده و پشتیبانی پاسخ‌گو</p><a class="hero-btn" href="#productsSection">همین حالا محصولات را ببینید</a></div><div class="hero-points"><span>تضمین کیفیت محصولات</span><span>تجربه خرید آسان</span><span>پشتیبانی مشتریان</span></div></section>
     <section id="features" class="features"><div class="feature"><b>✦</b>انتخاب محصولات باکیفیت</div><div class="feature"><b>➜</b>تجربه خرید آسان</div><div class="feature"><b>◉</b>اطلاع‌رسانی شفاف</div><div class="feature"><b>♡</b>توجه به رضایت مشتری</div></section>
+
+    <section id="aboutSection" class="card">
+      <h2>درباره مردیس‌شاپ</h2>
+      <p>مردیس‌شاپ یک فروشگاه اینترنتی همه‌منظوره است که با هدف فراهم‌کردن تجربه‌ای ساده و شفاف از خرید آنلاین فعالیت می‌کند. محصولات فعال فروشگاه در بخش محصولات نمایش داده می‌شوند.</p>
+      <p>دسته‌بندی‌های فروشگاه در آینده می‌تواند گسترش پیدا کند؛ از جمله پوشاک، قطعات یدکی خودرو، روکش صندلی خودرو و گروه‌های کالایی دیگر. موجودی و مشخصات هر کالا در صفحه همان محصول درج خواهد شد.</p>
+    </section>
+
+    <section id="contactSection" class="card">
+      <h2>تماس با ما و پشتیبانی</h2>
+      <p>برای پرسش درباره محصولات، پیگیری سفارش یا هماهنگی خرید می‌توانید از راه‌های زیر با پشتیبانی مردیس‌شاپ در ارتباط باشید. هر دو شماره امکان تماس و پیام در واتساپ دارند.</p>
+      <div class="info-grid">
+        <div class="info-tile">
+          <h3>شماره پشتیبانی اول</h3>
+          <a class="contact-link" href="tel:09337224500">تماس: ۰۹۳۳۷۲۲۴۵۰۰</a>
+          <a class="contact-link" href="https://wa.me/989337224500" target="_blank" rel="noopener">گفت‌وگو در واتساپ</a>
+        </div>
+        <div class="info-tile">
+          <h3>شماره پشتیبانی دوم</h3>
+          <a class="contact-link" href="tel:09369436562">تماس: ۰۹۳۶۹۴۳۶۵۶۲</a>
+          <a class="contact-link" href="https://wa.me/989369436562" target="_blank" rel="noopener">گفت‌وگو در واتساپ</a>
+        </div>
+      </div>
+      <h3>شبکه‌های اجتماعی</h3>
+      <p class="muted">نشانی شبکه‌های اجتماعی پس از راه‌اندازی در همین قسمت اضافه می‌شود.</p>
+      <a class="social-placeholder" href="#contactSection" aria-label="نشانی اینستاگرام بعداً اضافه می‌شود">اینستاگرام — به‌زودی</a>
+      <a class="social-placeholder" href="#contactSection" aria-label="نشانی تلگرام بعداً اضافه می‌شود">تلگرام — به‌زودی</a>
+      <!-- برای افزودن شبکه‌های اجتماعی، نشانی لینک‌های بالا را با آدرس واقعی صفحه جایگزین کنید. -->
+    </section>
+
+    <section id="purchaseRules" class="card">
+      <h2>قوانین خرید</h2>
+      <ul class="policy-list">
+        <li>لطفاً پیش از ثبت سفارش، نام و مشخصات کالا، قیمت و موجودی درج‌شده در سایت را بررسی کنید.</li>
+        <li>ثبت سفارش به معنی دریافت درخواست خرید است؛ سفارش پس از بررسی موجودی و هماهنگی با مشتری تأیید می‌شود.</li>
+        <li>در حال حاضر پرداخت آنلاین در سایت فعال نیست. روش و زمان پرداخت پس از ثبت سفارش با مشتری هماهنگ خواهد شد.</li>
+        <li>لطفاً شماره تماس و نشانی تحویل را صحیح و کامل وارد کنید تا امکان هماهنگی و ارسال فراهم باشد.</li>
+        <li>قیمت و موجودی نهایی سفارش بر اساس اطلاعات تأییدشده هنگام هماهنگی با پشتیبانی مشخص می‌شود.</li>
+        <li>در صورت وجود ابهام درباره کالا یا سفارش، پیش از نهایی‌کردن خرید با پشتیبانی تماس بگیرید.</li>
+      </ul>
+    </section>
+
+    <section id="shippingReturns" class="card">
+      <h2>شرایط ارسال و مرجوعی</h2>
+      <div class="info-grid">
+        <div class="info-tile">
+          <h3>ارسال سفارش</h3>
+          <p>امکان ارسال سفارش به تمام شهرهای ایران وجود دارد. روش ارسال، هزینه و زمان تقریبی تحویل با توجه به کالا و مقصد، پیش از نهایی‌شدن سفارش با مشتری هماهنگ می‌شود.</p>
+        </div>
+        <div class="info-tile">
+          <h3>پیگیری سفارش</h3>
+          <p>پس از ثبت درخواست، پشتیبانی برای بررسی موجودی و هماهنگی جزئیات سفارش با شما تماس می‌گیرد. وضعیت سفارش نیز در صورت ثبت نهایی، از پنل مدیریت قابل پیگیری است.</p>
+        </div>
+        <div class="info-tile">
+          <h3>درخواست مرجوعی یا مغایرت</h3>
+          <p>اگر کالا آسیب‌دیده، معیوب یا مغایر با سفارش تحویل شد، موضوع را در اولین فرصت همراه با شماره سفارش و توضیحات به پشتیبانی اطلاع دهید تا بررسی و راهکار مناسب هماهنگ شود.</p>
+        </div>
+      </div>
+      <p class="muted">شرایط دقیق بررسی مرجوعی، امکان تعویض و هزینه‌های احتمالی با توجه به نوع کالا و مقررات مربوط، پیش از اقدام با پشتیبانی هماهنگ می‌شود. این توضیحات حقوق قانونی مصرف‌کننده را محدود نمی‌کند.</p>
+    </section>
+
     <section id="productsSection" class="card"><div class="section-heading"><h2>محصولات فروشگاه</h2><span class="muted">محصولات منتخب مردیس شاپ</span></div><p class="muted">محصولات فعال فروشگاه در این بخش نمایش داده می‌شوند.</p><div id="products" class="grid"><p>در حال دریافت محصولات…</p></div></section>
 
     <section id="cartSection" class="card">
@@ -143,7 +212,12 @@ body {
     </section>
     <p class="muted">ثبت سفارش بدون پرداخت آنلاین فعال است. وضعیت سفارش‌ها در پنل مدیریت قابل مشاهده است؛ درگاه پرداخت در مرحله بعد اضافه می‌شود.</p>
   </main>
-  <footer id="siteFooter"><strong>مردیس شاپ</strong><p>آدرس، شماره تماس و راه‌های پشتیبانی پس از دریافت اطلاعات واقعی فروشگاه در این بخش درج می‌شود.</p><small>© مردیس شاپ</small></footer>
+  <footer id="siteFooter"><strong>مردیس‌شاپ</strong>
+      <p>فروشگاه اینترنتی همه‌منظوره با امکان ارسال به تمام شهرهای ایران</p>
+      <p><a href="tel:09337224500" style="color:#ffda8a">۰۹۳۳۷۲۲۴۵۰۰</a> &nbsp; | &nbsp; <a href="tel:09369436562" style="color:#ffda8a">۰۹۳۶۹۴۳۶۵۶۲</a></p>
+      <p><a href="#aboutSection" style="color:#eaf5fa">درباره ما</a>　<a href="#purchaseRules" style="color:#eaf5fa">قوانین خرید</a>　<a href="#shippingReturns" style="color:#eaf5fa">ارسال و مرجوعی</a></p>
+      <small>© مردیس‌شاپ</small>
+    </footer>
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
