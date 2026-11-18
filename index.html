@@ -93,6 +93,15 @@ body {
     .dialog-product-layout img{width:100%;max-height:300px;object-fit:contain;background:#f7faf8;border-radius:14px}
     .dialog-product-layout h3{color:var(--navy);margin:0 0 8px;font-size:21px}
     .dialog-product-description{white-space:pre-wrap;line-height:2;color:#52666b}
+    .dialog-gallery-main{width:100%;height:300px;object-fit:contain;background:#f7faf8;border-radius:14px}
+    .dialog-gallery-thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .dialog-gallery-thumbs button{width:66px;height:66px;padding:3px;margin:0;border:2px solid transparent;background:#f4f7f6;border-radius:10px;overflow:hidden}
+    .dialog-gallery-thumbs button.active{border-color:var(--teal)}
+    .dialog-gallery-thumbs img{width:100%;height:100%;object-fit:cover}
+    .admin-gallery-preview{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0}
+    .admin-gallery-item{position:relative;width:82px;height:82px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#f7faf8}
+    .admin-gallery-item img{width:100%;height:100%;object-fit:cover}
+    .admin-gallery-item button{position:absolute;top:3px;left:3px;width:24px;height:24px;padding:0;margin:0;border-radius:50%;background:#b91c1c;font-size:15px;line-height:1}
     @media(max-width:600px){.catalog-tools{grid-template-columns:1fr;gap:5px}.product-dialog-panel{padding:18px}.dialog-product-layout{grid-template-columns:1fr}.dialog-product-layout img{max-height:220px}}
 \n    /* طراحی بصری تازه مردیس‌شاپ */
     :root{--navy:#102d3b;--teal:#087f78;--teal2:#20b5a6;--gold:#e8b85c;--ink:#193442;--muted:#71818b;--line:#e7ecee}
@@ -272,10 +281,11 @@ body {
             <input id="pDiscountPrice" type="number" min="0" step="1" placeholder="قیمت تخفیفی به تومان">
             <label>شروع تخفیف<input id="pDiscountStart" type="text" placeholder="مثلاً 1405/08/20 - 14:30"></label>
             <label>پایان تخفیف<input id="pDiscountEnd" type="text" placeholder="مثلاً 1405/08/25 - 23:59"></label>
-            <label style="display:block"><span class="muted">تصویر محصول (اختیاری، حداکثر ۵ مگابایت)</span><input id="pimageFile" type="file" accept="image/*"></label>
+            <label style="display:block"><span class="muted">تصویر اصلی محصول (حداکثر ۵ مگابایت)</span><input id="pimageFile" type="file" accept="image/*"></label>
+            <label style="display:block"><span class="muted">تصاویر تکمیلی از زاویه‌های دیگر (حداکثر ۹ عکس، هرکدام ۵ مگابایت)</span><input id="pGalleryFiles" type="file" accept="image/*" multiple></label>
           </div>
           <img id="pimagePreview" class="hidden" alt="پیش‌نمایش تصویر محصول" style="max-width:180px;max-height:180px;object-fit:contain;border:1px solid #e5e7eb;border-radius:10px;margin:8px 0">
-          <p class="muted">برای ذخیره تصویر، باید فضای product-images در Supabase Storage ساخته شده و دسترسی لازم برای مدیر تنظیم شده باشد.</p>
+          <div id="pGalleryPreview" class="admin-gallery-preview"></div><p id="galleryFileNote" class="muted">برای ذخیره تصاویر، فضای product-images در Supabase Storage باید ساخته شده و دسترسی لازم برای مدیر تنظیم شده باشد. تصاویر قبلی را با × از گالری محصول حذف کنید.</p>
           <textarea id="pdescription" placeholder="توضیحات محصول"></textarea>
           <div class="row"><button id="saveProductButton" type="submit">ثبت محصول</button><button id="cancelEditButton" class="secondary hidden" type="button">لغو ویرایش</button></div>
         </form>
@@ -304,6 +314,7 @@ body {
     const TEHRAN_OFFSET_MINUTES = 210;
     let editingId = null;
     let currentImageUrl = null;
+    let currentGalleryUrls = [];
 
     let productCache = [];
     const CART_STORAGE_KEY = 'mardis_shop_cart_v1';
@@ -478,7 +489,7 @@ body {
 
     async function loadProducts() {
       const { data, error } = await db.from('products')
-        .select('id,name,category,description,price,stock,image_url,is_unique,is_discount_active,discount_price,discount_start,discount_end')
+        .select('id,name,category,description,price,stock,image_url,image_urls,is_unique,is_discount_active,discount_price,discount_start,discount_end')
         .eq('active', true).order('created_at', { ascending: false });
       if (error) { $('products').textContent = 'دریافت محصولات ناموفق بود. تنظیمات دسترسی جدول products را بررسی کنید.'; return; }
       productCache = data || []; populateCategoryFilter(); renderProducts();
@@ -522,16 +533,19 @@ body {
     $('sortProducts').addEventListener('change', renderProducts);
 
 
-    function openProductDetails(productId) {
+    function openProductDetails(productId, activeIndex = 0) {
       const product = cartProduct(productId);
       if (!product) return;
       const discounted = effectiveDiscount(product);
       const price = discounted ? product.discount_price : product.price;
-      const image = product.image_url
-        ? `<img src="${safe(product.image_url)}" alt="${safe(product.name)}">`
+      const gallery = [...new Set([product.image_url, ...(Array.isArray(product.image_urls) ? product.image_urls : [])].filter(Boolean))];
+      const safeIndex = Math.max(0, Math.min(activeIndex, Math.max(0, gallery.length - 1)));
+      const mainImage = gallery[safeIndex]
+        ? `<img class="dialog-gallery-main" src="${safe(gallery[safeIndex])}" alt="${safe(product.name)} - تصویر ${safeIndex + 1}">`
         : '<div style="min-height:180px;display:grid;place-items:center;background:#f7faf8;border-radius:14px;color:#71818b">تصویری ثبت نشده است</div>';
+      const thumbs = gallery.length > 1 ? `<div class="dialog-gallery-thumbs" aria-label="تصاویر دیگر کالا">${gallery.map((url, index) => `<button type="button" data-gallery-image="${index}" data-gallery-product="${safe(product.id)}" class="${index === safeIndex ? 'active' : ''}" aria-label="نمایش تصویر ${index + 1}"><img src="${safe(url)}" alt="نمای کوچک ${index + 1}"></button>`).join('')}</div>` : '';
       const stock = Number(product.stock || 0);
-      $('productDialogContent').innerHTML = `<div class="dialog-product-layout">${image}<div><h3 id="dialogProductName">${safe(product.name)}</h3><p class="muted">${safe(product.category || 'بدون دسته‌بندی')}</p><p class="dialog-product-description">${safe(product.description || 'توضیحی برای این کالا ثبت نشده است.')}</p><p class="price">${money(price)} ${discounted ? `<span class="old-price">${money(product.price)}</span>` : ''}</p><p>${stock > 0 ? `موجودی: ${stock.toLocaleString('fa-IR')} عدد` : 'این کالا فعلاً ناموجود است.'}</p><button type="button" data-dialog-add="${safe(product.id)}" ${stock < 1 ? 'disabled' : ''}>افزودن به سبد خرید</button></div></div>`;
+      $('productDialogContent').innerHTML = `<div class="dialog-product-layout"><div>${mainImage}${thumbs}</div><div><h3 id="dialogProductName">${safe(product.name)}</h3><p class="muted">${safe(product.category || 'بدون دسته‌بندی')}</p><p class="dialog-product-description">${safe(product.description || 'توضیحی برای این کالا ثبت نشده است.')}</p><p class="price">${money(price)} ${discounted ? `<span class="old-price">${money(product.price)}</span>` : ''}</p><p>${stock > 0 ? `موجودی: ${stock.toLocaleString('fa-IR')} عدد` : 'این کالا فعلاً ناموجود است.'}</p><button type="button" data-dialog-add="${safe(product.id)}" ${stock < 1 ? 'disabled' : ''}>افزودن به سبد خرید</button></div></div>`;
       $('productDialog').classList.remove('hidden');
       $('closeProductDialog').focus();
     }
@@ -541,6 +555,8 @@ body {
     $('closeProductDialog').addEventListener('click', closeProductDetails);
     $('productDialog').addEventListener('click', event => {
       if (event.target === $('productDialog')) closeProductDetails();
+      const thumb = event.target.closest('[data-gallery-image]');
+      if (thumb) { openProductDetails(thumb.dataset.galleryProduct, Number(thumb.dataset.galleryImage)); return; }
       const add = event.target.closest('[data-dialog-add]');
       if (add) { addToCart(add.dataset.dialogAdd); closeProductDetails(); }
     });
@@ -681,16 +697,43 @@ body {
       }
     }
 
+    function renderGalleryPreview() {
+      const holder = $('pGalleryPreview');
+      if (!holder) return;
+      holder.innerHTML = currentGalleryUrls.map((url, index) => `<div class="admin-gallery-item"><img src="${safe(url)}" alt="تصویر تکمیلی ${index + 1}"><button type="button" data-remove-gallery="${index}" aria-label="حذف تصویر">×</button></div>`).join('');
+    }
+    $('pGalleryPreview').addEventListener('click', event => {
+      const remove = event.target.closest('[data-remove-gallery]');
+      if (!remove) return;
+      currentGalleryUrls.splice(Number(remove.dataset.removeGallery), 1);
+      renderGalleryPreview();
+    });
+    $('pGalleryFiles').addEventListener('change', () => {
+      const files = [...$('pGalleryFiles').files];
+      if (files.some(file => !file.type.startsWith('image/') || file.size > 5 * 1024 * 1024)) {
+        alert('همه فایل‌ها باید تصویر و حداکثر ۵ مگابایت باشند.'); $('pGalleryFiles').value = ''; return;
+      }
+      if (currentGalleryUrls.length + files.length > 9) {
+        alert('حداکثر ۹ تصویر تکمیلی برای هر کالا قابل ثبت است.'); $('pGalleryFiles').value = ''; return;
+      }
+      $('galleryFileNote').textContent = files.length ? `${files.length.toLocaleString('fa-IR')} تصویر جدید برای بارگذاری انتخاب شده است.` : 'می‌توانید حداکثر ۹ تصویر تکمیلی انتخاب کنید.';
+    });
+    async function uploadGalleryImages(files) {
+      const urls = [];
+      for (const file of files) urls.push(await uploadProductImage(file));
+      return urls;
+    }
+
     function editProduct(product) {
       if (!product) return;
-      editingId = product.id; currentImageUrl = product.image_url || null;
+      editingId = product.id; currentImageUrl = product.image_url || null; currentGalleryUrls = Array.isArray(product.image_urls) ? [...product.image_urls] : [];
       $('pname').value = product.name || ''; $('pcategory').value = product.category || '';
       $('pprice').value = product.price ?? ''; $('pstock').value = product.stock ?? 0;
       $('pUnique').checked = Boolean(product.is_unique); $('pDiscountActive').checked = Boolean(product.is_discount_active);
       $('pDiscountPrice').value = product.discount_price ?? '';
       $('pDiscountStart').value = isoToTehranJalali(product.discount_start);
       $('pDiscountEnd').value = isoToTehranJalali(product.discount_end);
-      $('pdescription').value = product.description || ''; $('pimageFile').value = '';
+      $('pdescription').value = product.description || ''; $('pimageFile').value = ''; $('pGalleryFiles').value = ''; renderGalleryPreview();
       const preview = $('pimagePreview');
       if (currentImageUrl) { preview.src = currentImageUrl; preview.classList.remove('hidden'); }
       else { preview.removeAttribute('src'); preview.classList.add('hidden'); }
@@ -698,7 +741,7 @@ body {
       $('productForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     function cancelProductEdit() {
-      editingId = null; currentImageUrl = null; $('productForm').reset(); $('pstock').value = 1;
+      editingId = null; currentImageUrl = null; currentGalleryUrls = []; $('productForm').reset(); $('pstock').value = 1; $('pGalleryFiles').value = ''; renderGalleryPreview();
       $('pimagePreview').removeAttribute('src'); $('pimagePreview').classList.add('hidden');
       $('productFormTitle').textContent = 'افزودن محصول'; $('saveProductButton').textContent = 'ثبت محصول';
       $('cancelEditButton').classList.add('hidden');
@@ -736,11 +779,15 @@ body {
         const selectedFile = $('pimageFile').files[0];
         if (selectedFile && (!selectedFile.type.startsWith('image/') || selectedFile.size > 5 * 1024 * 1024)) throw new Error('تصویر باید از نوع عکس و حداکثر ۵ مگابایت باشد.');
         const imageUrl = selectedFile ? await uploadProductImage(selectedFile) : currentImageUrl;
+        const galleryFiles = [...$('pGalleryFiles').files];
+        if (galleryFiles.some(file => !file.type.startsWith('image/') || file.size > 5 * 1024 * 1024)) throw new Error('هر تصویر تکمیلی باید عکس و حداکثر ۵ مگابایت باشد.');
+        if (currentGalleryUrls.length + galleryFiles.length > 9) throw new Error('حداکثر ۹ تصویر تکمیلی برای هر کالا مجاز است.');
+        const uploadedGallery = await uploadGalleryImages(galleryFiles);
         const item = {
           name, category, price, stock: unique ? 1 : stockInput,
           is_unique: unique, is_discount_active: discountEnabled,
           discount_price: discountPrice, discount_start: discountStart, discount_end: discountEnd,
-          image_url: imageUrl || null, description: $('pdescription').value.trim(), active: true
+          image_url: imageUrl || null, image_urls: [...currentGalleryUrls, ...uploadedGallery], description: $('pdescription').value.trim(), active: true
         };
         const result = editingId
           ? await db.from('products').update(item).eq('id', editingId)
