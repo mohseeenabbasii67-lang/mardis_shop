@@ -46,6 +46,15 @@ body {
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}input,textarea,select,button{font:inherit;padding:11px;border:1px solid #d4dfe8;border-radius:10px;width:100%;margin:5px 0}input:focus,textarea:focus,select:focus{outline:2px solid #0aa3a344;border-color:var(--teal)}textarea{min-height:75px}
     button{background:var(--teal);color:white;border:0;cursor:pointer;font-weight:bold}button:disabled{opacity:.6;cursor:wait}button.secondary{background:#526779}button.danger{background:#b91c1c}button.linkbtn{background:transparent;color:var(--teal);text-decoration:underline;padding:5px;width:auto}.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:130px}
     .product{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:white;box-shadow:0 5px 16px #062b4510;transition:transform .2s,box-shadow .2s}.product:hover{transform:translateY(-4px);box-shadow:0 12px 24px #062b4520}.product img{width:100%;height:220px;object-fit:contain;background:#f8fafc;display:block;padding:10px}.product .info{padding:14px}.product .info b{color:var(--navy);font-size:15px}.price{font-weight:bold;color:#078b91;margin:10px 0}.old-price{color:#8a98a5;text-decoration:line-through;font-size:13px;margin-right:8px}.badge{display:inline-block;background:#fff3d7;color:#815500;border-radius:20px;padding:4px 9px;font-size:12px;margin:4px 0}
+
+    .stock-tools{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+    .stock-tools button{width:auto;min-width:38px;padding:6px 10px;margin:2px}
+    .stock-low{background:#fff3d7;color:#815500}
+    .stock-out{background:#fee2e2;color:#991b1b}
+    .stock-ok{background:#dcfce7;color:#166534}
+    .stock-summary{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+    .stock-summary span{padding:7px 12px;border-radius:9px;background:#f1f5f9;font-size:13px}
+
     .muted{color:var(--muted);font-size:13px}.hidden{display:none!important}.notice{padding:10px;border-radius:9px;background:#e9f8f8;color:#075e68;margin:8px 0}.error{background:#fef2f2;color:#991b1b}.success{background:#ecfdf5;color:#065f46}table{width:100%;border-collapse:collapse}th,td{text-align:right;padding:10px;border-bottom:1px solid var(--line);font-size:14px}td button{width:auto;padding:7px 12px;margin:2px}
     footer{margin-top:32px;background:var(--navy);color:#eaf5fa;padding:25px 5%;text-align:center}footer strong{color:#ffda8a;font-size:18px}
 
@@ -257,7 +266,7 @@ body {
       const uniqueBadge = product.is_unique ? '<span class="badge">تک‌نسخه‌ای</span>' : '';
       const discountBadge = discounted ? '<span class="badge">تخفیف فعال</span>' : '';
       const oldPrice = discounted ? `<span class="old-price">${money(product.price)}</span>` : '';
-      return `<article class="product">${image}<div class="info"><b>${safe(product.name)}</b><p class="muted">${safe(product.category || '')}</p>${uniqueBadge}${discountBadge}<p>${safe(product.description || '')}</p><div class="price">${money(shownPrice)} ${oldPrice}</div><small class="muted">موجودی: ${Number(product.stock || 0).toLocaleString('fa-IR')}</small><button type="button" class="add-cart" data-add-cart="${safe(product.id)}" ${Number(product.stock || 0) < 1 ? 'disabled' : ''}>افزودن به سبد خرید</button></div></article>`;
+      return `<article class="product">${image}<div class="info"><b>${safe(product.name)}</b><p class="muted">${safe(product.category || '')}</p>${uniqueBadge}${discountBadge}<p>${safe(product.description || '')}</p><div class="price">${money(shownPrice)} ${oldPrice}</div><div><small class="muted">موجودی: ${Number(product.stock || 0).toLocaleString('fa-IR')}</small> ${Number(product.stock || 0) < 1 ? '<span class="badge stock-out">ناموجود</span>' : Number(product.stock || 0) <= 3 ? '<span class="badge stock-low">موجودی محدود</span>' : '<span class="badge stock-ok">موجود</span>'}</div><button type="button" class="add-cart" data-add-cart="${safe(product.id)}" ${Number(product.stock || 0) < 1 ? 'disabled' : ''}>${Number(product.stock || 0) < 1 ? 'فعلاً ناموجود' : 'افزودن به سبد خرید'}</button></div></article>`;
     }
 
     $('pimageFile').addEventListener('change', () => {
@@ -411,12 +420,63 @@ body {
       const { data, error } = await db.from('products').select('*').order('created_at', { ascending: false });
       if (error) { $('manageProducts').textContent = 'خطا در دریافت محصولات: ' + error.message; return; }
       const rows = data || [];
+      window.__mardisProducts = rows;
+      const lowStockCount = rows.filter(p => !p.is_unique && Number(p.stock || 0) > 0 && Number(p.stock || 0) <= 3).length;
+      const outOfStockCount = rows.filter(p => Number(p.stock || 0) < 1).length;
       $('manageProducts').innerHTML = rows.length
-        ? `<table><thead><tr><th>محصول</th><th>قیمت</th><th>موجودی</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody>${rows.map(p => `<tr><td>${safe(p.name)}</td><td>${money(p.price)}</td><td>${Number(p.stock || 0)}</td><td>${p.active ? 'فعال' : 'غیرفعال'}</td><td><button type="button" data-edit="${safe(p.id)}" class="secondary">ویرایش</button><button type="button" data-del="${safe(p.id)}" class="danger">حذف</button></td></tr>`).join('')}</tbody></table>`
+        ? `<div class="stock-summary"><span>محصولات کم‌موجود: <b>${lowStockCount.toLocaleString('fa-IR')}</b></span><span>محصولات ناموجود: <b>${outOfStockCount.toLocaleString('fa-IR')}</b></span></div><div style="overflow-x:auto"><table><thead><tr><th>محصول</th><th>قیمت</th><th>موجودی</th><th>وضعیت</th><th>مدیریت موجودی</th><th>عملیات</th></tr></thead><tbody>${rows.map(p => {
+          const stock = Number(p.stock || 0);
+          const stockLabel = stock < 1 ? '<span class="badge stock-out">ناموجود</span>' : (!p.is_unique && stock <= 3 ? '<span class="badge stock-low">کم‌موجود</span>' : '<span class="badge stock-ok">موجود</span>');
+          const stockControls = p.is_unique
+            ? '<small class="muted">تک‌نسخه‌ای؛ از فرم ویرایش</small>'
+            : `<div class="stock-tools"><button type="button" class="secondary" data-stock-adjust="${safe(p.id)}" data-stock-direction="1" aria-label="افزایش موجودی">＋</button><button type="button" class="danger" data-stock-adjust="${safe(p.id)}" data-stock-direction="-1" aria-label="کاهش موجودی" ${stock < 1 ? 'disabled' : ''}>−</button></div>`;
+          return `<tr><td>${safe(p.name)}</td><td>${money(p.price)}</td><td>${stock.toLocaleString('fa-IR')}</td><td>${p.active ? 'فعال' : 'غیرفعال'}<br>${stockLabel}</td><td>${stockControls}</td><td><button type="button" data-edit="${safe(p.id)}" class="secondary">ویرایش</button><button type="button" data-del="${safe(p.id)}" class="danger">حذف</button></td></tr>`;
+        }).join('')}</tbody></table></div>`
         : 'محصولی ثبت نشده است.';
       $('manageProducts').querySelectorAll('[data-edit]').forEach(button => button.onclick = () => editProduct(rows.find(p => String(p.id) === button.dataset.edit)));
       $('manageProducts').querySelectorAll('[data-del]').forEach(button => button.onclick = () => deleteProduct(button.dataset.del));
+      $('manageProducts').querySelectorAll('[data-stock-adjust]').forEach(button => button.onclick = () => adjustProductStock(button.dataset.stockAdjust, Number(button.dataset.stockDirection), button));
     }
+    async function adjustProductStock(productId, direction, button) {
+      const amountText = prompt(direction > 0 ? 'چند عدد به موجودی اضافه شود؟' : 'چند عدد از موجودی کم شود؟', '1');
+      if (amountText === null) return;
+      const normalized = normalizeDigits(amountText).trim();
+      if (!/^\\d+$/.test(normalized) || Number(normalized) < 1 || !Number.isSafeInteger(Number(normalized))) {
+        setMessage($('adminMsg'), 'تعداد باید یک عدد صحیح مثبت باشد.', 'error');
+        return;
+      }
+      const amount = Number(normalized);
+      const delta = direction * amount;
+      const product = (window.__mardisProducts || []).find(p => String(p.id) === String(productId));
+      if (!product) {
+        setMessage($('adminMsg'), 'محصول پیدا نشد؛ فهرست را تازه‌سازی کنید.', 'error');
+        return;
+      }
+      if (product.is_unique) {
+        setMessage($('adminMsg'), 'برای محصول تک‌نسخه‌ای، موجودی را از فرم ویرایش مدیریت کنید.', 'error');
+        return;
+      }
+      if (direction < 0 && amount > Number(product.stock || 0)) {
+        setMessage($('adminMsg'), 'مقدار کاهش از موجودی فعلی بیشتر است.', 'error');
+        return;
+      }
+      button.disabled = true;
+      try {
+        const { data, error } = await db.rpc('admin_adjust_product_stock', {
+          p_product_id: productId,
+          p_delta: delta
+        });
+        if (error) throw error;
+        if (data?.success !== true) throw new Error(data?.error || 'تغییر موجودی انجام نشد.');
+        setMessage($('adminMsg'), `موجودی «${product.name}» با موفقیت به‌روزرسانی شد. موجودی جدید: ${Number(data.stock).toLocaleString('fa-IR')}`, 'success');
+        await Promise.all([loadProducts(), loadManageProducts()]);
+      } catch (error) {
+        setMessage($('adminMsg'), 'تغییر موجودی انجام نشد: ' + (error?.message || error), 'error');
+      } finally {
+        button.disabled = false;
+      }
+    }
+
     function editProduct(product) {
       if (!product) return;
       editingId = product.id; currentImageUrl = product.image_url || null;
