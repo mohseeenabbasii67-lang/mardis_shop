@@ -77,21 +77,52 @@ body {
     .policy-list{padding-right:22px;margin:8px 0}
     .policy-list li{margin:7px 0}
 
+
+    /* طراحی بصری تازه مردیس‌شاپ */
+    :root{--navy:#102d3b;--teal:#087f78;--teal2:#20b5a6;--gold:#e8b85c;--ink:#193442;--muted:#71818b;--line:#e7ecee}
+    body{background:#f5f7f6;color:var(--ink)}
+    .topbar{background:#102d3b;padding:9px max(5%,calc((100% - 1320px)/2));font-size:12px;letter-spacing:.05px}
+    header{position:relative;background:#fff;padding:18px max(5%,calc((100% - 1320px)/2));grid-template-columns:1fr minmax(240px,1.35fr) auto;gap:30px;border-bottom:1px solid #e9eeee}
+    .brand-line{display:flex;align-items:center;gap:12px}.brand-mark{width:48px;height:48px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(145deg,#0c857e,#123c4c);color:#fff;font-size:26px;font-weight:900;box-shadow:0 7px 16px #0b77732b}
+    .brand h1{font-size:25px;letter-spacing:-.5px}.brand p{margin:1px 0 0;font-size:12px}
+    .searchbox{background:#f6f8f7;border:1px solid #e6ece9;border-radius:14px;min-height:48px}.searchbox input{padding:12px 16px}.search-icon{background:transparent;color:#64817f;padding:10px 16px}
+    .header-actions button{background:#f3c86f;border-radius:12px;padding:12px 20px;box-shadow:0 5px 12px #e8b85c2a}
+    nav{background:#fff;color:var(--ink);padding:0 max(5%,calc((100% - 1320px)/2));gap:30px;min-height:50px;border-bottom:1px solid #e7ecea;box-shadow:0 5px 18px #183c3508;position:relative;z-index:2}
+    nav a{color:#415964;padding:15px 0;font-weight:600}nav a:hover{color:var(--teal)}
+    .wrap{max-width:1320px;margin:30px auto;padding:0 22px}
+    .hero{min-height:330px;border-radius:26px;padding:35px 5%;grid-template-columns:.9fr 1.35fr .9fr;gap:24px;background:radial-gradient(circle at 78% 18%,#20b5a633 0,transparent 24%),radial-gradient(circle at 12% 95%,#e8b85c2c 0,transparent 27%),linear-gradient(118deg,#102d3b 0%,#14545a 56%,#0d3945 100%);box-shadow:0 20px 45px #102d3b20}
+    .hero-copy{text-align:right;max-width:520px}.eyebrow{display:inline-block;color:#bce8dc;font-size:12px;font-weight:800;letter-spacing:.2px;margin-bottom:10px}.hero-copy h2{font-size:clamp(30px,4.3vw,49px);line-height:1.35;margin:0 0 13px;letter-spacing:-1px}.hero-copy p{max-width:490px;font-size:15px;color:#e1efed;line-height:2;margin-bottom:22px}
+    .hero-btn{background:linear-gradient(135deg,#f6d58e,#e8b85c);border-radius:12px;padding:12px 22px;box-shadow:0 8px 20px #091f2c36}.hero-btn span{font-size:18px;margin-right:8px}
+    .hero-art{position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;min-height:210px;font-size:12px;letter-spacing:4px;color:#d5eee9;font-weight:800}.hero-monogram{width:142px;height:142px;display:grid;place-items:center;border-radius:42px;border:1px solid #ffffff5c;background:linear-gradient(145deg,#ffffff25,#ffffff08);box-shadow:inset 0 0 35px #ffffff12,0 18px 35px #061d2b55;font-size:88px;color:#f4d18a;z-index:1}.hero-art small{margin-top:13px;font-size:10px;letter-spacing:4px;color:#c1dcd7}.hero-orbit{position:absolute;border:1px solid #d7f4e72c;border-radius:50%;width:205px;height:205px}.orbit-two{width:250px;height:250px;border-style:dashed;transform:rotate(24deg)}
+    .hero-points{font-size:14px;gap:17px;color:#f2f8f6}.hero-points span:before{background:#eac16e;color:#173a43;width:25px;height:25px;margin-left:9px}
+    .card{border:1px solid #e8eeeb;border-radius:20px;padding:25px;box-shadow:0 10px 30px #173c3509}.products-panel{margin-top:24px}.section-heading{align-items:flex-end;margin-bottom:22px}.section-heading h2{font-size:25px;margin:0 0 4px}.section-heading .muted{margin:0}.dark-eyebrow{color:#16877e;margin-bottom:5px}.products-count{white-space:nowrap;background:#eaf5f1;color:#26766d;padding:8px 13px;border-radius:30px;font-size:12px;font-weight:800}
+    .grid{grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:18px}.product{border:1px solid #e8eeeb;border-radius:18px;box-shadow:0 7px 20px #163c3509;display:flex;flex-direction:column;min-width:0}.product:hover{transform:translateY(-5px);box-shadow:0 16px 28px #163c3518;border-color:#cfe4dc}.product>img{height:225px;object-fit:contain;background:linear-gradient(180deg,#fafcfb,#f2f6f4);padding:18px}.product>.info{display:flex;flex-direction:column;align-items:stretch;flex:1;padding:16px}.product .info>b{font-size:15px;line-height:1.8;min-height:27px}.product .info>p.muted{margin:4px 0 7px;color:#87949a}.product .info>p:not(.muted){font-size:13px;color:#65777d;line-height:1.8;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:46px;margin:4px 0}.price{font-size:17px;color:#087f78;margin:12px 0}.badge{border-radius:8px;font-weight:700}.product .add-cart{margin-top:auto;border-radius:11px;padding:12px;background:linear-gradient(135deg,#0c8b80,#08736f);box-shadow:0 5px 12px #087f7822}.product .add-cart:disabled{box-shadow:none;background:#aeb9b7}
+    .features{gap:14px;margin:22px 0 30px}.feature{border:1px solid #e8eeeb;border-radius:16px;box-shadow:0 7px 20px #173c3507;color:#38525b;padding:18px 12px}.feature b{color:#13877e;font-size:23px}
+    .cart-total{color:#087f78}.cart-layout>div{background:#fbfcfb;border:1px solid #edf1ef;border-radius:15px;padding:16px}.cart-layout>div+div{background:#f6faf8}.cart-layout h3{font-size:17px}
+    .info-tile{background:#f8faf9;border-color:#e8eeeb;border-radius:15px}.contact-link{border-radius:10px;background:#e7f4f0;color:#116e67}.social-placeholder{border-radius:10px}
+    footer{background:#102d3b;margin-top:40px;padding:34px 5%;line-height:2}footer strong{color:#f2cc7c}
+    @media(max-width:800px){header{padding:15px 4%;gap:12px}.hero{grid-template-columns:1fr 1fr;min-height:270px}.hero-copy{text-align:center}.hero-art{min-height:170px}.hero-points{grid-column:1/-1;display:flex;justify-content:center;flex-wrap:wrap;gap:10px 18px}.hero-points span{font-size:12px}.hero-points span:before{width:21px;height:21px}.section-heading h2{font-size:22px}}
+    @media(max-width:520px){.topbar{font-size:11px;padding:8px 10px}.brand-mark{width:40px;height:40px;border-radius:13px;font-size:22px}.brand h1{font-size:19px}.brand p{font-size:11px}.header-actions button{padding:9px 12px}.searchbox{min-height:43px}nav{gap:19px;padding:0 14px}.wrap{margin:15px auto;padding:0 12px}.hero{padding:24px 18px;border-radius:20px;grid-template-columns:1fr;gap:7px}.hero-copy{order:1}.hero-art{order:2;min-height:150px}.hero-points{order:3;display:grid;justify-items:start;grid-template-columns:1fr 1fr;width:100%;gap:8px}.hero-copy h2{font-size:31px}.hero-copy p{font-size:13px}.hero-monogram{width:100px;height:100px;border-radius:30px;font-size:62px}.hero-orbit{width:145px;height:145px}.orbit-two{width:175px;height:175px}.hero-art small{margin-top:8px}.card{padding:16px;border-radius:17px}.products-panel{margin-top:15px}.section-heading{align-items:flex-start;flex-direction:column;gap:10px}.section-heading h2{font-size:21px}.products-count{align-self:flex-start}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product{border-radius:14px}.product>img{height:155px;padding:10px}.product .info{padding:11px}.product .info>b{font-size:13px}.product .info>p:not(.muted){font-size:11px;min-height:40px}.price{font-size:14px}.product .add-cart{font-size:12px;padding:10px 5px}.features{gap:8px}.feature{padding:12px 6px;font-size:11px}.feature b{font-size:19px}.cart-layout>div{padding:12px}}
+
   </style>
 </head>
 <body>
   <div class="topbar"><span>پشتیبانی مردیس‌شاپ: ۰۹۳۳۷۲۲۴۵۰۰ | ۰۹۳۶۹۴۳۶۵۶۲</span><span>ارسال به تمام شهرهای ایران</span><span>فروشگاه آنلاین مردیس</span></div>
   <header>
-    <div class="brand"><h1>مردیس شاپ</h1><p>انتخاب هوشمندانه شما</p></div>
+    <div class="brand"><div class="brand-line"><span class="brand-mark">م</span><div><h1>مردیس‌شاپ</h1><p>انتخاب هوشمندانه شما</p></div></div></div>
     <div class="searchbox"><input id="productSearch" type="search" placeholder="جستجو در محصولات..." aria-label="جستجو در محصولات"><span class="search-icon">⌕</span></div>
     <div class="header-actions"><button id="adminToggle" type="button">ورود مدیر</button></div>
   </header>
   <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a href="#features">مزایای خرید</a><a href="#aboutSection">درباره مردیس</a><a href="#contactSection">تماس با ما</a><a href="#purchaseRules">قوانین خرید</a><a href="#shippingReturns">ارسال و مرجوعی</a></nav>
   <main class="wrap">
-    <section class="hero"><div class="hero-art" aria-hidden="true">🛍️ 🎁</div><div class="hero-copy"><h2>مردیس شاپ</h2><p>فروشگاه اینترنتی همه‌منظوره<br>تنوعی رو به گسترش، خریدی ساده و پشتیبانی پاسخ‌گو</p><a class="hero-btn" href="#productsSection">همین حالا محصولات را ببینید</a></div><div class="hero-points"><span>تضمین کیفیت محصولات</span><span>تجربه خرید آسان</span><span>پشتیبانی مشتریان</span></div></section>
-    <section id="productsSection" class="card"><div class="section-heading"><h2>محصولات فروشگاه</h2><span class="muted">محصولات منتخب مردیس شاپ</span></div><p class="muted">محصولات فعال فروشگاه در این بخش نمایش داده می‌شوند.</p><div id="products" class="grid"><p>در حال دریافت محصولات…</p></div></section>
+    <section class="hero">
+      <div class="hero-art" aria-hidden="true"><span class="hero-orbit orbit-one"></span><span class="hero-orbit orbit-two"></span><span class="hero-monogram">M</span><small>MARDIS SHOP</small></div>
+      <div class="hero-copy"><span class="eyebrow">به فروشگاه مردیس خوش آمدید</span><h2>انتخابی ساده،<br>خریدی مطمئن‌تر</h2><p>محصولات متنوع را ببینید، مشخصات و موجودی را بررسی کنید و سفارش خود را به‌آسانی ثبت کنید.</p><a class="hero-btn" href="#productsSection">مشاهده محصولات <span aria-hidden="true">←</span></a></div>
+      <div class="hero-points"><span>مشاهده موجودی کالا</span><span>ثبت سفارش آسان</span><span>پشتیبانی تلفنی و واتساپ</span></div>
+    </section>
+    <section id="productsSection" class="card products-panel"><div class="section-heading"><div><span class="eyebrow dark-eyebrow">ویترین مردیس</span><h2>محصولات فروشگاه</h2><p class="muted">محصولات فعال فروشگاه را بررسی و کالای موردنظرتان را انتخاب کنید.</p></div><span id="productsCount" class="products-count">در حال دریافت…</span></div><div id="products" class="grid"><p>در حال دریافت محصولات…</p></div></section>
 
-    <section id="features" class="features"><div class="feature"><b>✦</b>انتخاب محصولات باکیفیت</div><div class="feature"><b>➜</b>تجربه خرید آسان</div><div class="feature"><b>◉</b>اطلاع‌رسانی شفاف</div><div class="feature"><b>♡</b>توجه به رضایت مشتری</div></section>
+    <section id="features" class="features"><div class="feature"><b>◈</b>مشخصات روشن محصولات</div><div class="feature"><b>↗</b>ثبت سفارش آسان</div><div class="feature"><b>◉</b>نمایش وضعیت موجودی</div><div class="feature"><b>♡</b>پشتیبانی مشتریان</div></section>
 
     <section id="cartSection" class="card">
       <div class="section-heading"><h2>سبد خرید</h2><span id="cartCount" class="muted">۰ محصول</span></div>
@@ -414,6 +445,8 @@ body {
       const term = $('productSearch').value.trim().toLocaleLowerCase();
       const filtered = productCache.filter(p => !term || [p.name, p.category, p.description].some(v => String(v || '').toLocaleLowerCase().includes(term)));
       $('products').innerHTML = filtered.length ? filtered.map(productCard).join('') : '<p>محصولی مطابق جستجوی شما پیدا نشد.</p>';
+      const count = $('productsCount');
+      if (count) count.textContent = `${filtered.length.toLocaleString('fa-IR')} کالا`;
       renderCart();
     }
     $('productSearch').addEventListener('input', renderProducts);
