@@ -89,7 +89,31 @@ body {
   <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a href="#features">مزایای خرید</a><a href="#aboutSection">درباره مردیس</a><a href="#contactSection">تماس با ما</a><a href="#purchaseRules">قوانین خرید</a><a href="#shippingReturns">ارسال و مرجوعی</a></nav>
   <main class="wrap">
     <section class="hero"><div class="hero-art" aria-hidden="true">🛍️ 🎁</div><div class="hero-copy"><h2>مردیس شاپ</h2><p>فروشگاه اینترنتی همه‌منظوره<br>تنوعی رو به گسترش، خریدی ساده و پشتیبانی پاسخ‌گو</p><a class="hero-btn" href="#productsSection">همین حالا محصولات را ببینید</a></div><div class="hero-points"><span>تضمین کیفیت محصولات</span><span>تجربه خرید آسان</span><span>پشتیبانی مشتریان</span></div></section>
+    <section id="productsSection" class="card"><div class="section-heading"><h2>محصولات فروشگاه</h2><span class="muted">محصولات منتخب مردیس شاپ</span></div><p class="muted">محصولات فعال فروشگاه در این بخش نمایش داده می‌شوند.</p><div id="products" class="grid"><p>در حال دریافت محصولات…</p></div></section>
+
     <section id="features" class="features"><div class="feature"><b>✦</b>انتخاب محصولات باکیفیت</div><div class="feature"><b>➜</b>تجربه خرید آسان</div><div class="feature"><b>◉</b>اطلاع‌رسانی شفاف</div><div class="feature"><b>♡</b>توجه به رضایت مشتری</div></section>
+
+    <section id="cartSection" class="card">
+      <div class="section-heading"><h2>سبد خرید</h2><span id="cartCount" class="muted">۰ محصول</span></div>
+      <div class="cart-layout">
+        <div>
+          <div id="cartItems"><p class="muted">سبد خرید شما خالی است.</p></div>
+          <div id="cartTotal" class="cart-total">جمع کل تقریبی: ۰ تومان</div>
+        </div>
+        <div>
+          <h3 style="margin-top:0;color:var(--navy)">اطلاعات تحویل سفارش</h3>
+          <form id="checkoutForm">
+            <input id="checkoutName" type="text" maxlength="120" placeholder="نام و نام خانوادگی" autocomplete="name" required>
+            <input id="checkoutPhone" type="tel" maxlength="30" placeholder="شماره تماس" autocomplete="tel" required>
+            <textarea id="checkoutAddress" maxlength="1000" placeholder="نشانی کامل برای تحویل سفارش" autocomplete="street-address" required></textarea>
+            <input id="checkoutPostal" type="text" maxlength="30" placeholder="کد پستی (اختیاری)" autocomplete="postal-code">
+            <button id="checkoutButton" type="submit">ثبت سفارش</button>
+          </form>
+          <p class="muted">پرداخت آنلاین در این مرحله فعال نیست. پس از ثبت سفارش، برای هماهنگی با شما تماس گرفته می‌شود.</p>
+          <p id="checkoutMessage" aria-live="polite" class="muted"></p>
+        </div>
+      </div>
+    </section>
 
     <section id="aboutSection" class="card">
       <h2>درباره مردیس‌شاپ</h2>
@@ -148,30 +172,6 @@ body {
         </div>
       </div>
       <p class="muted">شرایط دقیق بررسی مرجوعی، امکان تعویض و هزینه‌های احتمالی با توجه به نوع کالا و مقررات مربوط، پیش از اقدام با پشتیبانی هماهنگ می‌شود. این توضیحات حقوق قانونی مصرف‌کننده را محدود نمی‌کند.</p>
-    </section>
-
-    <section id="productsSection" class="card"><div class="section-heading"><h2>محصولات فروشگاه</h2><span class="muted">محصولات منتخب مردیس شاپ</span></div><p class="muted">محصولات فعال فروشگاه در این بخش نمایش داده می‌شوند.</p><div id="products" class="grid"><p>در حال دریافت محصولات…</p></div></section>
-
-    <section id="cartSection" class="card">
-      <div class="section-heading"><h2>سبد خرید</h2><span id="cartCount" class="muted">۰ محصول</span></div>
-      <div class="cart-layout">
-        <div>
-          <div id="cartItems"><p class="muted">سبد خرید شما خالی است.</p></div>
-          <div id="cartTotal" class="cart-total">جمع کل تقریبی: ۰ تومان</div>
-        </div>
-        <div>
-          <h3 style="margin-top:0;color:var(--navy)">اطلاعات تحویل سفارش</h3>
-          <form id="checkoutForm">
-            <input id="checkoutName" type="text" maxlength="120" placeholder="نام و نام خانوادگی" autocomplete="name" required>
-            <input id="checkoutPhone" type="tel" maxlength="30" placeholder="شماره تماس" autocomplete="tel" required>
-            <textarea id="checkoutAddress" maxlength="1000" placeholder="نشانی کامل برای تحویل سفارش" autocomplete="street-address" required></textarea>
-            <input id="checkoutPostal" type="text" maxlength="30" placeholder="کد پستی (اختیاری)" autocomplete="postal-code">
-            <button id="checkoutButton" type="submit">ثبت سفارش</button>
-          </form>
-          <p class="muted">پرداخت آنلاین در این مرحله فعال نیست. پس از ثبت سفارش، برای هماهنگی با شما تماس گرفته می‌شود.</p>
-          <p id="checkoutMessage" aria-live="polite" class="muted"></p>
-        </div>
-      </div>
     </section>
 
     <section id="loginPanel" class="card hidden">
