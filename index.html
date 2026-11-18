@@ -498,13 +498,115 @@ body {
       if (error) { setMessage($('adminMsg'), 'خطا در حذف: ' + error.message, 'error'); return; }
       setMessage($('adminMsg'), 'محصول حذف شد.', 'success'); await Promise.all([loadProducts(), loadManageProducts()]);
     }
+    const ORDER_STATUSES = {
+      pending: 'در انتظار بررسی',
+      confirmed: 'تأیید شده',
+      processing: 'در حال آماده‌سازی',
+      shipped: 'ارسال شده',
+      delivered: 'تحویل داده شده',
+      cancelled: 'لغو شده'
+    };
+
+    async function showOrderDetails(orderId, button) {
+      const target = document.getElementById(`order-details-${CSS.escape(String(orderId))}`);
+      if (!target) return;
+      if (!target.classList.contains('hidden')) {
+        target.classList.add('hidden');
+        button.textContent = 'جزئیات';
+        return;
+      }
+      target.classList.remove('hidden');
+      target.innerHTML = '<p class="muted">در حال دریافت جزئیات سفارش…</p>';
+      button.textContent = 'بستن جزئیات';
+
+      const { data: items, error } = await db.from('order_items')
+        .select('product_name,quantity,unit_price')
+        .eq('order_id', orderId);
+
+      if (error) {
+        target.innerHTML = `<p class="notice error">دریافت اقلام سفارش ناموفق بود: ${safe(error.message)}</p>`;
+        return;
+      }
+      const order = (window.__mardisOrders || []).find(o => String(o.id) === String(orderId));
+      const itemRows = items || [];
+      target.innerHTML = `
+        <div class="notice">
+          <b>نام مشتری:</b> ${safe(order?.customer_name)}<br>
+          <b>شماره تماس:</b> ${safe(order?.phone)}<br>
+          <b>نشانی:</b> ${safe(order?.address)}<br>
+          <b>تاریخ ثبت:</b> ${order?.created_at ? safe(new Date(order.created_at).toLocaleString('fa-IR')) : '—'}<br>
+          <b>مبلغ کل:</b> ${money(order?.total_amount)}
+        </div>
+        <h3>محصولات سفارش</h3>
+        ${itemRows.length ? `<div style="overflow-x:auto"><table>
+          <thead><tr><th>محصول</th><th>تعداد</th><th>قیمت واحد</th><th>جمع</th></tr></thead>
+          <tbody>${itemRows.map(item => `<tr>
+            <td>${safe(item.product_name)}</td>
+            <td>${Number(item.quantity).toLocaleString('fa-IR')}</td>
+            <td>${money(item.unit_price)}</td>
+            <td>${money(Number(item.quantity) * Number(item.unit_price))}</td>
+          </tr>`).join('')}</tbody>
+        </table></div>` : '<p class="muted">برای این سفارش قلمی ثبت نشده است.</p>'}
+      `;
+    }
+
+    async function changeOrderStatus(orderId, status, button) {
+      if (!Object.hasOwn(ORDER_STATUSES, status)) {
+        setMessage($('adminMsg'), 'وضعیت انتخاب‌شده معتبر نیست.', 'error');
+        return;
+      }
+      if (!confirm(`وضعیت سفارش به «${ORDER_STATUSES[status]}» تغییر کند؟`)) return;
+      button.disabled = true;
+      const { data, error } = await db.rpc('admin_update_order_status', {
+        p_order_id: orderId,
+        p_status: status
+      });
+      button.disabled = false;
+      if (error || data?.success !== true) {
+        setMessage($('adminMsg'), 'تغییر وضعیت انجام نشد. ابتدا دستور SQL همراه فایل را در Supabase اجرا کنید. ' + (error?.message || data?.error || ''), 'error');
+        return;
+      }
+      setMessage($('adminMsg'), 'وضعیت سفارش با موفقیت تغییر کرد.', 'success');
+      await loadOrders();
+    }
+
     async function loadOrders() {
-      const { data, error } = await db.from('orders').select('id,customer_name,phone,address,total_amount,status,created_at').order('created_at', { ascending: false });
+      const { data, error } = await db.from('orders')
+        .select('id,customer_name,phone,address,total_amount,status,created_at')
+        .order('created_at', { ascending: false });
       if (error) { $('orders').textContent = 'خطا در دریافت سفارش‌ها: ' + error.message; return; }
       const rows = data || [];
+      window.__mardisOrders = rows;
       $('orders').innerHTML = rows.length
-        ? `<table><thead><tr><th>شماره</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th></tr></thead><tbody>${rows.map(o => `<tr><td>${safe(o.id)}</td><td>${safe(o.customer_name)}<br><small>${safe(o.phone)}</small></td><td>${money(o.total_amount)}</td><td>${safe(o.status)}</td><td>${o.created_at ? new Date(o.created_at).toLocaleDateString('fa-IR') : '—'}</td></tr>`).join('')}</tbody></table>`
+        ? `<div style="overflow-x:auto"><table><thead><tr><th>شماره</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th><th>جزئیات و عملیات</th></tr></thead><tbody>${rows.map(o => `
+          <tr>
+            <td>${safe(o.id)}</td>
+            <td>${safe(o.customer_name)}<br><small>${safe(o.phone)}</small></td>
+            <td>${money(o.total_amount)}</td>
+            <td>
+              <select aria-label="وضعیت سفارش ${safe(o.id)}" data-order-status="${safe(o.id)}">
+                ${Object.entries(ORDER_STATUSES).map(([value,label]) => `<option value="${value}" ${o.status === value ? 'selected' : ''}>${label}</option>`).join('')}
+                ${!Object.hasOwn(ORDER_STATUSES, o.status) ? `<option value="${safe(o.status)}" selected>${safe(o.status)}</option>` : ''}
+              </select>
+            </td>
+            <td>${o.created_at ? new Date(o.created_at).toLocaleDateString('fa-IR') : '—'}</td>
+            <td><button type="button" class="secondary" data-order-details="${safe(o.id)}">جزئیات</button>
+                <button type="button" data-save-order-status="${safe(o.id)}">ذخیره وضعیت</button></td>
+          </tr>
+          <tr><td colspan="6"><div id="order-details-${safe(o.id)}" class="hidden"></div></td></tr>
+        `).join('')}</tbody></table></div>`
         : 'هنوز سفارشی ثبت نشده است.';
+
+      $('orders').querySelectorAll('[data-order-details]').forEach(button => {
+        button.addEventListener('click', () => showOrderDetails(button.dataset.orderDetails, button));
+      });
+      $('orders').querySelectorAll('[data-save-order-status]').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = button.dataset.saveOrderStatus;
+          const select = $('orders').querySelector(`[data-order-status="${CSS.escape(id)}"]`);
+          if (select) changeOrderStatus(id, select.value, button);
+        });
+      });
     }
 
     db.auth.onAuthStateChange(event => { if (event === 'PASSWORD_RECOVERY') showRecoveryForm(); });
