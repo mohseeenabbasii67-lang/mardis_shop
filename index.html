@@ -508,8 +508,12 @@ body {
     };
 
     async function showOrderDetails(orderId, button) {
-      const target = document.getElementById(`order-details-${CSS.escape(String(orderId))}`);
-      if (!target) return;
+      // شناسه سفارش UUID است؛ برای پیدا کردن عنصر نیازی به CSS.escape نداریم.
+      const target = document.getElementById('order-details-' + String(orderId));
+      if (!target) {
+        setMessage($('adminMsg'), 'بخش نمایش جزئیات سفارش در صفحه پیدا نشد. صفحه را تازه‌سازی کنید.', 'error');
+        return;
+      }
       if (!target.classList.contains('hidden')) {
         target.classList.add('hidden');
         button.textContent = 'جزئیات';
@@ -518,18 +522,17 @@ body {
       target.classList.remove('hidden');
       target.innerHTML = '<p class="muted">در حال دریافت جزئیات سفارش…</p>';
       button.textContent = 'بستن جزئیات';
+      button.disabled = true;
 
-      const { data: items, error } = await db.from('order_items')
-        .select('product_name,quantity,unit_price')
-        .eq('order_id', orderId);
+      try {
+        const { data: items, error } = await db.from('order_items')
+          .select('product_name,quantity,unit_price')
+          .eq('order_id', orderId);
+        if (error) throw error;
 
-      if (error) {
-        target.innerHTML = `<p class="notice error">دریافت اقلام سفارش ناموفق بود: ${safe(error.message)}</p>`;
-        return;
-      }
-      const order = (window.__mardisOrders || []).find(o => String(o.id) === String(orderId));
-      const itemRows = items || [];
-      target.innerHTML = `
+        const order = (window.__mardisOrders || []).find(o => String(o.id) === String(orderId));
+        const itemRows = items || [];
+        target.innerHTML = `
         <div class="notice">
           <b>نام مشتری:</b> ${safe(order?.customer_name)}<br>
           <b>شماره تماس:</b> ${safe(order?.phone)}<br>
@@ -547,7 +550,12 @@ body {
             <td>${money(Number(item.quantity) * Number(item.unit_price))}</td>
           </tr>`).join('')}</tbody>
         </table></div>` : '<p class="muted">برای این سفارش قلمی ثبت نشده است.</p>'}
-      `;
+        `;
+      } catch (error) {
+        target.innerHTML = `<p class="notice error">نمایش جزئیات سفارش با خطا روبه‌رو شد: ${safe(error?.message || error)}</p>`;
+      } finally {
+        button.disabled = false;
+      }
     }
 
     async function changeOrderStatus(orderId, status, button) {
@@ -603,7 +611,7 @@ body {
       $('orders').querySelectorAll('[data-save-order-status]').forEach(button => {
         button.addEventListener('click', () => {
           const id = button.dataset.saveOrderStatus;
-          const select = $('orders').querySelector(`[data-order-status="${CSS.escape(id)}"]`);
+          const select = $('orders').querySelector('[data-order-status="' + id + '"]');
           if (select) changeOrderStatus(id, select.value, button);
         });
       });
