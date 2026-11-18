@@ -78,7 +78,23 @@ body {
     .policy-list li{margin:7px 0}
 
 
-    /* طراحی بصری تازه مردیس‌شاپ */
+
+    .catalog-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px;margin:0 0 18px;background:#f7faf8;border:1px solid #e8eeeb;border-radius:14px}
+    .catalog-tools label{display:block;color:#52666b;font-size:12px;font-weight:700}
+    .catalog-tools select{margin:6px 0 0;background:#fff}
+    .product .product-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto;padding-top:10px}
+    .product .product-actions button{margin:0;padding:10px 6px;font-size:12px;border-radius:10px}
+    .product .details-btn{background:#edf5f1;color:#176c63;border:1px solid #d9e9e2}
+    .product-dialog{position:fixed;inset:0;z-index:1000;background:#071d26b8;display:grid;place-items:center;padding:18px}
+    .product-dialog.hidden{display:none!important}
+    .product-dialog-panel{position:relative;width:min(680px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:24px;box-shadow:0 24px 70px #0004}
+    .dialog-close{position:absolute;left:14px;top:12px;width:38px;height:38px;padding:0;margin:0;border-radius:50%;background:#edf3f1;color:#173b43;font-size:25px}
+    .dialog-product-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start;padding-top:18px}
+    .dialog-product-layout img{width:100%;max-height:300px;object-fit:contain;background:#f7faf8;border-radius:14px}
+    .dialog-product-layout h3{color:var(--navy);margin:0 0 8px;font-size:21px}
+    .dialog-product-description{white-space:pre-wrap;line-height:2;color:#52666b}
+    @media(max-width:600px){.catalog-tools{grid-template-columns:1fr;gap:5px}.product-dialog-panel{padding:18px}.dialog-product-layout{grid-template-columns:1fr}.dialog-product-layout img{max-height:220px}}
+\n    /* طراحی بصری تازه مردیس‌شاپ */
     :root{--navy:#102d3b;--teal:#087f78;--teal2:#20b5a6;--gold:#e8b85c;--ink:#193442;--muted:#71818b;--line:#e7ecee}
     body{background:#f5f7f6;color:var(--ink)}
     .topbar{background:#102d3b;padding:9px max(5%,calc((100% - 1320px)/2));font-size:12px;letter-spacing:.05px}
@@ -120,7 +136,33 @@ body {
       <div class="hero-copy"><span class="eyebrow">به فروشگاه مردیس خوش آمدید</span><h2>انتخابی ساده،<br>خریدی مطمئن‌تر</h2><p>محصولات متنوع را ببینید، مشخصات و موجودی را بررسی کنید و سفارش خود را به‌آسانی ثبت کنید.</p><a class="hero-btn" href="#productsSection">مشاهده محصولات <span aria-hidden="true">←</span></a></div>
       <div class="hero-points"><span>مشاهده موجودی کالا</span><span>ثبت سفارش آسان</span><span>پشتیبانی تلفنی و واتساپ</span></div>
     </section>
-    <section id="productsSection" class="card products-panel"><div class="section-heading"><div><span class="eyebrow dark-eyebrow">ویترین مردیس</span><h2>محصولات فروشگاه</h2><p class="muted">محصولات فعال فروشگاه را بررسی و کالای موردنظرتان را انتخاب کنید.</p></div><span id="productsCount" class="products-count">در حال دریافت…</span></div><div id="products" class="grid"><p>در حال دریافت محصولات…</p></div></section>
+    <section id="productsSection" class="card products-panel"><div class="section-heading"><div><span class="eyebrow dark-eyebrow">ویترین مردیس</span><h2>محصولات فروشگاه</h2><p class="muted">محصولات فعال فروشگاه را بررسی و کالای موردنظرتان را انتخاب کنید.</p></div><span id="productsCount" class="products-count">در حال دریافت…</span></div><div class="catalog-tools" aria-label="فیلتر و مرتب‌سازی محصولات">
+  <label>دسته‌بندی
+    <select id="categoryFilter"><option value="">همه دسته‌بندی‌ها</option></select>
+  </label>
+  <label>نمایش کالا
+    <select id="availabilityFilter">
+      <option value="all">همه کالاها</option>
+      <option value="available">فقط موجودها</option>
+      <option value="discount">فقط تخفیف‌دارها</option>
+    </select>
+  </label>
+  <label>مرتب‌سازی
+    <select id="sortProducts">
+      <option value="newest">جدیدترین</option>
+      <option value="price-asc">ارزان‌ترین</option>
+      <option value="price-desc">گران‌ترین</option>
+      <option value="name">نام کالا</option>
+    </select>
+  </label>
+</div>
+<div id="products" class="grid"><p>در حال دریافت محصولات…</p></div></section>
+<div id="productDialog" class="product-dialog hidden" role="dialog" aria-modal="true" aria-labelledby="dialogProductName">
+  <div class="product-dialog-panel">
+    <button type="button" id="closeProductDialog" class="dialog-close" aria-label="بستن">×</button>
+    <div id="productDialogContent"></div>
+  </div>
+</div>
 
     <section id="features" class="features"><div class="feature"><b>◈</b>مشخصات روشن محصولات</div><div class="feature"><b>↗</b>ثبت سفارش آسان</div><div class="feature"><b>◉</b>نمایش وضعیت موجودی</div><div class="feature"><b>♡</b>پشتیبانی مشتریان</div></section>
 
@@ -371,7 +413,7 @@ body {
       const uniqueBadge = product.is_unique ? '<span class="badge">تک‌نسخه‌ای</span>' : '';
       const discountBadge = discounted ? '<span class="badge">تخفیف فعال</span>' : '';
       const oldPrice = discounted ? `<span class="old-price">${money(product.price)}</span>` : '';
-      return `<article class="product">${image}<div class="info"><b>${safe(product.name)}</b><p class="muted">${safe(product.category || '')}</p>${uniqueBadge}${discountBadge}<p>${safe(product.description || '')}</p><div class="price">${money(shownPrice)} ${oldPrice}</div><div><small class="muted">موجودی: ${Number(product.stock || 0).toLocaleString('fa-IR')}</small> ${Number(product.stock || 0) < 1 ? '<span class="badge stock-out">ناموجود</span>' : Number(product.stock || 0) <= 3 ? '<span class="badge stock-low">موجودی محدود</span>' : '<span class="badge stock-ok">موجود</span>'}</div><button type="button" class="add-cart" data-add-cart="${safe(product.id)}" ${Number(product.stock || 0) < 1 ? 'disabled' : ''}>${Number(product.stock || 0) < 1 ? 'فعلاً ناموجود' : 'افزودن به سبد خرید'}</button></div></article>`;
+      return `<article class="product">${image}<div class="info"><b>${safe(product.name)}</b><p class="muted">${safe(product.category || '')}</p>${uniqueBadge}${discountBadge}<p>${safe(product.description || '')}</p><div class="price">${money(shownPrice)} ${oldPrice}</div><div><small class="muted">موجودی: ${Number(product.stock || 0).toLocaleString('fa-IR')}</small> ${Number(product.stock || 0) < 1 ? '<span class="badge stock-out">ناموجود</span>' : Number(product.stock || 0) <= 3 ? '<span class="badge stock-low">موجودی محدود</span>' : '<span class="badge stock-ok">موجود</span>'}</div><div class="product-actions"><button type="button" class="details-btn" data-product-details="${safe(product.id)}">جزئیات کالا</button><button type="button" class="add-cart" data-add-cart="${safe(product.id)}" ${Number(product.stock || 0) < 1 ? 'disabled' : ''}>${Number(product.stock || 0) < 1 ? 'فعلاً ناموجود' : 'افزودن به سبد'}</button></div></div></article>`;
     }
 
     $('pimageFile').addEventListener('change', () => {
@@ -439,20 +481,75 @@ body {
         .select('id,name,category,description,price,stock,image_url,is_unique,is_discount_active,discount_price,discount_start,discount_end')
         .eq('active', true).order('created_at', { ascending: false });
       if (error) { $('products').textContent = 'دریافت محصولات ناموفق بود. تنظیمات دسترسی جدول products را بررسی کنید.'; return; }
-      productCache = data || []; renderProducts();
+      productCache = data || []; populateCategoryFilter(); renderProducts();
+    }
+    function populateCategoryFilter() {
+      const select = $('categoryFilter');
+      if (!select) return;
+      const previous = select.value;
+      const categories = [...new Set(productCache.map(p => String(p.category || '').trim()).filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b, 'fa'));
+      select.innerHTML = '<option value="">همه دسته‌بندی‌ها</option>' +
+        categories.map(category => `<option value="${safe(category)}">${safe(category)}</option>`).join('');
+      if (categories.includes(previous)) select.value = previous;
     }
     function renderProducts() {
       const term = $('productSearch').value.trim().toLocaleLowerCase();
-      const filtered = productCache.filter(p => !term || [p.name, p.category, p.description].some(v => String(v || '').toLocaleLowerCase().includes(term)));
-      $('products').innerHTML = filtered.length ? filtered.map(productCard).join('') : '<p>محصولی مطابق جستجوی شما پیدا نشد.</p>';
+      const category = $('categoryFilter')?.value || '';
+      const availability = $('availabilityFilter')?.value || 'all';
+      const sort = $('sortProducts')?.value || 'newest';
+      let filtered = productCache.filter(p => {
+        const matchesTerm = !term || [p.name, p.category, p.description]
+          .some(v => String(v || '').toLocaleLowerCase().includes(term));
+        const matchesCategory = !category || String(p.category || '').trim() === category;
+        const matchesAvailability = availability === 'available' ? Number(p.stock || 0) > 0 :
+          availability === 'discount' ? effectiveDiscount(p) : true;
+        return matchesTerm && matchesCategory && matchesAvailability;
+      });
+      const priceOf = p => Number(effectiveDiscount(p) ? p.discount_price : p.price);
+      if (sort === 'price-asc') filtered.sort((a,b) => priceOf(a)-priceOf(b));
+      else if (sort === 'price-desc') filtered.sort((a,b) => priceOf(b)-priceOf(a));
+      else if (sort === 'name') filtered.sort((a,b) => String(a.name || '').localeCompare(String(b.name || ''), 'fa'));
+      else filtered.sort((a,b) => new Date(b.created_at || 0)-new Date(a.created_at || 0));
+      $('products').innerHTML = filtered.length ? filtered.map(productCard).join('') : '<p>محصولی مطابق فیلترهای انتخاب‌شده پیدا نشد.</p>';
       const count = $('productsCount');
       if (count) count.textContent = `${filtered.length.toLocaleString('fa-IR')} کالا`;
       renderCart();
     }
     $('productSearch').addEventListener('input', renderProducts);
+    $('categoryFilter').addEventListener('change', renderProducts);
+    $('availabilityFilter').addEventListener('change', renderProducts);
+    $('sortProducts').addEventListener('change', renderProducts);
 
 
+    function openProductDetails(productId) {
+      const product = cartProduct(productId);
+      if (!product) return;
+      const discounted = effectiveDiscount(product);
+      const price = discounted ? product.discount_price : product.price;
+      const image = product.image_url
+        ? `<img src="${safe(product.image_url)}" alt="${safe(product.name)}">`
+        : '<div style="min-height:180px;display:grid;place-items:center;background:#f7faf8;border-radius:14px;color:#71818b">تصویری ثبت نشده است</div>';
+      const stock = Number(product.stock || 0);
+      $('productDialogContent').innerHTML = `<div class="dialog-product-layout">${image}<div><h3 id="dialogProductName">${safe(product.name)}</h3><p class="muted">${safe(product.category || 'بدون دسته‌بندی')}</p><p class="dialog-product-description">${safe(product.description || 'توضیحی برای این کالا ثبت نشده است.')}</p><p class="price">${money(price)} ${discounted ? `<span class="old-price">${money(product.price)}</span>` : ''}</p><p>${stock > 0 ? `موجودی: ${stock.toLocaleString('fa-IR')} عدد` : 'این کالا فعلاً ناموجود است.'}</p><button type="button" data-dialog-add="${safe(product.id)}" ${stock < 1 ? 'disabled' : ''}>افزودن به سبد خرید</button></div></div>`;
+      $('productDialog').classList.remove('hidden');
+      $('closeProductDialog').focus();
+    }
+    function closeProductDetails() {
+      $('productDialog').classList.add('hidden');
+    }
+    $('closeProductDialog').addEventListener('click', closeProductDetails);
+    $('productDialog').addEventListener('click', event => {
+      if (event.target === $('productDialog')) closeProductDetails();
+      const add = event.target.closest('[data-dialog-add]');
+      if (add) { addToCart(add.dataset.dialogAdd); closeProductDetails(); }
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeProductDetails();
+    });
     $('products').addEventListener('click', event => {
+      const details = event.target.closest('[data-product-details]');
+      if (details) { openProductDetails(details.dataset.productDetails); return; }
       const button = event.target.closest('[data-add-cart]');
       if (button) addToCart(button.dataset.addCart);
     });
