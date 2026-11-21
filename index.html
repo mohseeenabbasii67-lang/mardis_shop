@@ -161,6 +161,30 @@ body {
     #shippingReturns .info-tile:before{content:"✓";display:inline-grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#b9f4e5;color:#075c67;font-weight:900;margin-bottom:7px}
     @media(max-width:520px){.order-confirmation-panel{padding:19px}.confirmation-title{font-size:20px}.confirmation-actions{flex-direction:column}.confirmation-number strong{font-size:21px}}
 
+
+    /* سبد خرید شناور و پنجره‌ای */
+    .header-actions{display:flex;align-items:center;gap:10px;justify-content:flex-end}
+    .header-actions .cart-header-button{position:relative;display:inline-flex;align-items:center;gap:8px;width:auto;margin:0;padding:11px 14px;background:#e9f5f1;color:#145d59;border:1px solid #d3e9e1;border-radius:13px;box-shadow:0 5px 12px #087f7810}
+    .cart-header-button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .cart-badge{display:inline-grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:20px;background:#e8b85c;color:#173a43;font-size:11px}
+    .cart-modal{position:fixed;inset:0;z-index:1100;background:#071d26b8;display:grid;place-items:center;padding:18px}
+    .cart-modal.hidden{display:none!important}
+    .cart-modal-panel{width:min(920px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:22px;padding:24px;box-shadow:0 25px 80px #00131f66;border-top:5px solid var(--teal2)}
+    .cart-modal-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+    .cart-modal-heading h2{font-size:24px;margin:0}.cart-modal-heading .muted{display:block;margin-top:3px}
+    .cart-close{width:40px;height:40px;padding:0;margin:0;border-radius:50%;background:#edf3f1;color:#173b43;font-size:27px;line-height:1}
+    .cart-layout>div{min-width:0}.continue-shopping{margin-top:16px;width:auto;padding:10px 16px}
+    .shipping-intro{padding:15px 18px 17px;margin:-4px -3px 18px;border-radius:15px;background:linear-gradient(110deg,#ffffff18,#d5f3e812 55%,#f2d58a20);border:1px solid #c6eee32b}
+    .shipping-intro .eyebrow{color:#f2d58a;margin:0 0 4px}
+    #shippingReturns .shipping-intro h2{font-size:25px;margin:0 0 5px;color:#fff}
+    .shipping-intro p{margin:0;color:#d9f0ec;font-size:13px;line-height:2}
+    #aboutSection{background:linear-gradient(115deg,#fff 0%,#f1f8f5 100%);border-right:4px solid #75b9a7}
+    #contactSection{background:linear-gradient(115deg,#fff 0%,#f1f6fa 100%);border-right:4px solid #82b5c8}
+    #purchaseRules{background:linear-gradient(115deg,#fff 0%,#fbf6e9 100%);border-right:4px solid #e3bd70}
+    #aboutSection h2,#contactSection h2,#purchaseRules h2{position:relative;padding-bottom:9px}
+    #aboutSection h2:after,#contactSection h2:after,#purchaseRules h2:after{content:"";position:absolute;right:0;bottom:0;width:58px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--teal2),var(--gold))}
+    @media(max-width:800px){.header-actions{gap:7px}.header-actions .cart-header-button{padding:9px 10px}.cart-modal-panel{padding:18px}}
+    @media(max-width:520px){.header-actions{gap:5px}.header-actions .cart-header-button{padding:8px 9px;font-size:11px;gap:5px}.cart-header-button svg{width:19px;height:19px}.cart-badge{min-width:18px;height:18px;font-size:10px}.header-actions #adminToggle{padding:8px 9px;font-size:11px}.cart-modal{padding:8px}.cart-modal-panel{max-height:96vh;padding:14px;border-radius:17px}.cart-layout{grid-template-columns:1fr}.cart-layout>div{padding:12px}.cart-modal-heading h2{font-size:21px}}
   </style>
 </head>
 <body>
@@ -168,7 +192,13 @@ body {
   <header>
     <div class="brand"><div class="brand-line"><span class="brand-mark">م</span><div><h1>مردیس‌شاپ</h1><p>انتخاب هوشمندانه شما</p></div></div></div>
     <div class="searchbox"><input id="productSearch" type="search" placeholder="جستجو در محصولات..." aria-label="جستجو در محصولات"><span class="search-icon">⌕</span></div>
-    <div class="header-actions"><button id="adminToggle" type="button">ورود مدیر</button></div>
+    <div class="header-actions">
+      <button id="openCartButton" class="cart-header-button" type="button" aria-label="باز کردن سبد خرید" aria-haspopup="dialog" aria-controls="cartModal">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 1.9-1.4L22 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/></svg>
+        <span>سبد خرید</span><b id="cartBadge" class="cart-badge">۰</b>
+      </button>
+      <button id="adminToggle" type="button">ورود مدیر</button>
+    </div>
   </header>
   <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a href="#features">مزایای خرید</a><a href="#aboutSection">درباره مردیس</a><a href="#contactSection">تماس با ما</a><a href="#purchaseRules">قوانین خرید</a><a href="#shippingReturns">ارسال و مرجوعی</a></nav>
   <main class="wrap">
@@ -218,27 +248,30 @@ body {
 
     <section id="features" class="features"><div class="feature"><b>◈</b>مشخصات روشن محصولات</div><div class="feature"><b>↗</b>ثبت سفارش آسان</div><div class="feature"><b>◉</b>نمایش وضعیت موجودی</div><div class="feature"><b>♡</b>پشتیبانی مشتریان</div></section>
 
-    <section id="cartSection" class="card">
-      <div class="section-heading"><h2>سبد خرید</h2><span id="cartCount" class="muted">۰ محصول</span></div>
-      <div class="cart-layout">
-        <div>
-          <div id="cartItems"><p class="muted">سبد خرید شما خالی است.</p></div>
-          <div id="cartTotal" class="cart-total">جمع کل تقریبی: ۰ تومان</div>
-        </div>
-        <div>
-          <h3 style="margin-top:0;color:var(--navy)">اطلاعات تحویل سفارش</h3>
-          <form id="checkoutForm">
-            <input id="checkoutName" type="text" maxlength="120" placeholder="نام و نام خانوادگی" autocomplete="name" required>
-            <input id="checkoutPhone" type="tel" maxlength="30" placeholder="شماره تماس" autocomplete="tel" required>
-            <textarea id="checkoutAddress" maxlength="1000" placeholder="نشانی کامل برای تحویل سفارش" autocomplete="street-address" required></textarea>
-            <input id="checkoutPostal" type="text" maxlength="30" placeholder="کد پستی (اختیاری)" autocomplete="postal-code">
-            <button id="checkoutButton" type="submit">ثبت سفارش</button>
-          </form>
-          <p class="muted">پرداخت آنلاین در این مرحله فعال نیست. پس از ثبت سفارش، برای هماهنگی با شما تماس گرفته می‌شود.</p>
-          <p id="checkoutMessage" aria-live="polite" class="muted"></p>
+    <div id="cartModal" class="cart-modal hidden" role="dialog" aria-modal="true" aria-labelledby="cartModalTitle">
+      <div class="cart-modal-panel">
+        <div class="cart-modal-heading"><div><span class="eyebrow dark-eyebrow">خرید شما</span><h2 id="cartModalTitle">سبد خرید</h2><span id="cartCount" class="muted">۰ محصول</span></div><button type="button" id="closeCartButton" class="cart-close" aria-label="بستن سبد خرید">×</button></div>
+        <div class="cart-layout">
+          <div>
+            <div id="cartItems"><p class="muted">سبد خرید شما خالی است.</p></div>
+            <div id="cartTotal" class="cart-total">جمع کل تقریبی: ۰ تومان</div>
+            <button type="button" id="continueShoppingButton" class="secondary continue-shopping">ادامه مشاهده محصولات</button>
+          </div>
+          <div>
+            <h3 style="margin-top:0;color:var(--navy)">اطلاعات تحویل سفارش</h3>
+            <form id="checkoutForm">
+              <input id="checkoutName" type="text" maxlength="120" placeholder="نام و نام خانوادگی" autocomplete="name" required>
+              <input id="checkoutPhone" type="tel" maxlength="30" placeholder="شماره تماس" autocomplete="tel" required>
+              <textarea id="checkoutAddress" maxlength="1000" placeholder="نشانی کامل برای تحویل سفارش" autocomplete="street-address" required></textarea>
+              <input id="checkoutPostal" type="text" maxlength="30" placeholder="کد پستی (اختیاری)" autocomplete="postal-code">
+              <button id="checkoutButton" type="submit">ثبت سفارش</button>
+            </form>
+            <p class="muted">پرداخت آنلاین در این مرحله فعال نیست. پس از ثبت سفارش، برای هماهنگی با شما تماس گرفته می‌شود.</p>
+            <p id="checkoutMessage" aria-live="polite" class="muted"></p>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
 
     <section id="aboutSection" class="card">
       <h2>درباره مردیس‌شاپ</h2>
@@ -281,7 +314,7 @@ body {
     </section>
 
     <section id="shippingReturns" class="card">
-      <h2>شرایط ارسال و مرجوعی</h2>
+      <div class="shipping-intro"><span class="eyebrow">راهنمای خرید مطمئن</span><h2>شرایط ارسال و مرجوعی</h2><p>اطلاعات زیر به شما کمک می‌کند پیش از ثبت سفارش، با روند ارسال، پیگیری و درخواست بررسی کالا آشنا شوید.</p></div>
       <div class="info-grid">
         <div class="info-tile">
           <h3>ارسال سفارش</h3>
@@ -389,8 +422,22 @@ body {
       if (current) current.quantity = nextQty;
       else cart.push({ product_id: Number(product.id), quantity: 1 });
       saveCart();
-      $('cartSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      openCart();
     }
+    function openCart() {
+      $('cartModal').classList.remove('hidden');
+      document.body.classList.add('modal-open');
+      $('closeCartButton').focus();
+    }
+    function closeCart() {
+      $('cartModal').classList.add('hidden');
+      document.body.classList.remove('modal-open');
+      $('openCartButton').focus();
+    }
+    $('openCartButton').addEventListener('click', openCart);
+    $('closeCartButton').addEventListener('click', closeCart);
+    $('continueShoppingButton').addEventListener('click', closeCart);
+    $('cartModal').addEventListener('click', event => { if (event.target === $('cartModal')) closeCart(); });
     function changeCartQuantity(productId, delta) {
       const line = cart.find(x => x.product_id === Number(productId));
       if (!line) return;
@@ -407,6 +454,8 @@ body {
     function renderCart() {
       const count = cart.reduce((sum, line) => sum + line.quantity, 0);
       $('cartCount').textContent = `${count.toLocaleString('fa-IR')} محصول`;
+      $('cartBadge').textContent = count.toLocaleString('fa-IR');
+      $('openCartButton').setAttribute('aria-label', `سبد خرید، ${count.toLocaleString('fa-IR')} محصول`);
       let total = 0;
       const rows = cart.map(line => {
         const product = cartProduct(line.product_id);
@@ -604,7 +653,7 @@ body {
       if (add) { addToCart(add.dataset.dialogAdd); closeProductDetails(); }
     });
     document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') closeProductDetails();
+      if (event.key === 'Escape') { closeProductDetails(); if (!$('cartModal').classList.contains('hidden')) closeCart(); }
     });
     $('products').addEventListener('click', event => {
       const details = event.target.closest('[data-product-details]');
@@ -691,6 +740,7 @@ body {
         cart = [];
         saveCart();
         $('checkoutForm').reset();
+        closeCart();
         setMessage($('checkoutMessage'), 'سفارش با موفقیت ثبت شد. رسید سفارش نمایش داده شده است.', 'success');
         showOrderConfirmation(orderId, orderedLines);
         await loadProducts();
@@ -935,12 +985,45 @@ body {
             <td>${money(Number(item.quantity) * Number(item.unit_price))}</td>
           </tr>`).join('')}</tbody>
         </table></div>` : '<p class="muted">برای این سفارش قلمی ثبت نشده است.</p>'}
+        <div class="notice" style="margin-top:16px">
+          <h3 style="margin:0 0 8px">اطلاعات ارسال</h3>
+          <div class="row">
+            <label style="flex:2">کد رهگیری مرسوله<input type="text" maxlength="100" id="tracking-${safe(orderId)}" value="${safe(order?.tracking_number || '')}" placeholder="کد رهگیری پستی"></label>
+            <label style="flex:1">تاریخ ارسال<input type="date" id="shipped-${safe(orderId)}" value="${order?.shipped_at ? safe(new Date(order.shipped_at).toISOString().slice(0,10)) : ''}"></label>
+          </div>
+          <button type="button" data-save-shipping="${safe(orderId)}">ذخیره اطلاعات ارسال</button>
+          <p class="muted">وضعیت فعلی: ${safe(ORDER_STATUSES[order?.status] || order?.status || '—')}</p>
+        </div>
         `;
+        const shippingSaveButton = target.querySelector('[data-save-shipping]');
+        if (shippingSaveButton) shippingSaveButton.addEventListener('click', () => saveOrderShipping(orderId, shippingSaveButton));
       } catch (error) {
         target.innerHTML = `<p class="notice error">نمایش جزئیات سفارش با خطا روبه‌رو شد: ${safe(error?.message || error)}</p>`;
       } finally {
         button.disabled = false;
       }
+    }
+
+    async function saveOrderShipping(orderId, button) {
+      const tracking = $('tracking-' + orderId)?.value.trim() || '';
+      const dateValue = $('shipped-' + orderId)?.value || '';
+      if (tracking && !dateValue) {
+        if (!confirm('کد رهگیری وارد شده اما تاریخ ارسال خالی است. فقط کد رهگیری ذخیره شود؟')) return;
+      }
+      const shippedAt = dateValue ? new Date(dateValue + 'T12:00:00+03:30').toISOString() : null;
+      button.disabled = true;
+      const { data, error } = await db.rpc('admin_update_order_shipping', {
+        p_order_id: orderId,
+        p_tracking_number: tracking || null,
+        p_shipped_at: shippedAt
+      });
+      button.disabled = false;
+      if (error || data?.success !== true) {
+        setMessage($('adminMsg'), 'ذخیره اطلاعات ارسال انجام نشد. ابتدا فایل SQL همراه نسخه جدید را در Supabase اجرا کنید. ' + (error?.message || data?.error || ''), 'error');
+        return;
+      }
+      setMessage($('adminMsg'), 'اطلاعات ارسال سفارش ذخیره شد.', 'success');
+      await loadOrders();
     }
 
     async function changeOrderStatus(orderId, status, button) {
@@ -965,7 +1048,7 @@ body {
 
     async function loadOrders() {
       const { data, error } = await db.from('orders')
-        .select('id,customer_name,phone,address,total_amount,status,created_at')
+        .select('id,customer_name,phone,address,total_amount,status,created_at,tracking_number,shipped_at')
         .order('created_at', { ascending: false });
       if (error) { $('orders').textContent = 'خطا در دریافت سفارش‌ها: ' + error.message; return; }
       const rows = data || [];
@@ -1002,6 +1085,7 @@ body {
       });
     }
 
+    renderCart();
     db.auth.onAuthStateChange(event => { if (event === 'PASSWORD_RECOVERY') showRecoveryForm(); });
     const urlHash = new URLSearchParams(window.location.hash.slice(1));
     const urlError = urlHash.get('error_description') || urlHash.get('error');
