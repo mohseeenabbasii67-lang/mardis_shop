@@ -185,7 +185,25 @@ body {
     #aboutSection h2:after,#contactSection h2:after,#purchaseRules h2:after{content:"";position:absolute;right:0;bottom:0;width:58px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--teal2),var(--gold))}
     @media(max-width:800px){.header-actions{gap:7px}.header-actions .cart-header-button{padding:9px 10px}.cart-modal-panel{padding:18px}}
     @media(max-width:520px){.header-actions{gap:5px}.header-actions .cart-header-button{padding:8px 9px;font-size:11px;gap:5px}.cart-header-button svg{width:19px;height:19px}.cart-badge{min-width:18px;height:18px;font-size:10px}.header-actions #adminToggle{padding:8px 9px;font-size:11px}.cart-modal{padding:8px}.cart-modal-panel{max-height:96vh;padding:14px;border-radius:17px}.cart-layout{grid-template-columns:1fr}.cart-layout>div{padding:12px}.cart-modal-heading h2{font-size:21px}}
-  </style>
+
+
+    /* هویت بصری پوشاک: رنگ‌های پارچه‌ای و گرم در کنار سبزآبی مردیس */
+    .products-panel{background:linear-gradient(145deg,#fff 0%,#fbf7f0 100%);border-top:4px solid #d8b77a}
+    .catalog-tools{background:linear-gradient(120deg,#f4f8f5,#fbf3e7);border-color:#e8dfcf}
+    .catalog-tools label{color:#52645c}
+    .product{background:linear-gradient(180deg,#fff 0%,#fffdfa 100%);border-color:#e9e1d5}
+    .product>img{background:linear-gradient(145deg,#f7f3eb,#eef5f1)}
+    .product .details-btn{background:#f5eee2;color:#755b32;border-color:#eadcc2}
+    .category-manager{margin:16px 0;padding:17px;border:1px solid #e8dcc7;border-radius:16px;background:linear-gradient(120deg,#fbf6ec,#f0f7f3)}
+    .category-manager>label{font-weight:800;color:#425c55}
+    .category-add-button{max-width:190px;background:linear-gradient(135deg,#c79b50,#e5bd75);color:#273d3a}
+    .category-chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+    .category-chip{padding:5px 11px;border-radius:20px;background:#e6f1eb;color:#27665c;font-size:12px;border:1px solid #d1e4d9}
+    #aboutSection{background:linear-gradient(120deg,#fff 0%,#f4f8f2 58%,#fbf3e7 100%)}
+    #contactSection .info-tile{background:linear-gradient(145deg,#f2f8f5,#fffaf1);border-color:#e5e6d8}
+    #purchaseRules{background:linear-gradient(120deg,#fff 0%,#f8f2e7 100%)}
+    @media(max-width:520px){.category-add-button{max-width:none}}
+\n  </style>
 </head>
 <body>
   <div class="topbar"><span>پشتیبانی مردیس‌شاپ: ۰۹۳۳۷۲۲۴۵۰۰ | ۰۹۳۶۹۴۳۶۵۶۲</span><span>ارسال به تمام شهرهای ایران</span><span>فروشگاه آنلاین مردیس</span></div>
@@ -209,7 +227,7 @@ body {
     </section>
     <section id="productsSection" class="card products-panel"><div class="section-heading"><div><span class="eyebrow dark-eyebrow">ویترین مردیس</span><h2>محصولات فروشگاه</h2><p class="muted">محصولات فعال فروشگاه را بررسی و کالای موردنظرتان را انتخاب کنید.</p></div><span id="productsCount" class="products-count">در حال دریافت…</span></div><div class="catalog-tools" aria-label="فیلتر و مرتب‌سازی محصولات">
   <label>دسته‌بندی
-    <select id="categoryFilter"><option value="">همه دسته‌بندی‌ها</option></select>
+    <select id="categoryFilter"><option value="">همه موضوعات پوشاک</option></select>
   </label>
   <label>نمایش کالا
     <select id="availabilityFilter">
@@ -275,8 +293,8 @@ body {
 
     <section id="aboutSection" class="card">
       <h2>درباره مردیس‌شاپ</h2>
-      <p>مردیس‌شاپ یک فروشگاه اینترنتی همه‌منظوره است که با هدف فراهم‌کردن تجربه‌ای ساده و شفاف از خرید آنلاین فعالیت می‌کند. محصولات فعال فروشگاه در بخش محصولات نمایش داده می‌شوند.</p>
-      <p>دسته‌بندی‌های فروشگاه در آینده می‌تواند گسترش پیدا کند؛ از جمله پوشاک، قطعات یدکی خودرو، روکش صندلی خودرو و گروه‌های کالایی دیگر. موجودی و مشخصات هر کالا در صفحه همان محصول درج خواهد شد.</p>
+      <p>مردیس‌شاپ فروشگاهی برای انتخاب و خرید پوشاک و کالاهای مکمل است؛ تلاش می‌کنیم تجربه‌ای ساده، شفاف و دلنشین از خرید آنلاین فراهم کنیم.</p>
+      <p>گروه‌های فروشگاه با توجه به نیاز مشتریان گسترش پیدا می‌کنند؛ از پوشاک زنانه، مردانه و بچگانه تا کیف، کفش و اکسسوری. موجودی و مشخصات هر کالا در صفحه همان محصول درج خواهد شد.</p>
     </section>
 
     <section id="contactSection" class="card">
@@ -349,7 +367,10 @@ body {
         <form id="productForm">
           <div class="grid">
             <input id="pname" placeholder="نام محصول" required>
-            <input id="pcategory" placeholder="دسته‌بندی (مثلاً لوازم برقی)" required>
+            <label class="category-field">موضوع پوشاک محصول
+              <input id="pcategory" list="clothingCategoryOptions" placeholder="مثلاً پوشاک زنانه" required>
+              <datalist id="clothingCategoryOptions"></datalist>
+            </label>
             <input id="pprice" type="number" min="0" step="1" placeholder="قیمت به تومان" required>
             <input id="pstock" type="number" min="0" step="1" placeholder="موجودی" value="1" required>
             <label style="display:block;margin:10px 0"><input type="checkbox" id="pUnique"> محصول تک‌نسخه‌ای</label>
@@ -359,6 +380,15 @@ body {
             <label>پایان تخفیف<input id="pDiscountEnd" type="text" placeholder="مثلاً 1405/08/25 - 23:59"></label>
             <label style="display:block"><span class="muted">تصویر اصلی محصول (حداکثر ۵ مگابایت)</span><input id="pimageFile" type="file" accept="image/*"></label>
             <label style="display:block"><span class="muted">تصاویر تکمیلی از زاویه‌های دیگر (حداکثر ۹ عکس، هرکدام ۵ مگابایت)</span><input id="pGalleryFiles" type="file" accept="image/*" multiple></label>
+          </div>
+          <div class="category-manager">
+            <label for="newClothingCategory">افزودن موضوع پوشاک به دسته‌بندی‌ها</label>
+            <div class="row">
+              <input id="newClothingCategory" type="text" maxlength="60" placeholder="مثلاً مانتو، شلوار، لباس بچگانه">
+              <button type="button" id="addClothingCategory" class="category-add-button">افزودن موضوع</button>
+            </div>
+            <p class="muted">موضوع‌های افزوده‌شده در همین مرورگر نگهداری می‌شوند؛ با ثبت محصول در آن موضوع، دسته‌بندی محصول در ویترین برای همه نمایش داده می‌شود.</p>
+            <div id="adminCategoryChips" class="category-chips"></div>
           </div>
           <img id="pimagePreview" class="hidden" alt="پیش‌نمایش تصویر محصول" style="max-width:180px;max-height:180px;object-fit:contain;border:1px solid #e5e7eb;border-radius:10px;margin:8px 0">
           <div id="pGalleryPreview" class="admin-gallery-preview"></div><p id="galleryFileNote" class="muted">برای ذخیره تصاویر، فضای product-images در Supabase Storage باید ساخته شده و دسترسی لازم برای مدیر تنظیم شده باشد. تصاویر قبلی را با × از گالری محصول حذف کنید.</p>
@@ -372,7 +402,7 @@ body {
     <p class="muted">ثبت سفارش بدون پرداخت آنلاین فعال است. وضعیت سفارش‌ها در پنل مدیریت قابل مشاهده است؛ درگاه پرداخت در مرحله بعد اضافه می‌شود.</p>
   </main>
   <footer id="siteFooter"><strong>مردیس‌شاپ</strong>
-      <p>فروشگاه اینترنتی همه‌منظوره با امکان ارسال به تمام شهرهای ایران</p>
+      <p>فروشگاه آنلاین پوشاک و اکسسوری با امکان ارسال به تمام شهرهای ایران</p>
       <p><a href="tel:09337224500" style="color:#ffda8a">۰۹۳۳۷۲۲۴۵۰۰</a> &nbsp; | &nbsp; <a href="tel:09369436562" style="color:#ffda8a">۰۹۳۶۹۴۳۶۵۶۲</a></p>
       <p><a href="#aboutSection" style="color:#eaf5fa">درباره ما</a>　<a href="#purchaseRules" style="color:#eaf5fa">قوانین خرید</a>　<a href="#shippingReturns" style="color:#eaf5fa">ارسال و مرجوعی</a></p>
       <small>© مردیس‌شاپ</small>
@@ -584,15 +614,54 @@ body {
         .select('id,name,category,description,price,stock,image_url,image_urls,is_unique,is_discount_active,discount_price,discount_start,discount_end')
         .eq('active', true).order('created_at', { ascending: false });
       if (error) { $('products').textContent = 'دریافت محصولات ناموفق بود. تنظیمات دسترسی جدول products را بررسی کنید.'; return; }
-      productCache = data || []; populateCategoryFilter(); renderProducts();
+      productCache = data || []; refreshCategoryControls(); renderProducts();
     }
+    const DEFAULT_CLOTHING_CATEGORIES = ['پوشاک زنانه','پوشاک مردانه','پوشاک بچگانه','لباس راحتی','کیف','کفش','اکسسوری'];
+    const CLOTHING_CATEGORY_STORAGE_KEY = 'mardis_shop_clothing_categories_v1';
+    function readClothingCategories() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(CLOTHING_CATEGORY_STORAGE_KEY) || '[]');
+        return Array.isArray(saved) ? saved.filter(x => typeof x === 'string' && x.trim()).map(x => x.trim()) : [];
+      } catch { return []; }
+    }
+    function allClothingCategories() {
+      return [...new Set([...DEFAULT_CLOTHING_CATEGORIES, ...readClothingCategories(),
+        ...productCache.map(p => String(p.category || '').trim()).filter(Boolean)])]
+        .sort((a, b) => a.localeCompare(b, 'fa'));
+    }
+    function refreshCategoryControls() {
+      const categories = allClothingCategories();
+      const datalist = $('clothingCategoryOptions');
+      if (datalist) datalist.innerHTML = categories.map(c => `<option value="${safe(c)}">`).join('');
+      const chips = $('adminCategoryChips');
+      if (chips) chips.innerHTML = categories.map(c => `<span class="category-chip">${safe(c)}</span>`).join('');
+      populateCategoryFilter();
+    }
+    function addClothingCategory() {
+      const input = $('newClothingCategory');
+      const category = input.value.trim().replace(/\\s+/g, ' ');
+      if (!category) { setMessage($('adminMsg'), 'نام موضوع پوشاک را وارد کنید.', 'error'); input.focus(); return; }
+      const categories = readClothingCategories();
+      if (allClothingCategories().some(c => c.toLocaleLowerCase() === category.toLocaleLowerCase())) {
+        setMessage($('adminMsg'), 'این موضوع از قبل در دسته‌بندی‌ها وجود دارد.', 'error'); return;
+      }
+      categories.push(category);
+      localStorage.setItem(CLOTHING_CATEGORY_STORAGE_KEY, JSON.stringify(categories));
+      input.value = '';
+      refreshCategoryControls();
+      $('pcategory').value = category;
+      setMessage($('adminMsg'), `موضوع «${category}» به فهرست این مرورگر اضافه شد. برای نمایش عمومی، محصولی را با همین موضوع ثبت کنید.`, 'success');
+    }
+    $('addClothingCategory').addEventListener('click', addClothingCategory);
+    $('newClothingCategory').addEventListener('keydown', event => {
+      if (event.key === 'Enter') { event.preventDefault(); addClothingCategory(); }
+    });
     function populateCategoryFilter() {
       const select = $('categoryFilter');
       if (!select) return;
       const previous = select.value;
-      const categories = [...new Set(productCache.map(p => String(p.category || '').trim()).filter(Boolean))]
-        .sort((a, b) => a.localeCompare(b, 'fa'));
-      select.innerHTML = '<option value="">همه دسته‌بندی‌ها</option>' +
+      const categories = allClothingCategories();
+      select.innerHTML = '<option value="">همه موضوعات پوشاک</option>' +
         categories.map(category => `<option value="${safe(category)}">${safe(category)}</option>`).join('');
       if (categories.includes(previous)) select.value = previous;
     }
