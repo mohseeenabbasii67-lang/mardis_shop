@@ -149,8 +149,15 @@ body {
     #shippingReturns h2{color:#fff;font-size:23px}
     #shippingReturns .info-tile{background:#ffffff12;border:1px solid #b9f2e833;color:#efffff;backdrop-filter:blur(4px)}
     #shippingReturns .info-tile h3{color:#8ff1df}
+    /* تنوع رنگ نوشته‌های بخش پایانی، با حفظ خوانایی روی زمینه تیره */
     #shippingReturns .info-tile p{color:#f0ffff}
-    #shippingReturns .muted{color:#d2eeed}
+    #shippingReturns .info-tile:nth-child(1) p{color:#e3fbf5}
+    #shippingReturns .info-tile:nth-child(2) p{color:#d9f1ff}
+    #shippingReturns .info-tile:nth-child(3) p{color:#fff0d2}
+    #shippingReturns > .muted{color:#c9e9e5}
+    #siteFooter > p:first-of-type{color:#d8f2ef}
+    #siteFooter > p:last-of-type{color:#e8f3fa}
+    #siteFooter > small{display:inline-block;margin-top:8px;color:#b9d8df}
     #shippingReturns .info-tile:before{content:"✓";display:inline-grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#b9f4e5;color:#075c67;font-weight:900;margin-bottom:7px}
     @media(max-width:520px){.order-confirmation-panel{padding:19px}.confirmation-title{font-size:20px}.confirmation-actions{flex-direction:column}.confirmation-number strong{font-size:21px}}
 
