@@ -228,76 +228,6 @@ body {
 </style>
 
 
-<style id="mardis-tracking-nav-dropdown">
-  .hero{grid-template-areas:"points copy art" !important; row-gap:18px !important;}
-  .hero-art{grid-area:art;min-width:0}
-  .hero-copy{grid-area:copy;min-width:0}
-  .hero-points{grid-area:points;min-width:0}
-  .tracking-dropdown{
-    position:fixed !important;
-    z-index:3000 !important;
-    inset:auto !important;
-    top:var(--tracking-dropdown-top,100px) !important;
-    right:var(--tracking-dropdown-right,16px) !important;
-    left:auto !important;
-    width:min(620px,calc(100vw - 24px)) !important;
-    max-height:calc(100vh - var(--tracking-dropdown-top,100px) - 16px);
-    overflow:auto;
-    margin:0 !important;
-    padding:18px 20px !important;
-    background:linear-gradient(135deg,#174e55,#103c49) !important;
-    border:1px solid #d8f2e755 !important;
-    border-radius:16px !important;
-    box-shadow:0 18px 48px #071d2680 !important;
-    text-align:right;
-  }
-  .tracking-dropdown.hidden{display:none !important}
-  .tracking-dropdown-close{
-    position:absolute;left:10px;top:8px;width:30px;height:30px;
-    margin:0;padding:0;border-radius:50%;background:#ffffff20;color:#fff;
-    font-size:22px;line-height:1
-  }
-  #trackingMenuToggle[aria-expanded="true"]{color:var(--teal);font-weight:900}
-  @media(max-width:520px){
-    .hero{grid-template-areas:"copy" "art" "points" !important}
-    .tracking-dropdown{padding:16px 12px !important}
-    .tracking-dropdown .grid{grid-template-columns:minmax(0,1fr) !important}
-  }
-</style>
-<script id="tracking-nav-dropdown-script">
-document.addEventListener('DOMContentLoaded',function(){
-  const trigger=document.getElementById('trackingMenuToggle');
-  const panel=document.getElementById('orderTrackingSection');
-  const close=document.getElementById('closeTrackingDropdown');
-  const nav=document.querySelector('nav');
-  if(!trigger||!panel||!nav)return;
-  function positionPanel(){
-    const rect=trigger.getBoundingClientRect();
-    const width=Math.min(620,window.innerWidth-24);
-    const right=Math.max(12,Math.min(window.innerWidth- width-12,window.innerWidth-rect.right));
-    panel.style.setProperty('--tracking-dropdown-top',(nav.getBoundingClientRect().bottom+8)+'px');
-    panel.style.setProperty('--tracking-dropdown-right',right+'px');
-  }
-  function setOpen(open){
-    panel.classList.toggle('hidden',!open);
-    trigger.setAttribute('aria-expanded',String(open));
-    if(open){positionPanel();}
-  }
-  trigger.addEventListener('click',function(event){
-    event.preventDefault();
-    setOpen(panel.classList.contains('hidden'));
-  });
-  close?.addEventListener('click',()=>setOpen(false));
-  document.addEventListener('click',function(event){
-    if(!panel.classList.contains('hidden')&&!panel.contains(event.target)&&!trigger.contains(event.target))setOpen(false);
-  });
-  document.addEventListener('keydown',function(event){if(event.key==='Escape')setOpen(false);});
-  window.addEventListener('resize',()=>{if(!panel.classList.contains('hidden'))positionPanel();});
-  window.addEventListener('scroll',()=>{if(!panel.classList.contains('hidden'))positionPanel();},true);
-});
-</script>
-
-
 </head>
 <body>
   <div class="topbar"><span>پشتیبانی مردیس‌شاپ: ۰۹۳۳۷۲۲۴۵۰۰ | ۰۹۳۶۹۴۳۶۵۶۲</span><span>ارسال به تمام شهرهای ایران</span><span>فروشگاه آنلاین مردیس</span></div>
@@ -312,21 +242,8 @@ document.addEventListener('DOMContentLoaded',function(){
       <button id="adminToggle" type="button" aria-controls="loginPanel" aria-expanded="false" onclick="const panel=document.getElementById('loginPanel');const opened=panel.classList.toggle('hidden')===false;this.classList.toggle('is-open',opened);this.setAttribute('aria-expanded',String(opened));">ورود مدیر</button>
     </div>
   </header>
-  <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a id="trackingMenuToggle" href="#orderTrackingSection" aria-controls="orderTrackingSection" aria-expanded="false">پیگیری سفارش</a><a href="#features">مزایای خرید</a><a href="#aboutSection">درباره مردیس</a><a href="#contactSection">تماس با ما</a><a href="#purchaseRules">قوانین خرید</a><a href="#shippingReturns">ارسال و مرجوعی</a>
-  <div id="orderTrackingSection" class="hero-tracking tracking-dropdown hidden" role="region" aria-label="فرم پیگیری سفارش">
-    <button type="button" id="closeTrackingDropdown" class="tracking-dropdown-close" aria-label="بستن فرم پیگیری">×</button>
-    <h3>پیگیری سفارش</h3>
-          <p>برای مشاهده وضعیت سفارش، شماره سفارش و شماره موبایلی را که هنگام خرید ثبت کرده‌اید وارد کنید.</p>
-          <form id="orderTrackingForm">
-            <div class="grid">
-              <label>شماره سفارش<input id="trackingOrderId" type="text" maxlength="36" placeholder="شناسه سفارش درج‌شده در رسید" autocomplete="off" required></label>
-              <label>شماره موبایل ثبت‌شده<input id="trackingPhone" type="tel" maxlength="30" placeholder="مثلاً 09xxxxxxxxx" autocomplete="tel" required></label>
-            </div>
-            <button id="trackOrderButton" type="submit">استعلام سفارش</button>
-            <p id="trackingLookupMessage" aria-live="polite"></p>
-          </form>
-          <div id="trackingLookupResult" class="hidden" aria-live="polite"></div>
-  </div>
+  <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a href="tracking.html">پیگیری سفارش</a><a href="#features">مزایای خرید</a><a href="#aboutSection">درباره مردیس</a><a href="#contactSection">تماس با ما</a><a href="#purchaseRules">قوانین خرید</a><a href="#shippingReturns">ارسال و مرجوعی</a>
+  
 
 </nav>
   <main class="wrap">
