@@ -216,7 +216,7 @@ body {
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 1.9-1.4L22 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/></svg>
         <span>سبد خرید</span><b id="cartBadge" class="cart-badge">۰</b>
       </button>
-      <button id="adminToggle" type="button">ورود مدیر</button>
+      <button id="adminToggle" type="button" onclick="document.getElementById('loginPanel').classList.toggle('hidden')">ورود مدیر</button>
     </div>
   </header>
   <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a href="#features">مزایای خرید</a><a href="#aboutSection">درباره مردیس</a><a href="#contactSection">تماس با ما</a><a href="#purchaseRules">قوانین خرید</a><a href="#shippingReturns">ارسال و مرجوعی</a></nav>
@@ -260,7 +260,22 @@ body {
     <p class="confirmation-subtitle">از اعتماد شما به مردیس‌شاپ سپاسگزاریم.</p>
     <div class="confirmation-number"><small>شماره سفارش</small><strong id="confirmationOrderId">—</strong></div>
     <div id="confirmationItems" class="confirmation-items"></div>
-    <div class="confirmation-status">وضعیت سفارش: <b>در انتظار بررسی</b><br>پرداخت آنلاین فعلاً فعال نیست. پشتیبانی برای بررسی موجودی و هماهنگی مراحل بعد با شما تماس می‌گیرد.</div>
+    <div class="confirmation-status">وضعیت سفارش: <b>در انتظار بررسی</b><br>پس از ثبت سفارش، اطلاعات پرداخت کارت‌به‌کارت را بررسی کنید. سفارش پس از تأیید مدیر وارد مرحله آماده‌سازی می‌شود.</div>
+    <section id="bankPaymentBox" class="info-tile" style="margin:14px 0">
+      <h3>پرداخت کارت‌به‌کارت</h3>
+      <p id="bankPaymentInstructions" class="muted">در حال دریافت اطلاعات پرداخت…</p>
+      <p><b>بانک:</b> <span id="paymentBankName">—</span></p>
+      <p><b>شماره کارت:</b> <strong id="paymentCardNumber" dir="ltr">—</strong> <button type="button" id="copyPaymentCard" class="secondary" style="width:auto">کپی شماره کارت</button></p>
+      <p><b>به نام:</b> <span id="paymentCardHolder">—</span></p>
+      <form id="paymentReferenceForm">
+        <label>کد پیگیری یا شماره مرجع پرداخت
+          <input id="paymentReference" type="text" maxlength="100" placeholder="پس از واریز وارد کنید" required>
+        </label>
+        <button id="submitPaymentReference" type="submit">ارسال اطلاعات پرداخت</button>
+        <p id="paymentReferenceMessage" class="muted" aria-live="polite"></p>
+      </form>
+      <small class="muted">لطفاً فقط پس از انجام واقعی واریز، کد پیگیری را ثبت کنید. ثبت کد به معنی تأیید پرداخت نیست.</small>
+    </section>
     <div class="confirmation-actions"><button type="button" id="confirmationClose">بازگشت به فروشگاه</button><button type="button" id="confirmationContact" class="secondary">اطلاعات تماس پشتیبانی</button></div>
   </div>
 </div>
@@ -373,6 +388,20 @@ body {
           </div>
           <button id="saveSocialLinksButton" type="submit">ذخیره لینک‌های شبکه‌های اجتماعی</button>
           <p id="socialLinksAdminMsg" class="muted" aria-live="polite"></p>
+        </form>
+      </div>
+      <div class="card">
+        <h2>تنظیمات پرداخت کارت‌به‌کارت</h2>
+        <p class="muted">اطلاعات زیر برای مشتریان نمایش داده می‌شود. فقط شماره کارت و اطلاعاتی را وارد کنید که برای دریافت وجه سفارش‌های فروشگاه در نظر گرفته‌اید.</p>
+        <form id="paymentSettingsForm">
+          <div class="grid">
+            <label>نام بانک<input id="paymentSettingsBank" maxlength="80" placeholder="مثلاً بانک ملت"></label>
+            <label>شماره کارت ۱۶ رقمی<input id="paymentSettingsCard" inputmode="numeric" maxlength="19" placeholder="6037-xxxx-xxxx-xxxx"></label>
+            <label>نام صاحب کارت<input id="paymentSettingsHolder" maxlength="120" placeholder="نام و نام خانوادگی"></label>
+          </div>
+          <label>راهنمای پرداخت<textarea id="paymentSettingsInstructions" maxlength="1000" placeholder="پس از واریز، کد پیگیری را در فرم ثبت سفارش وارد کنید."></textarea></label>
+          <button id="savePaymentSettingsButton" type="submit">ذخیره اطلاعات پرداخت</button>
+          <p id="paymentSettingsMessage" class="muted" aria-live="polite"></p>
         </form>
       </div>
       <div class="card">
@@ -623,7 +652,6 @@ body {
     }
     function clearRecoveryMarker() { window.history.replaceState({}, document.title, window.location.pathname + window.location.search); }
 
-    $('adminToggle').onclick = () => $('loginPanel').classList.toggle('hidden');
     $('forgotButton').onclick = async () => {
       const email = $('email').value.trim();
       if (!email) { setMessage($('loginMsg'), 'ابتدا ایمیل حساب مدیر را در کادر ایمیل وارد کن.'); $('email').focus(); return; }
@@ -799,6 +827,72 @@ body {
       $('orderConfirmation').classList.remove('hidden');
       $('confirmationClose').focus();
     }
+    let activePaymentOrderId = null;
+    let activePaymentPhone = '';
+    let paymentSettings = { bank_name: '', card_number: '', card_holder: '', instructions: '' };
+    const PAYMENT_SETTING_KEY = 'payment_details';
+    function normalizeCardNumber(value) { return String(value || '').replace(/\\D/g, ''); }
+    function renderPaymentDetails() {
+      $('paymentBankName').textContent = paymentSettings.bank_name || '—';
+      $('paymentCardNumber').textContent = paymentSettings.card_number || '—';
+      $('paymentCardHolder').textContent = paymentSettings.card_holder || '—';
+      $('bankPaymentInstructions').textContent = paymentSettings.instructions || 'پس از واریز، کد پیگیری را در همین فرم وارد کنید.';
+      $('bankPaymentBox').classList.toggle('hidden', !normalizeCardNumber(paymentSettings.card_number) || !paymentSettings.card_holder);
+    }
+    async function loadPaymentSettings() {
+      const { data, error } = await db.from('site_settings').select('value').eq('key', PAYMENT_SETTING_KEY).maybeSingle();
+      if (!error && data?.value && typeof data.value === 'object') paymentSettings = { ...paymentSettings, ...data.value };
+      renderPaymentDetails();
+      if ($('paymentSettingsBank')) {
+        $('paymentSettingsBank').value = paymentSettings.bank_name || '';
+        $('paymentSettingsCard').value = paymentSettings.card_number || '';
+        $('paymentSettingsHolder').value = paymentSettings.card_holder || '';
+        $('paymentSettingsInstructions').value = paymentSettings.instructions || '';
+      }
+    }
+    $('copyPaymentCard')?.addEventListener('click', async () => {
+      const card = normalizeCardNumber(paymentSettings.card_number);
+      if (!card) return;
+      try { await navigator.clipboard.writeText(card); setMessage($('paymentReferenceMessage'), 'شماره کارت کپی شد.', 'success'); }
+      catch { setMessage($('paymentReferenceMessage'), 'امکان کپی خودکار نیست؛ شماره کارت را دستی انتخاب کنید.', 'error'); }
+    });
+    $('paymentSettingsForm')?.addEventListener('submit', async event => {
+      event.preventDefault();
+      const card = normalizeCardNumber($('paymentSettingsCard').value);
+      if (card && !/^\\d{16}$/.test(card)) { setMessage($('paymentSettingsMessage'), 'شماره کارت باید دقیقاً ۱۶ رقم باشد.', 'error'); return; }
+      const settings = {
+        bank_name: $('paymentSettingsBank').value.trim(),
+        card_number: card,
+        card_holder: $('paymentSettingsHolder').value.trim(),
+        instructions: $('paymentSettingsInstructions').value.trim()
+      };
+      if (card && (!settings.bank_name || !settings.card_holder)) { setMessage($('paymentSettingsMessage'), 'برای نمایش شماره کارت، نام بانک و صاحب کارت را هم وارد کنید.', 'error'); return; }
+      const button = $('savePaymentSettingsButton'); button.disabled = true;
+      const { error } = await db.from('site_settings').upsert({ key: PAYMENT_SETTING_KEY, value: settings, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+      button.disabled = false;
+      if (error) { setMessage($('paymentSettingsMessage'), 'ذخیره اطلاعات پرداخت ناموفق بود: ' + error.message, 'error'); return; }
+      paymentSettings = settings; renderPaymentDetails();
+      setMessage($('paymentSettingsMessage'), 'اطلاعات پرداخت ذخیره شد.', 'success');
+    });
+    $('paymentReferenceForm')?.addEventListener('submit', async event => {
+      event.preventDefault();
+      const reference = $('paymentReference').value.trim();
+      if (!activePaymentOrderId || !activePaymentPhone || reference.length < 4) {
+        setMessage($('paymentReferenceMessage'), 'کد پیگیری معتبر را وارد کنید.', 'error'); return;
+      }
+      const button = $('submitPaymentReference'); button.disabled = true;
+      const { data, error } = await db.rpc('submit_order_payment_reference', {
+        p_order_id: activePaymentOrderId,
+        p_phone: activePaymentPhone,
+        p_reference: reference
+      });
+      button.disabled = false;
+      if (error || data?.success !== true) {
+        setMessage($('paymentReferenceMessage'), 'ثبت کد پیگیری انجام نشد. ' + (error?.message || data?.error || ''), 'error'); return;
+      }
+      setMessage($('paymentReferenceMessage'), 'کد پیگیری ثبت شد و در انتظار بررسی مدیر است.', 'success');
+      $('paymentReference').value = '';
+    });
     function closeOrderConfirmation() {
       $('orderConfirmation').classList.add('hidden');
       $('productsSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -849,13 +943,16 @@ body {
           throw new Error(result.error || 'ثبت سفارش انجام نشد. لطفاً دوباره تلاش کنید.');
         }
         const orderId = result.order_id ?? result.order?.order_id ?? result.id ?? '';
+        activePaymentOrderId = orderId;
+        activePaymentPhone = phone;
+        await loadPaymentSettings();
         cart = [];
         saveCart();
         $('checkoutForm').reset();
         closeCart();
         setMessage($('checkoutMessage'), 'سفارش با موفقیت ثبت شد. رسید سفارش نمایش داده شده است.', 'success');
         showOrderConfirmation(orderId, orderedLines);
-        await Promise.all([loadProducts(), loadSocialLinks()]);
+        await Promise.all([loadProducts(), loadSocialLinks(), loadPaymentSettings()]);
       } catch (error) {
         setMessage($('checkoutMessage'), error.message || 'خطا در ارتباط با سرور ثبت سفارش.', 'error');
       } finally {
@@ -917,7 +1014,7 @@ body {
       const { data: allowed, error } = await db.rpc('is_admin');
       if (error || allowed !== true) { setMessage($('loginMsg'), 'این حساب دسترسی مدیر ندارد.', 'error'); await db.auth.signOut(); return; }
       $('adminPanel').classList.remove('hidden'); $('adminToggle').classList.add('hidden');
-      await Promise.all([loadProducts(), loadManageProducts(), loadOrders(), loadSocialLinks()]);
+      await Promise.all([loadProducts(), loadManageProducts(), loadOrders(), loadSocialLinks(), loadPaymentSettings()]);
     }
     async function loadManageProducts() {
       const { data, error } = await db.from('products').select('*').order('created_at', { ascending: false });
@@ -1157,6 +1254,21 @@ body {
           </tr>`).join('')}</tbody>
         </table></div>` : '<p class="muted">برای این سفارش قلمی ثبت نشده است.</p>'}
         <div class="notice" style="margin-top:16px">
+          <h3 style="margin:0 0 8px">وضعیت پرداخت</h3>
+          <p><b>وضعیت:</b> ${safe(({unpaid:'پرداخت ثبت نشده',pending_review:'در انتظار تأیید مدیر',paid:'پرداخت تأیید شده',rejected:'پرداخت رد شده'})[order?.payment_status] || order?.payment_status || 'پرداخت ثبت نشده')}</p>
+          <p><b>کد پیگیری مشتری:</b> ${safe(order?.payment_reference || '—')}</p>
+          <p><b>زمان ثبت کد:</b> ${order?.payment_submitted_at ? safe(new Date(order.payment_submitted_at).toLocaleString('fa-IR')) : '—'}</p>
+          <label>تغییر وضعیت پرداخت
+            <select id="payment-status-${safe(orderId)}">
+              <option value="pending_review" ${order?.payment_status === 'pending_review' ? 'selected' : ''}>در انتظار تأیید مدیر</option>
+              <option value="paid" ${order?.payment_status === 'paid' ? 'selected' : ''}>تأیید شده</option>
+              <option value="rejected" ${order?.payment_status === 'rejected' ? 'selected' : ''}>رد شده</option>
+              <option value="unpaid" ${order?.payment_status === 'unpaid' ? 'selected' : ''}>پرداخت ثبت نشده</option>
+            </select>
+          </label>
+          <button type="button" data-save-payment-status="${safe(orderId)}">ذخیره وضعیت پرداخت</button>
+        </div>
+        <div class="notice" style="margin-top:16px">
           <h3 style="margin:0 0 8px">اطلاعات ارسال</h3>
           <div class="row">
             <label style="flex:2">کد رهگیری مرسوله<input type="text" maxlength="100" id="tracking-${safe(orderId)}" value="${safe(order?.tracking_number || '')}" placeholder="کد رهگیری پستی"></label>
@@ -1168,11 +1280,27 @@ body {
         `;
         const shippingSaveButton = target.querySelector('[data-save-shipping]');
         if (shippingSaveButton) shippingSaveButton.addEventListener('click', () => saveOrderShipping(orderId, shippingSaveButton));
+        const paymentSaveButton = target.querySelector('[data-save-payment-status]');
+        if (paymentSaveButton) paymentSaveButton.addEventListener('click', () => saveOrderPaymentStatus(orderId, paymentSaveButton));
       } catch (error) {
         target.innerHTML = `<p class="notice error">نمایش جزئیات سفارش با خطا روبه‌رو شد: ${safe(error?.message || error)}</p>`;
       } finally {
         button.disabled = false;
       }
+    }
+
+    async function saveOrderPaymentStatus(orderId, button) {
+      const status = $('payment-status-' + orderId)?.value;
+      if (!['unpaid','pending_review','paid','rejected'].includes(status)) return;
+      if (!confirm('وضعیت پرداخت این سفارش تغییر کند؟')) return;
+      button.disabled = true;
+      const { data, error } = await db.rpc('admin_update_order_payment_status', { p_order_id: orderId, p_status: status });
+      button.disabled = false;
+      if (error || data?.success !== true) {
+        setMessage($('adminMsg'), 'تغییر وضعیت پرداخت انجام نشد. فایل SQL همراه نسخه را اجرا کنید. ' + (error?.message || data?.error || ''), 'error'); return;
+      }
+      setMessage($('adminMsg'), 'وضعیت پرداخت ذخیره شد.', 'success');
+      await loadOrders();
     }
 
     async function saveOrderShipping(orderId, button) {
@@ -1219,7 +1347,7 @@ body {
 
     async function loadOrders() {
       const { data, error } = await db.from('orders')
-        .select('id,customer_name,phone,address,total_amount,status,created_at,tracking_number,shipped_at')
+        .select('id,customer_name,phone,address,total_amount,status,created_at,tracking_number,shipped_at,payment_status,payment_reference,payment_submitted_at')
         .order('created_at', { ascending: false });
       if (error) { $('orders').textContent = 'خطا در دریافت سفارش‌ها: ' + error.message; return; }
       const rows = data || [];
@@ -1269,7 +1397,7 @@ body {
       else if (session) await showAdmin();
     }
     renderCart();
-    await Promise.all([loadProducts(), loadSocialLinks()]);
+    await Promise.all([loadProducts(), loadSocialLinks(), loadPaymentSettings()]);
   </script>
 </body>
 </html>
