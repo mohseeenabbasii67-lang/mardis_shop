@@ -119,6 +119,15 @@ body {
     .wrap{max-width:1320px;margin:30px auto;padding:0 22px}
     .hero{min-height:330px;border-radius:26px;padding:35px 5%;grid-template-columns:.9fr 1.35fr .9fr;gap:24px;background:radial-gradient(circle at 78% 18%,#20b5a633 0,transparent 24%),radial-gradient(circle at 12% 95%,#e8b85c2c 0,transparent 27%),linear-gradient(118deg,#102d3b 0%,#14545a 56%,#0d3945 100%);box-shadow:0 20px 45px #102d3b20}
     .hero-copy{text-align:right;max-width:520px}.eyebrow{display:inline-block;color:#bce8dc;font-size:12px;font-weight:800;letter-spacing:.2px;margin-bottom:10px}.hero-copy h2{font-size:clamp(30px,4.3vw,49px);line-height:1.35;margin:0 0 13px;letter-spacing:-1px}.hero-copy p{max-width:490px;font-size:15px;color:#e1efed;line-height:2;margin-bottom:22px}
+    .hero-tracking{margin-top:18px;padding:14px 16px;border:1px solid #d8f2e755;border-radius:16px;background:#ffffff12;backdrop-filter:blur(5px);text-align:right}
+    .hero-tracking h3{margin:0 0 4px;color:#f6d58e;font-size:18px}
+    .hero-tracking>p{margin:0 0 8px;color:#e1efed;font-size:12px;line-height:1.8}
+    .hero-tracking .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .hero-tracking label{display:block;color:#f2f8f6;font-size:12px;font-weight:700}
+    .hero-tracking input{margin:4px 0 7px;padding:9px 10px;background:#fff;color:#173b43;font-size:12px}
+    .hero-tracking button{margin:2px 0 0;padding:9px 12px;background:linear-gradient(135deg,#f6d58e,#e8b85c);color:#17344a;border-radius:10px}
+    .hero-tracking #trackingLookupMessage{margin:5px 0 0;color:#f2f8f6;font-size:12px}
+    .hero-tracking #trackingLookupResult{margin-top:8px;color:#173b43;background:#fff;border-radius:10px;padding:10px}
     .hero-btn{background:linear-gradient(135deg,#f6d58e,#e8b85c);border-radius:12px;padding:12px 22px;box-shadow:0 8px 20px #091f2c36}.hero-btn span{font-size:18px;margin-right:8px}
     .hero-art{position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;min-height:210px;font-size:12px;letter-spacing:4px;color:#d5eee9;font-weight:800}.hero-monogram{width:142px;height:142px;display:grid;place-items:center;border-radius:42px;border:1px solid #ffffff5c;background:linear-gradient(145deg,#ffffff25,#ffffff08);box-shadow:inset 0 0 35px #ffffff12,0 18px 35px #061d2b55;font-size:88px;color:#f4d18a;z-index:1}.hero-art small{margin-top:13px;font-size:10px;letter-spacing:4px;color:#c1dcd7}.hero-orbit{position:absolute;border:1px solid #d7f4e72c;border-radius:50%;width:205px;height:205px}.orbit-two{width:250px;height:250px;border-style:dashed;transform:rotate(24deg)}
     .hero-points{font-size:14px;gap:17px;color:#f2f8f6}.hero-points span:before{background:#eac16e;color:#173a43;width:25px;height:25px;margin-left:9px}
@@ -129,7 +138,7 @@ body {
     .info-tile{background:#f8faf9;border-color:#e8eeeb;border-radius:15px}.contact-link{border-radius:10px;background:#e7f4f0;color:#116e67}.social-placeholder{border-radius:10px}
     footer{background:#102d3b;margin-top:40px;padding:34px 5%;line-height:2}footer strong{color:#f2cc7c}
     @media(max-width:800px){header{padding:15px 4%;gap:12px}.hero{grid-template-columns:1fr 1fr;min-height:270px}.hero-copy{text-align:center}.hero-art{min-height:170px}.hero-points{grid-column:1/-1;display:flex;justify-content:center;flex-wrap:wrap;gap:10px 18px}.hero-points span{font-size:12px}.hero-points span:before{width:21px;height:21px}.section-heading h2{font-size:22px}}
-    @media(max-width:520px){.topbar{font-size:11px;padding:8px 10px}.brand-mark{width:40px;height:40px;border-radius:13px;font-size:22px}.brand h1{font-size:19px}.brand p{font-size:11px}.header-actions button{padding:9px 12px}.searchbox{min-height:43px}nav{gap:19px;padding:0 14px}.wrap{margin:15px auto;padding:0 12px}.hero{padding:24px 18px;border-radius:20px;grid-template-columns:1fr;gap:7px}.hero-copy{order:1}.hero-art{order:2;min-height:150px}.hero-points{order:3;display:grid;justify-items:start;grid-template-columns:1fr 1fr;width:100%;gap:8px}.hero-copy h2{font-size:31px}.hero-copy p{font-size:13px}.hero-monogram{width:100px;height:100px;border-radius:30px;font-size:62px}.hero-orbit{width:145px;height:145px}.orbit-two{width:175px;height:175px}.hero-art small{margin-top:8px}.card{padding:16px;border-radius:17px}.products-panel{margin-top:15px}.section-heading{align-items:flex-start;flex-direction:column;gap:10px}.section-heading h2{font-size:21px}.products-count{align-self:flex-start}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product{border-radius:14px}.product>img{height:155px;padding:10px}.product .info{padding:11px}.product .info>b{font-size:13px}.product .info>p:not(.muted){font-size:11px;min-height:40px}.price{font-size:14px}.product .add-cart{font-size:12px;padding:10px 5px}.features{gap:8px}.feature{padding:12px 6px;font-size:11px}.feature b{font-size:19px}.cart-layout>div{padding:12px}}
+    @media(max-width:520px){.hero-tracking .grid{grid-template-columns:1fr;gap:3px}.hero-tracking{padding:12px}.topbar{font-size:11px;padding:8px 10px}.brand-mark{width:40px;height:40px;border-radius:13px;font-size:22px}.brand h1{font-size:19px}.brand p{font-size:11px}.header-actions button{padding:9px 12px}.searchbox{min-height:43px}nav{gap:19px;padding:0 14px}.wrap{margin:15px auto;padding:0 12px}.hero{padding:24px 18px;border-radius:20px;grid-template-columns:1fr;gap:7px}.hero-copy{order:1}.hero-art{order:2;min-height:150px}.hero-points{order:3;display:grid;justify-items:start;grid-template-columns:1fr 1fr;width:100%;gap:8px}.hero-copy h2{font-size:31px}.hero-copy p{font-size:13px}.hero-monogram{width:100px;height:100px;border-radius:30px;font-size:62px}.hero-orbit{width:145px;height:145px}.orbit-two{width:175px;height:175px}.hero-art small{margin-top:8px}.card{padding:16px;border-radius:17px}.products-panel{margin-top:15px}.section-heading{align-items:flex-start;flex-direction:column;gap:10px}.section-heading h2{font-size:21px}.products-count{align-self:flex-start}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product{border-radius:14px}.product>img{height:155px;padding:10px}.product .info{padding:11px}.product .info>b{font-size:13px}.product .info>p:not(.muted){font-size:11px;min-height:40px}.price{font-size:14px}.product .add-cart{font-size:12px;padding:10px 5px}.features{gap:8px}.feature{padding:12px 6px;font-size:11px}.feature b{font-size:19px}.cart-layout>div{padding:12px}}
 
 
     /* رسید ثبت سفارش */
@@ -205,6 +214,18 @@ body {
     #purchaseRules{background:linear-gradient(120deg,#fff 0%,#f8f2e7 100%)}
     @media(max-width:520px){.category-add-button{max-width:none}}
 \n  </style>
+
+<style id="admin-toggle-feedback">
+  #adminToggle {
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease, filter .12s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #adminToggle:hover { filter: brightness(1.08); box-shadow: 0 4px 12px rgba(0, 120, 130, .20); }
+  #adminToggle:active { transform: translateY(2px) scale(.96); box-shadow: inset 0 2px 5px rgba(0,0,0,.20); }
+  #adminToggle.is-open { box-shadow: 0 0 0 3px rgba(12, 132, 140, .20); filter: brightness(1.06); }
+  #adminToggle:focus-visible { outline: 3px solid rgba(12, 132, 140, .45); outline-offset: 3px; }
+</style>
 </head>
 <body>
   <div class="topbar"><span>پشتیبانی مردیس‌شاپ: ۰۹۳۳۷۲۲۴۵۰۰ | ۰۹۳۶۹۴۳۶۵۶۲</span><span>ارسال به تمام شهرهای ایران</span><span>فروشگاه آنلاین مردیس</span></div>
@@ -216,27 +237,29 @@ body {
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 1.9-1.4L22 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/></svg>
         <span>سبد خرید</span><b id="cartBadge" class="cart-badge">۰</b>
       </button>
-      <button id="adminToggle" type="button" onclick="document.getElementById('loginPanel').classList.toggle('hidden')">ورود مدیر</button>
+      <button id="adminToggle" type="button" aria-controls="loginPanel" aria-expanded="false" onclick="const panel=document.getElementById('loginPanel');const opened=panel.classList.toggle('hidden')===false;this.classList.toggle('is-open',opened);this.setAttribute('aria-expanded',String(opened));">ورود مدیر</button>
     </div>
   </header>
   <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a href="#orderTrackingSection">پیگیری سفارش</a><a href="#features">مزایای خرید</a><a href="#aboutSection">درباره مردیس</a><a href="#contactSection">تماس با ما</a><a href="#purchaseRules">قوانین خرید</a><a href="#shippingReturns">ارسال و مرجوعی</a></nav>
   <main class="wrap">
     <section class="hero">
       <div class="hero-art" aria-hidden="true"><span class="hero-orbit orbit-one"></span><span class="hero-orbit orbit-two"></span><span class="hero-monogram">M</span><small>MARDIS SHOP</small></div>
-      <div class="hero-copy"><span class="eyebrow">به فروشگاه مردیس خوش آمدید</span><h2>انتخابی ساده،<br>خریدی مطمئن‌تر</h2><p>محصولات متنوع را ببینید، مشخصات و موجودی را بررسی کنید و سفارش خود را به‌آسانی ثبت کنید.</p><a class="hero-btn" href="#productsSection">مشاهده محصولات <span aria-hidden="true">←</span></a></div>
-      <div class="hero-points"><span>مشاهده موجودی کالا</span><span>ثبت سفارش آسان</span><span>پشتیبانی تلفنی و واتساپ</span></div>
-    </section>
-    <section id="orderTrackingSection" class="card" style="margin:24px 0">
-      <div class="section-heading"><div><h2>پیگیری سفارش</h2><p class="muted">برای مشاهده وضعیت سفارش، شماره سفارش و شماره موبایلی را که هنگام خرید ثبت کرده‌اید وارد کنید.</p></div></div>
-      <form id="orderTrackingForm">
-        <div class="grid">
-          <label>شماره سفارش<input id="trackingOrderId" type="text" maxlength="36" placeholder="شناسه سفارش درج‌شده در رسید" autocomplete="off" required></label>
-          <label>شماره موبایل ثبت‌شده<input id="trackingPhone" type="tel" maxlength="30" placeholder="مثلاً 09xxxxxxxxx" autocomplete="tel" required></label>
+      <div class="hero-copy"><span class="eyebrow">به فروشگاه مردیس خوش آمدید</span><h2>انتخابی ساده،<br>خریدی مطمئن‌تر</h2><p>محصولات متنوع را ببینید، مشخصات و موجودی را بررسی کنید و سفارش خود را به‌آسانی ثبت کنید.</p><a class="hero-btn" href="#productsSection">مشاهده محصولات <span aria-hidden="true">←</span></a>
+        <div id="orderTrackingSection" class="hero-tracking">
+          <h3>پیگیری سفارش</h3>
+          <p>برای مشاهده وضعیت سفارش، شماره سفارش و شماره موبایلی را که هنگام خرید ثبت کرده‌اید وارد کنید.</p>
+          <form id="orderTrackingForm">
+            <div class="grid">
+              <label>شماره سفارش<input id="trackingOrderId" type="text" maxlength="36" placeholder="شناسه سفارش درج‌شده در رسید" autocomplete="off" required></label>
+              <label>شماره موبایل ثبت‌شده<input id="trackingPhone" type="tel" maxlength="30" placeholder="مثلاً 09xxxxxxxxx" autocomplete="tel" required></label>
+            </div>
+            <button id="trackOrderButton" type="submit">استعلام سفارش</button>
+            <p id="trackingLookupMessage" aria-live="polite"></p>
+          </form>
+          <div id="trackingLookupResult" class="hidden" aria-live="polite"></div>
         </div>
-        <button id="trackOrderButton" type="submit">استعلام سفارش</button>
-        <p id="trackingLookupMessage" class="muted" aria-live="polite"></p>
-      </form>
-      <div id="trackingLookupResult" class="hidden" aria-live="polite"></div>
+      </div>
+      <div class="hero-points"><span>مشاهده موجودی کالا</span><span>ثبت سفارش آسان</span><span>پشتیبانی تلفنی و واتساپ</span></div>
     </section>
     <section id="productsSection" class="card products-panel"><div class="section-heading"><div><span class="eyebrow dark-eyebrow">ویترین مردیس</span><h2>محصولات فروشگاه</h2><p class="muted">محصولات فعال فروشگاه را بررسی و کالای موردنظرتان را انتخاب کنید.</p></div><span id="productsCount" class="products-count">در حال دریافت…</span></div><div class="catalog-tools" aria-label="فیلتر و مرتب‌سازی محصولات">
   <label>دسته‌بندی
