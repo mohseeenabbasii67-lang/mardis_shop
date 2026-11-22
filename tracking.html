@@ -1,0 +1,1346 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta name="enamad" content ="1018330"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* فونت و تایپوگرافی مردیس شاپ */
+:root {
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+}
+
+body,
+input,
+textarea,
+select,
+button {
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+}
+
+h1, h2, h3, button {
+  font-weight: 700;
+}
+
+body {
+  line-height: 1.8;
+}
+
+.product .info b {
+  font-weight: 800;
+}
+    :root{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;color:#102b40;background:#f4f7fb;--navy:#062b45;--teal:#087f89;--teal2:#08a6a3;--gold:#f4bd55;--ink:#102b40;--muted:#647789;--line:#e3eaf0}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#f7f9fc,#eef3f8);color:var(--ink)}
+    .topbar{background:var(--navy);color:#edf7fb;padding:9px 5%;display:flex;justify-content:space-between;gap:12px;font-size:13px}
+    header{background:#fff;padding:18px 5%;display:grid;grid-template-columns:1fr minmax(220px,1.4fr) auto;align-items:center;gap:24px;border-bottom:1px solid var(--line)}
+    .brand h1{margin:0;font-size:29px;color:var(--navy);font-weight:900}.brand p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .searchbox{display:flex;align-items:center;background:#f7f9fc;border:1px solid #e1e8ef;border-radius:30px;overflow:hidden}.searchbox input{border:0;background:transparent;outline:0;margin:0;min-width:0}.search-icon{background:var(--navy);color:white;padding:13px 18px;font-size:18px}
+    .header-actions button{width:auto;margin:0;padding:11px 17px;background:var(--gold);color:var(--navy);border-radius:24px}
+    nav{background:var(--navy);color:white;padding:0 5%;display:flex;gap:28px;align-items:center;min-height:48px;border-bottom:3px solid var(--teal2);font-size:14px;font-weight:bold;overflow-x:auto;white-space:nowrap}nav a{padding:14px 0;color:white;text-decoration:none}nav a:hover{color:#ffda8a}
+    .wrap{max-width:1320px;margin:25px auto;padding:0 22px}
+    .hero{position:relative;overflow:hidden;border-radius:22px;min-height:275px;padding:36px 5%;display:grid;grid-template-columns:1fr 1.2fr 1fr;align-items:center;gap:18px;color:white;background:radial-gradient(circle at 18% 20%,#0a9b9c 0,transparent 28%),linear-gradient(115deg,#05283f,#087b83 54%,#05283f);box-shadow:0 14px 30px #062b4526}
+    .hero-art{font-size:76px;text-align:center;filter:drop-shadow(0 10px 12px #001c2c66);z-index:1}.hero-copy{text-align:center;z-index:1}.hero-copy h2{font-size:clamp(28px,4vw,48px);margin:0 0 12px;color:white;font-weight:900}.hero-copy p{font-size:17px;line-height:1.9;margin:0 0 20px;color:#e4ffff}.hero-btn{display:inline-block;background:linear-gradient(135deg,#ffda8a,var(--gold));color:#17344a;border-radius:30px;padding:13px 27px;font-weight:bold;text-decoration:none}
+    .hero-points{z-index:1;display:grid;gap:15px;font-size:17px;font-weight:bold}.hero-points span:before{content:"✓";display:inline-grid;place-items:center;width:27px;height:27px;border-radius:50%;background:var(--gold);color:var(--navy);margin-left:10px}
+    .features{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:18px 0 28px}.feature{background:white;border:1px solid var(--line);border-radius:15px;padding:17px 12px;text-align:center;box-shadow:0 5px 15px #062b4509;font-weight:bold;color:var(--navy)}.feature b{display:block;font-size:24px;margin-bottom:7px}
+    .card{background:white;border:1px solid var(--line);border-radius:17px;padding:20px;margin-bottom:18px;box-shadow:0 7px 22px #062b450b}h2{font-size:20px;margin:0 0 14px;color:var(--navy)}.section-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.section-heading h2{margin:0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}input,textarea,select,button{font:inherit;padding:11px;border:1px solid #d4dfe8;border-radius:10px;width:100%;margin:5px 0}input:focus,textarea:focus,select:focus{outline:2px solid #0aa3a344;border-color:var(--teal)}textarea{min-height:75px}
+    button{background:var(--teal);color:white;border:0;cursor:pointer;font-weight:bold}button:disabled{opacity:.6;cursor:wait}button.secondary{background:#526779}button.danger{background:#b91c1c}button.linkbtn{background:transparent;color:var(--teal);text-decoration:underline;padding:5px;width:auto}.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:130px}
+    .product{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:white;box-shadow:0 5px 16px #062b4510;transition:transform .2s,box-shadow .2s}.product:hover{transform:translateY(-4px);box-shadow:0 12px 24px #062b4520}.product img{width:100%;height:220px;object-fit:contain;background:#f8fafc;display:block;padding:10px}.product .info{padding:14px}.product .info b{color:var(--navy);font-size:15px}.price{font-weight:bold;color:#078b91;margin:10px 0}.old-price{color:#8a98a5;text-decoration:line-through;font-size:13px;margin-right:8px}.badge{display:inline-block;background:#fff3d7;color:#815500;border-radius:20px;padding:4px 9px;font-size:12px;margin:4px 0}
+
+    .stock-tools{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+    .stock-tools button{width:auto;min-width:38px;padding:6px 10px;margin:2px}
+    .stock-low{background:#fff3d7;color:#815500}
+    .stock-out{background:#fee2e2;color:#991b1b}
+    .stock-ok{background:#dcfce7;color:#166534}
+    .stock-summary{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+    .stock-summary span{padding:7px 12px;border-radius:9px;background:#f1f5f9;font-size:13px}
+
+    .muted{color:var(--muted);font-size:13px}.hidden{display:none!important}.notice{padding:10px;border-radius:9px;background:#e9f8f8;color:#075e68;margin:8px 0}.error{background:#fef2f2;color:#991b1b}.success{background:#ecfdf5;color:#065f46}table{width:100%;border-collapse:collapse}th,td{text-align:right;padding:10px;border-bottom:1px solid var(--line);font-size:14px}td button{width:auto;padding:7px 12px;margin:2px}
+    footer{margin-top:32px;background:var(--navy);color:#eaf5fa;padding:25px 5%;text-align:center}footer strong{color:#ffda8a;font-size:18px}
+
+    .cart-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+    .cart-line{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+    .cart-line button{width:auto;min-width:36px;padding:6px 10px;margin:0}
+    .cart-line .qty{display:flex;align-items:center;gap:6px}
+    .cart-total{font-size:18px;font-weight:900;color:var(--navy);margin-top:12px}
+    .product .add-cart{margin-top:10px}
+    @media(max-width:700px){.cart-layout{grid-template-columns:1fr}.cart-line{grid-template-columns:1fr auto}.cart-line .qty{grid-column:1/-1}}
+
+    @media(max-width:800px){header{grid-template-columns:1fr auto;gap:12px;padding:15px 4%}.searchbox{grid-column:1/-1;grid-row:2}.brand h1{font-size:24px}nav{gap:17px;padding:0 4%}.hero{grid-template-columns:1fr 1fr;padding:28px 5%;min-height:240px}.hero-art{font-size:54px}.hero-points{font-size:14px}.features{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:520px){.topbar{justify-content:center;text-align:center}.topbar span:nth-child(2){display:none}header{grid-template-columns:1fr auto}.brand h1{font-size:21px}.header-actions button{font-size:12px;padding:10px}nav{font-size:13px;gap:20px}.wrap{margin:15px auto;padding:0 12px}.hero{grid-template-columns:1fr;text-align:center;padding:25px 18px;gap:10px}.hero-art{font-size:48px;order:2}.hero-copy{order:1}.hero-points{order:3;justify-items:center;gap:8px}.hero-copy p{font-size:14px}.features{gap:9px}.feature{font-size:12px;padding:13px 7px}.feature b{font-size:20px}.card{padding:15px}.product img{height:210px}.grid{grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}th,td{padding:7px;font-size:12px}}
+
+    .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+    .info-tile{background:#f7fafc;border:1px solid var(--line);border-radius:13px;padding:15px}
+    .info-tile h3{margin:0 0 8px;color:var(--navy);font-size:16px}
+    .contact-link{display:inline-block;margin:5px 8px 5px 0;padding:8px 13px;border-radius:22px;background:#e8f7f6;color:#075e68;text-decoration:none;font-weight:bold}
+    .social-placeholder{display:inline-block;margin:5px 8px 5px 0;padding:8px 13px;border:1px dashed #9aabb8;border-radius:22px;color:var(--muted);text-decoration:none}
+    .social-links-public a{display:inline-block;margin:5px 8px 5px 0;padding:8px 14px;border-radius:22px;background:#e7f4f0;color:#116e67;text-decoration:none;font-weight:700}
+    .policy-list{padding-right:22px;margin:8px 0}
+    .policy-list li{margin:7px 0}
+
+
+
+    .catalog-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px;margin:0 0 18px;background:#f7faf8;border:1px solid #e8eeeb;border-radius:14px}
+    .catalog-tools label{display:block;color:#52666b;font-size:12px;font-weight:700}
+    .catalog-tools select{margin:6px 0 0;background:#fff}
+    .product .product-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto;padding-top:10px}
+    .product .product-actions button{margin:0;padding:10px 6px;font-size:12px;border-radius:10px}
+    .product .details-btn{background:#edf5f1;color:#176c63;border:1px solid #d9e9e2}
+    .product-dialog{position:fixed;inset:0;z-index:1000;background:#071d26b8;display:grid;place-items:center;padding:18px}
+    .product-dialog.hidden{display:none!important}
+    .product-dialog-panel{position:relative;width:min(680px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:24px;box-shadow:0 24px 70px #0004}
+    .dialog-close{position:absolute;left:14px;top:12px;width:38px;height:38px;padding:0;margin:0;border-radius:50%;background:#edf3f1;color:#173b43;font-size:25px}
+    .dialog-product-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start;padding-top:18px}
+    .dialog-product-layout img{width:100%;max-height:300px;object-fit:contain;background:#f7faf8;border-radius:14px}
+    .dialog-product-layout h3{color:var(--navy);margin:0 0 8px;font-size:21px}
+    .dialog-product-description{white-space:pre-wrap;line-height:2;color:#52666b}
+    .dialog-gallery-main{width:100%;height:300px;object-fit:contain;background:#f7faf8;border-radius:14px}
+    .dialog-gallery-thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .dialog-gallery-thumbs button{width:66px;height:66px;padding:3px;margin:0;border:2px solid transparent;background:#f4f7f6;border-radius:10px;overflow:hidden}
+    .dialog-gallery-thumbs button.active{border-color:var(--teal)}
+    .dialog-gallery-thumbs img{width:100%;height:100%;object-fit:cover}
+    .admin-gallery-preview{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0}
+    .admin-gallery-item{position:relative;width:82px;height:82px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#f7faf8}
+    .admin-gallery-item img{width:100%;height:100%;object-fit:cover}
+    .admin-gallery-item button{position:absolute;top:3px;left:3px;width:24px;height:24px;padding:0;margin:0;border-radius:50%;background:#b91c1c;font-size:15px;line-height:1}
+    @media(max-width:600px){.catalog-tools{grid-template-columns:1fr;gap:5px}.product-dialog-panel{padding:18px}.dialog-product-layout{grid-template-columns:1fr}.dialog-product-layout img{max-height:220px}}
+\n    /* طراحی بصری تازه مردیس‌شاپ */
+    :root{--navy:#102d3b;--teal:#087f78;--teal2:#20b5a6;--gold:#e8b85c;--ink:#193442;--muted:#71818b;--line:#e7ecee}
+    body{background:#f5f7f6;color:var(--ink)}
+    .topbar{background:#102d3b;padding:9px max(5%,calc((100% - 1320px)/2));font-size:12px;letter-spacing:.05px}
+    header{position:relative;background:#fff;padding:18px max(5%,calc((100% - 1320px)/2));grid-template-columns:1fr minmax(240px,1.35fr) auto;gap:30px;border-bottom:1px solid #e9eeee}
+    .brand-line{display:flex;align-items:center;gap:12px}.brand-mark{width:48px;height:48px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(145deg,#0c857e,#123c4c);color:#fff;font-size:26px;font-weight:900;box-shadow:0 7px 16px #0b77732b}
+    .brand h1{font-size:25px;letter-spacing:-.5px}.brand p{margin:1px 0 0;font-size:12px}
+    .searchbox{background:#f6f8f7;border:1px solid #e6ece9;border-radius:14px;min-height:48px}.searchbox input{padding:12px 16px}.search-icon{background:transparent;color:#64817f;padding:10px 16px}
+    .header-actions button{background:#f3c86f;border-radius:12px;padding:12px 20px;box-shadow:0 5px 12px #e8b85c2a}
+    nav{background:#fff;color:var(--ink);padding:0 max(5%,calc((100% - 1320px)/2));gap:30px;min-height:50px;border-bottom:1px solid #e7ecea;box-shadow:0 5px 18px #183c3508;position:relative;z-index:2}
+    nav a{color:#415964;padding:15px 0;font-weight:600}nav a:hover{color:var(--teal)}
+    .wrap{max-width:1320px;margin:30px auto;padding:0 22px}
+    .hero{min-height:330px;border-radius:26px;padding:35px 5%;grid-template-columns:.9fr 1.35fr .9fr;gap:24px;background:radial-gradient(circle at 78% 18%,#20b5a633 0,transparent 24%),radial-gradient(circle at 12% 95%,#e8b85c2c 0,transparent 27%),linear-gradient(118deg,#102d3b 0%,#14545a 56%,#0d3945 100%);box-shadow:0 20px 45px #102d3b20}
+    .hero-copy{text-align:right;max-width:520px}.eyebrow{display:inline-block;color:#bce8dc;font-size:12px;font-weight:800;letter-spacing:.2px;margin-bottom:10px}.hero-copy h2{font-size:clamp(30px,4.3vw,49px);line-height:1.35;margin:0 0 13px;letter-spacing:-1px}.hero-copy p{max-width:490px;font-size:15px;color:#e1efed;line-height:2;margin-bottom:22px}
+    .hero-tracking{grid-column:1/-1;width:100%;box-sizing:border-box;margin-top:8px;padding:14px 16px;border:1px solid #d8f2e755;border-radius:16px;background:#ffffff12;backdrop-filter:blur(5px);text-align:right}
+    .hero-tracking h3{margin:0 0 4px;color:#f6d58e;font-size:18px}
+    .hero-tracking>p{margin:0 0 8px;color:#e1efed;font-size:12px;line-height:1.8}
+    .hero-tracking .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .hero-tracking label{display:block;color:#f2f8f6;font-size:12px;font-weight:700}
+    .hero-tracking input{margin:4px 0 7px;padding:9px 10px;background:#fff;color:#173b43;font-size:12px}
+    .hero-tracking button{margin:2px 0 0;padding:9px 12px;background:linear-gradient(135deg,#f6d58e,#e8b85c);color:#17344a;border-radius:10px}
+    .hero-tracking #trackingLookupMessage{margin:5px 0 0;color:#f2f8f6;font-size:12px}
+    .hero-tracking #trackingLookupResult{margin-top:8px;color:#173b43;background:#fff;border-radius:10px;padding:10px}
+    .hero-btn{background:linear-gradient(135deg,#f6d58e,#e8b85c);border-radius:12px;padding:12px 22px;box-shadow:0 8px 20px #091f2c36}.hero-btn span{font-size:18px;margin-right:8px}
+    .hero-art{position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;min-height:210px;font-size:12px;letter-spacing:4px;color:#d5eee9;font-weight:800}.hero-monogram{width:142px;height:142px;display:grid;place-items:center;border-radius:42px;border:1px solid #ffffff5c;background:linear-gradient(145deg,#ffffff25,#ffffff08);box-shadow:inset 0 0 35px #ffffff12,0 18px 35px #061d2b55;font-size:88px;color:#f4d18a;z-index:1}.hero-art small{margin-top:13px;font-size:10px;letter-spacing:4px;color:#c1dcd7}.hero-orbit{position:absolute;border:1px solid #d7f4e72c;border-radius:50%;width:205px;height:205px}.orbit-two{width:250px;height:250px;border-style:dashed;transform:rotate(24deg)}
+    .hero-points{font-size:14px;gap:17px;color:#f2f8f6}.hero-points span:before{background:#eac16e;color:#173a43;width:25px;height:25px;margin-left:9px}
+    .card{border:1px solid #e8eeeb;border-radius:20px;padding:25px;box-shadow:0 10px 30px #173c3509}.products-panel{margin-top:24px}.section-heading{align-items:flex-end;margin-bottom:22px}.section-heading h2{font-size:25px;margin:0 0 4px}.section-heading .muted{margin:0}.dark-eyebrow{color:#16877e;margin-bottom:5px}.products-count{white-space:nowrap;background:#eaf5f1;color:#26766d;padding:8px 13px;border-radius:30px;font-size:12px;font-weight:800}
+    .grid{grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:18px}.product{border:1px solid #e8eeeb;border-radius:18px;box-shadow:0 7px 20px #163c3509;display:flex;flex-direction:column;min-width:0}.product:hover{transform:translateY(-5px);box-shadow:0 16px 28px #163c3518;border-color:#cfe4dc}.product>img{height:225px;object-fit:contain;background:linear-gradient(180deg,#fafcfb,#f2f6f4);padding:18px}.product>.info{display:flex;flex-direction:column;align-items:stretch;flex:1;padding:16px}.product .info>b{font-size:15px;line-height:1.8;min-height:27px}.product .info>p.muted{margin:4px 0 7px;color:#87949a}.product .info>p:not(.muted){font-size:13px;color:#65777d;line-height:1.8;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:46px;margin:4px 0}.price{font-size:17px;color:#087f78;margin:12px 0}.badge{border-radius:8px;font-weight:700}.product .add-cart{margin-top:auto;border-radius:11px;padding:12px;background:linear-gradient(135deg,#0c8b80,#08736f);box-shadow:0 5px 12px #087f7822}.product .add-cart:disabled{box-shadow:none;background:#aeb9b7}
+    .features{gap:14px;margin:22px 0 30px}.feature{border:1px solid #e8eeeb;border-radius:16px;box-shadow:0 7px 20px #173c3507;color:#38525b;padding:18px 12px}.feature b{color:#13877e;font-size:23px}
+    .cart-total{color:#087f78}.cart-layout>div{background:#fbfcfb;border:1px solid #edf1ef;border-radius:15px;padding:16px}.cart-layout>div+div{background:#f6faf8}.cart-layout h3{font-size:17px}
+    .info-tile{background:#f8faf9;border-color:#e8eeeb;border-radius:15px}.contact-link{border-radius:10px;background:#e7f4f0;color:#116e67}.social-placeholder{border-radius:10px}
+    footer{background:#102d3b;margin-top:40px;padding:34px 5%;line-height:2}footer strong{color:#f2cc7c}
+    @media(max-width:800px){header{padding:15px 4%;gap:12px}.hero{grid-template-columns:1fr 1fr;min-height:270px}.hero-copy{text-align:center}.hero-art{min-height:170px}.hero-points{grid-column:1/-1;display:flex;justify-content:center;flex-wrap:wrap;gap:10px 18px}.hero-points span{font-size:12px}.hero-points span:before{width:21px;height:21px}.section-heading h2{font-size:22px}}
+    @media(max-width:520px){.hero-tracking .grid{grid-template-columns:1fr;gap:3px}.hero-tracking{padding:12px}.topbar{font-size:11px;padding:8px 10px}.brand-mark{width:40px;height:40px;border-radius:13px;font-size:22px}.brand h1{font-size:19px}.brand p{font-size:11px}.header-actions button{padding:9px 12px}.searchbox{min-height:43px}nav{gap:19px;padding:0 14px}.wrap{margin:15px auto;padding:0 12px}.hero{padding:24px 18px;border-radius:20px;grid-template-columns:1fr;gap:7px}.hero-copy{order:1}.hero-art{order:2;min-height:150px}.hero-points{order:3;display:grid;justify-items:start;grid-template-columns:1fr 1fr;width:100%;gap:8px}.hero-copy h2{font-size:31px}.hero-copy p{font-size:13px}.hero-monogram{width:100px;height:100px;border-radius:30px;font-size:62px}.hero-orbit{width:145px;height:145px}.orbit-two{width:175px;height:175px}.hero-art small{margin-top:8px}.card{padding:16px;border-radius:17px}.products-panel{margin-top:15px}.section-heading{align-items:flex-start;flex-direction:column;gap:10px}.section-heading h2{font-size:21px}.products-count{align-self:flex-start}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product{border-radius:14px}.product>img{height:155px;padding:10px}.product .info{padding:11px}.product .info>b{font-size:13px}.product .info>p:not(.muted){font-size:11px;min-height:40px}.price{font-size:14px}.product .add-cart{font-size:12px;padding:10px 5px}.features{gap:8px}.feature{padding:12px 6px;font-size:11px}.feature b{font-size:19px}.cart-layout>div{padding:12px}}
+
+
+    /* رسید ثبت سفارش */
+    .order-confirmation{position:fixed;inset:0;z-index:1200;background:#041d2bd9;display:grid;place-items:center;padding:18px}
+    .order-confirmation.hidden{display:none!important}
+    .order-confirmation-panel{width:min(620px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:22px;padding:26px;box-shadow:0 25px 80px #00131f66;border-top:6px solid var(--teal2)}
+    .confirmation-mark{width:64px;height:64px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#d9f6ec;color:#087f65;font-size:36px;font-weight:900}
+    .confirmation-title{text-align:center;color:#075e58;font-size:24px;margin:0 0 5px}
+    .confirmation-subtitle{text-align:center;color:var(--muted);margin:0 0 18px}
+    .confirmation-number{background:linear-gradient(135deg,#062b45,#087f89);color:white;border-radius:14px;padding:14px;text-align:center;margin:14px 0}
+    .confirmation-number small{display:block;color:#c9f4ed}.confirmation-number strong{font-size:25px;letter-spacing:1px}
+    .confirmation-items{border:1px solid var(--line);border-radius:13px;padding:12px;margin:14px 0}
+    .confirmation-item{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+    .confirmation-item:last-child{border-bottom:0}.confirmation-total{display:flex;justify-content:space-between;gap:10px;font-weight:900;color:var(--navy);font-size:17px;padding-top:10px}
+    .confirmation-status{background:#fff5d9;color:#765000;border-radius:12px;padding:11px 13px;font-size:13px;margin:14px 0}
+    .confirmation-actions{display:flex;gap:10px;margin-top:18px}.confirmation-actions button{margin:0}
+    #shippingReturns{background:linear-gradient(135deg,#062b45 0%,#075c67 52%,#087f89 100%);border:0;color:#efffff;box-shadow:0 14px 32px #062b4526}
+    #shippingReturns h2{color:#fff;font-size:23px}
+    #shippingReturns .info-tile{background:#ffffff12;border:1px solid #b9f2e833;color:#efffff;backdrop-filter:blur(4px)}
+    #shippingReturns .info-tile h3{color:#8ff1df}
+    /* تنوع رنگ نوشته‌های بخش پایانی، با حفظ خوانایی روی زمینه تیره */
+    #shippingReturns .info-tile p{color:#f0ffff}
+    #shippingReturns .info-tile:nth-child(1) p{color:#e3fbf5}
+    #shippingReturns .info-tile:nth-child(2) p{color:#d9f1ff}
+    #shippingReturns .info-tile:nth-child(3) p{color:#fff0d2}
+    #shippingReturns > .muted{color:#c9e9e5}
+    #siteFooter > p:first-of-type{color:#d8f2ef}
+    #siteFooter > p:last-of-type{color:#e8f3fa}
+    #siteFooter > small{display:inline-block;margin-top:8px;color:#b9d8df}
+    #shippingReturns .info-tile:before{content:"✓";display:inline-grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#b9f4e5;color:#075c67;font-weight:900;margin-bottom:7px}
+    @media(max-width:520px){.order-confirmation-panel{padding:19px}.confirmation-title{font-size:20px}.confirmation-actions{flex-direction:column}.confirmation-number strong{font-size:21px}}
+
+
+    /* سبد خرید شناور و پنجره‌ای */
+    .header-actions{display:flex;align-items:center;gap:10px;justify-content:flex-end}
+    .header-actions .cart-header-button{position:relative;display:inline-flex;align-items:center;gap:8px;width:auto;margin:0;padding:11px 14px;background:#e9f5f1;color:#145d59;border:1px solid #d3e9e1;border-radius:13px;box-shadow:0 5px 12px #087f7810}
+    .cart-header-button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .cart-badge{display:inline-grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:20px;background:#e8b85c;color:#173a43;font-size:11px}
+    .cart-modal{position:fixed;inset:0;z-index:1100;background:#071d26b8;display:grid;place-items:center;padding:18px}
+    .cart-modal.hidden{display:none!important}
+    .cart-modal-panel{width:min(920px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:22px;padding:24px;box-shadow:0 25px 80px #00131f66;border-top:5px solid var(--teal2)}
+    .cart-modal-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+    .cart-modal-heading h2{font-size:24px;margin:0}.cart-modal-heading .muted{display:block;margin-top:3px}
+    .cart-close{width:40px;height:40px;padding:0;margin:0;border-radius:50%;background:#edf3f1;color:#173b43;font-size:27px;line-height:1}
+    .cart-layout>div{min-width:0}.continue-shopping{margin-top:16px;width:auto;padding:10px 16px}
+    .shipping-intro{padding:15px 18px 17px;margin:-4px -3px 18px;border-radius:15px;background:linear-gradient(110deg,#ffffff18,#d5f3e812 55%,#f2d58a20);border:1px solid #c6eee32b}
+    .shipping-intro .eyebrow{color:#f2d58a;margin:0 0 4px}
+    #shippingReturns .shipping-intro h2{font-size:25px;margin:0 0 5px;color:#fff}
+    .shipping-intro p{margin:0;color:#d9f0ec;font-size:13px;line-height:2}
+    #aboutSection{background:linear-gradient(115deg,#fff 0%,#f1f8f5 100%);border-right:4px solid #75b9a7}
+    #contactSection{background:linear-gradient(115deg,#fff 0%,#f1f6fa 100%);border-right:4px solid #82b5c8}
+    #purchaseRules{background:linear-gradient(115deg,#fff 0%,#fbf6e9 100%);border-right:4px solid #e3bd70}
+    #aboutSection h2,#contactSection h2,#purchaseRules h2{position:relative;padding-bottom:9px}
+    #aboutSection h2:after,#contactSection h2:after,#purchaseRules h2:after{content:"";position:absolute;right:0;bottom:0;width:58px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--teal2),var(--gold))}
+    @media(max-width:800px){.header-actions{gap:7px}.header-actions .cart-header-button{padding:9px 10px}.cart-modal-panel{padding:18px}}
+    @media(max-width:520px){.header-actions{gap:5px}.header-actions .cart-header-button{padding:8px 9px;font-size:11px;gap:5px}.cart-header-button svg{width:19px;height:19px}.cart-badge{min-width:18px;height:18px;font-size:10px}.header-actions #adminToggle{padding:8px 9px;font-size:11px}.cart-modal{padding:8px}.cart-modal-panel{max-height:96vh;padding:14px;border-radius:17px}.cart-layout{grid-template-columns:1fr}.cart-layout>div{padding:12px}.cart-modal-heading h2{font-size:21px}}
+
+
+    /* هویت بصری پوشاک: رنگ‌های پارچه‌ای و گرم در کنار سبزآبی مردیس */
+    .products-panel{background:linear-gradient(145deg,#fff 0%,#fbf7f0 100%);border-top:4px solid #d8b77a}
+    .catalog-tools{background:linear-gradient(120deg,#f4f8f5,#fbf3e7);border-color:#e8dfcf}
+    .catalog-tools label{color:#52645c}
+    .product{background:linear-gradient(180deg,#fff 0%,#fffdfa 100%);border-color:#e9e1d5}
+    .product>img{background:linear-gradient(145deg,#f7f3eb,#eef5f1)}
+    .product .details-btn{background:#f5eee2;color:#755b32;border-color:#eadcc2}
+    .category-manager{margin:16px 0;padding:17px;border:1px solid #e8dcc7;border-radius:16px;background:linear-gradient(120deg,#fbf6ec,#f0f7f3)}
+    .category-manager>label{font-weight:800;color:#425c55}
+    .category-add-button{max-width:190px;background:linear-gradient(135deg,#c79b50,#e5bd75);color:#273d3a}
+    .category-chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+    .category-chip{padding:5px 11px;border-radius:20px;background:#e6f1eb;color:#27665c;font-size:12px;border:1px solid #d1e4d9}
+    #aboutSection{background:linear-gradient(120deg,#fff 0%,#f4f8f2 58%,#fbf3e7 100%)}
+    #contactSection .info-tile{background:linear-gradient(145deg,#f2f8f5,#fffaf1);border-color:#e5e6d8}
+    #purchaseRules{background:linear-gradient(120deg,#fff 0%,#f8f2e7 100%)}
+    @media(max-width:520px){.category-add-button{max-width:none}}
+\n  </style>
+
+<style id="admin-toggle-feedback">
+  #adminToggle {
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease, filter .12s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #adminToggle:hover { filter: brightness(1.08); box-shadow: 0 4px 12px rgba(0, 120, 130, .20); }
+  #adminToggle:active { transform: translateY(2px) scale(.96); box-shadow: inset 0 2px 5px rgba(0,0,0,.20); }
+  #adminToggle.is-open { box-shadow: 0 0 0 3px rgba(12, 132, 140, .20); filter: brightness(1.06); }
+  #adminToggle:focus-visible { outline: 3px solid rgba(12, 132, 140, .45); outline-offset: 3px; }
+</style>
+
+
+<style id="mardis-tracking-nav-dropdown">
+  .hero{grid-template-areas:"points copy art" !important; row-gap:18px !important;}
+  .hero-art{grid-area:art;min-width:0}
+  .hero-copy{grid-area:copy;min-width:0}
+  .hero-points{grid-area:points;min-width:0}
+  .tracking-dropdown{
+    position:fixed !important;
+    z-index:3000 !important;
+    inset:auto !important;
+    top:var(--tracking-dropdown-top,100px) !important;
+    right:var(--tracking-dropdown-right,16px) !important;
+    left:auto !important;
+    width:min(620px,calc(100vw - 24px)) !important;
+    max-height:calc(100vh - var(--tracking-dropdown-top,100px) - 16px);
+    overflow:auto;
+    margin:0 !important;
+    padding:18px 20px !important;
+    background:linear-gradient(135deg,#174e55,#103c49) !important;
+    border:1px solid #d8f2e755 !important;
+    border-radius:16px !important;
+    box-shadow:0 18px 48px #071d2680 !important;
+    text-align:right;
+  }
+  .tracking-dropdown.hidden{display:none !important}
+  .tracking-dropdown-close{
+    position:absolute;left:10px;top:8px;width:30px;height:30px;
+    margin:0;padding:0;border-radius:50%;background:#ffffff20;color:#fff;
+    font-size:22px;line-height:1
+  }
+  #trackingMenuToggle[aria-expanded="true"]{color:var(--teal);font-weight:900}
+  @media(max-width:520px){
+    .hero{grid-template-areas:"copy" "art" "points" !important}
+    .tracking-dropdown{padding:16px 12px !important}
+    .tracking-dropdown .grid{grid-template-columns:minmax(0,1fr) !important}
+  }
+</style>
+<script id="tracking-nav-dropdown-script">
+document.addEventListener('DOMContentLoaded',function(){
+  const trigger=document.getElementById('trackingMenuToggle');
+  const panel=document.getElementById('orderTrackingSection');
+  const close=document.getElementById('closeTrackingDropdown');
+  const nav=document.querySelector('nav');
+  if(!trigger||!panel||!nav)return;
+  function positionPanel(){
+    const rect=trigger.getBoundingClientRect();
+    const width=Math.min(620,window.innerWidth-24);
+    const right=Math.max(12,Math.min(window.innerWidth- width-12,window.innerWidth-rect.right));
+    panel.style.setProperty('--tracking-dropdown-top',(nav.getBoundingClientRect().bottom+8)+'px');
+    panel.style.setProperty('--tracking-dropdown-right',right+'px');
+  }
+  function setOpen(open){
+    panel.classList.toggle('hidden',!open);
+    trigger.setAttribute('aria-expanded',String(open));
+    if(open){positionPanel();}
+  }
+  trigger.addEventListener('click',function(event){
+    event.preventDefault();
+    setOpen(panel.classList.contains('hidden'));
+  });
+  close?.addEventListener('click',()=>setOpen(false));
+  document.addEventListener('click',function(event){
+    if(!panel.classList.contains('hidden')&&!panel.contains(event.target)&&!trigger.contains(event.target))setOpen(false);
+  });
+  document.addEventListener('keydown',function(event){if(event.key==='Escape')setOpen(false);});
+  window.addEventListener('resize',()=>{if(!panel.classList.contains('hidden'))positionPanel();});
+  window.addEventListener('scroll',()=>{if(!panel.classList.contains('hidden'))positionPanel();},true);
+});
+</script>
+
+
+
+<style id="dedicated-tracking-page">
+  body.tracking-page{min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#eef4f5,#e5eeee)}
+  body.tracking-page > *:not(#trackingPage):not(script){display:none!important}
+  #trackingPage{display:block!important;visibility:visible!important;width:min(900px,100%);margin:auto;padding:0}
+  #trackingPage *{visibility:visible}
+  #trackingPage .hero-tracking{
+    display:block!important;position:relative!important;inset:auto!important;transform:none!important;
+    width:100%!important;max-width:900px!important;max-height:none!important;overflow:visible!important;
+    margin:0 auto!important;padding:30px!important;border-radius:22px!important;
+    background:linear-gradient(135deg,#174e55,#103c49)!important;
+    border:1px solid #d8f2e755!important;box-shadow:0 18px 48px #071d2630!important;
+    color:#fff!important;text-align:right!important;
+  }
+  #trackingPage h3{font-size:25px;color:#ffda8a;margin:0 0 10px}
+  #trackingPage p{line-height:1.9}
+  #trackingPage form{display:block;width:100%}
+  #trackingPage .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;width:100%}
+  #trackingPage label{display:block;min-width:0;color:#fff;font-weight:700}
+  #trackingPage input{display:block;width:100%;min-width:0;background:#fff;color:#17344a;margin-top:7px}
+  #trackingPage #trackOrderButton{display:block;width:100%;margin-top:14px;background:linear-gradient(135deg,#ffda8a,#e8b85c);color:#17344a}
+  #trackingPage #trackingLookupMessage{color:#fff}
+  #trackingPage #trackingLookupResult{margin-top:16px;background:#fff;color:#17344a;border-radius:12px;padding:16px}
+  #trackingPage .hidden{display:none!important}
+  @media(max-width:640px){
+    body.tracking-page{padding:14px}
+    #trackingPage .hero-tracking{padding:20px 16px!important}
+    #trackingPage .grid{grid-template-columns:minmax(0,1fr)}
+  }
+</style>
+
+</head>
+<body class="tracking-page">
+<main id="trackingPage"><div id="orderTrackingSection" class="hero-tracking" aria-label="فرم پیگیری سفارش">
+    <h3>پیگیری سفارش</h3>
+          <p>برای مشاهده وضعیت سفارش، شماره سفارش و شماره موبایلی را که هنگام خرید ثبت کرده‌اید وارد کنید.</p>
+          <form id="orderTrackingForm">
+            <div class="grid">
+              <label>شماره سفارش<input id="trackingOrderId" type="text" maxlength="36" placeholder="شناسه سفارش درج‌شده در رسید" autocomplete="off" required></label>
+              <label>شماره موبایل ثبت‌شده<input id="trackingPhone" type="tel" maxlength="30" placeholder="مثلاً 09xxxxxxxxx" autocomplete="tel" required></label>
+            </div>
+            <button id="trackOrderButton" type="submit">استعلام سفارش</button>
+            <p id="trackingLookupMessage" aria-live="polite"></p>
+          </form>
+          <div id="trackingLookupResult" class="hidden" aria-live="polite"></div>
+  </div></main>
+<script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    import { toGregorian, toJalaali, isValidJalaaliDate } from 'https://cdn.jsdelivr.net/npm/jalaali-js@1.2.8/+esm';
+    const SUPABASE_URL = 'https://snkdwaatcjmqdhkxiasa.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_5o05x-xTjWYSTGXDBdE-Ug_jwZwASAI';
+    const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const $ = id => document.getElementById(id);
+    const money = n => Number(n || 0).toLocaleString('fa-IR') + ' تومان';
+    const safe = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const PRODUCT_META_PREFIX = '\n\n<!--MARDIS_META:';
+    function unpackProductDescription(raw) {
+      const text = String(raw || '');
+      const at = text.lastIndexOf(PRODUCT_META_PREFIX);
+      if (at < 0) return { description: text, meta: {} };
+      const tail = text.slice(at + PRODUCT_META_PREFIX.length);
+      const end = tail.indexOf('-->');
+      if (end < 0) return { description: text, meta: {} };
+      try { return { description: text.slice(0, at), meta: JSON.parse(tail.slice(0, end)) || {} }; }
+      catch { return { description: text, meta: {} }; }
+    }
+    function packProductDescription(description, meta) {
+      const clean = String(description || '').trim();
+      const details = Object.fromEntries(Object.entries(meta).map(([k,v]) => [k, String(v || '').trim()]).filter(([,v]) => v));
+      return Object.keys(details).length ? `${clean}${PRODUCT_META_PREFIX}${JSON.stringify(details)}-->` : clean;
+    }
+    function productDescription(product) { return unpackProductDescription(product.description).description; }
+    function productSpecsHtml(product) {
+      const m = unpackProductDescription(product.description).meta;
+      const rows = [['سایزبندی',m.sizes],['رنگ‌بندی',m.colors],['جنس',m.material],['نگهداری',m.care]].filter(([,v]) => v);
+      return rows.length ? `<div class="info-tile" style="margin:12px 0"><b>مشخصات پوشاک</b>${rows.map(([k,v])=>`<p><strong>${k}:</strong> ${safe(v)}</p>`).join('')}</div>` : '';
+    }
+
+    const TEHRAN_OFFSET_MINUTES = 210;
+    let editingId = null;
+    let editingProductActive = true;
+    let currentImageUrl = null;
+    let currentGalleryUrls = [];
+
+    let productCache = [];
+    const CART_STORAGE_KEY = 'mardis_shop_cart_v1';
+    let cart = readCart();
+
+    function readCart() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
+        if (!Array.isArray(parsed)) return [];
+        return parsed.filter(x => Number.isSafeInteger(Number(x.product_id)) && Number(x.product_id) > 0 &&
+          Number.isSafeInteger(Number(x.quantity)) && Number(x.quantity) > 0)
+          .map(x => ({ product_id: Number(x.product_id), quantity: Number(x.quantity) }));
+      } catch { return []; }
+    }
+    function saveCart() {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+      renderCart();
+    }
+    function cartProduct(productId) {
+      return productCache.find(p => String(p.id) === String(productId));
+    }
+    function addToCart(productId) {
+      const product = cartProduct(productId);
+      if (!product) { alert('این محصول در دسترس نیست. صفحه را تازه‌سازی کنید.'); return; }
+      const current = cart.find(x => x.product_id === Number(product.id));
+      const nextQty = (current?.quantity || 0) + 1;
+      if (Number(product.stock || 0) < nextQty) { alert('موجودی این محصول کافی نیست.'); return; }
+      if (product.is_unique && nextQty > 1) { alert('از این محصول تک‌نسخه‌ای فقط یک عدد قابل سفارش است.'); return; }
+      if (current) current.quantity = nextQty;
+      else cart.push({ product_id: Number(product.id), quantity: 1 });
+      saveCart();
+      openCart();
+    }
+    function openCart() {
+      $('cartModal').classList.remove('hidden');
+      document.body.classList.add('modal-open');
+      $('closeCartButton').focus();
+    }
+    function closeCart() {
+      $('cartModal').classList.add('hidden');
+      document.body.classList.remove('modal-open');
+      $('openCartButton').focus();
+    }
+    $('openCartButton').addEventListener('click', openCart);
+    $('closeCartButton').addEventListener('click', closeCart);
+    $('continueShoppingButton').addEventListener('click', closeCart);
+    $('cartModal').addEventListener('click', event => { if (event.target === $('cartModal')) closeCart(); });
+    function changeCartQuantity(productId, delta) {
+      const line = cart.find(x => x.product_id === Number(productId));
+      if (!line) return;
+      const product = cartProduct(productId);
+      const nextQty = line.quantity + delta;
+      if (nextQty <= 0) cart = cart.filter(x => x.product_id !== Number(productId));
+      else {
+        if (!product || nextQty > Number(product.stock || 0)) { alert('موجودی کافی نیست.'); return; }
+        if (product.is_unique && nextQty > 1) { alert('از محصول تک‌نسخه‌ای فقط یک عدد قابل سفارش است.'); return; }
+        line.quantity = nextQty;
+      }
+      saveCart();
+    }
+    function renderCart() {
+      const count = cart.reduce((sum, line) => sum + line.quantity, 0);
+      $('cartCount').textContent = `${count.toLocaleString('fa-IR')} محصول`;
+      $('cartBadge').textContent = count.toLocaleString('fa-IR');
+      $('openCartButton').setAttribute('aria-label', `سبد خرید، ${count.toLocaleString('fa-IR')} محصول`);
+      let total = 0;
+      const rows = cart.map(line => {
+        const product = cartProduct(line.product_id);
+        if (!product) return `<div class="cart-line"><span>محصول شماره ${line.product_id} (در حال بررسی)</span><span class="qty"><button type="button" data-remove="${line.product_id}" class="danger">حذف</button></span></div>`;
+        const unitPrice = effectiveDiscount(product) ? Number(product.discount_price) : Number(product.price);
+        total += unitPrice * line.quantity;
+        return `<div class="cart-line"><span><b>${safe(product.name)}</b><br><small class="muted">${money(unitPrice)} برای هر عدد</small></span><span class="qty"><button type="button" data-minus="${line.product_id}" aria-label="کم کردن">−</button><b>${line.quantity.toLocaleString('fa-IR')}</b><button type="button" data-plus="${line.product_id}" aria-label="زیاد کردن">+</button></span><button type="button" data-remove="${line.product_id}" class="danger">حذف</button></div>`;
+      }).join('');
+      $('cartItems').innerHTML = rows || '<p class="muted">سبد خرید شما خالی است.</p>';
+      $('cartTotal').textContent = `جمع کل تقریبی: ${money(total)}`;
+      $('checkoutButton').disabled = cart.length === 0;
+    }
+
+
+    function normalizeDigits(value) {
+      return String(value ?? '').replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+    }
+    function jalaliToISO(value) {
+      const normalized = normalizeDigits(value).trim();
+      if (!normalized) return null;
+      const match = normalized.match(/^(\d{4})[/-](\d{1,2})[/-](\d{1,2})\s*[-، ]\s*(\d{1,2}):(\d{2})$/);
+      if (!match) throw new Error('تاریخ را به شکل 1405/08/20 - 14:30 وارد کنید.');
+      const [, jyS, jmS, jdS, hourS, minuteS] = match;
+      const jy = Number(jyS), jm = Number(jmS), jd = Number(jdS), hour = Number(hourS), minute = Number(minuteS);
+      if (!isValidJalaaliDate(jy, jm, jd)) throw new Error('تاریخ شمسی معتبر نیست.');
+      if (hour > 23 || minute > 59) throw new Error('ساعت واردشده معتبر نیست.');
+      const g = toGregorian(jy, jm, jd);
+      // ورودی ساعت، ساعت رسمی تهران است؛ آن را مستقل از منطقه زمانی دستگاه به UTC تبدیل می‌کنیم.
+      const utcMillis = Date.UTC(g.gy, g.gm - 1, g.gd, hour, minute) - TEHRAN_OFFSET_MINUTES * 60 * 1000;
+      return new Date(utcMillis).toISOString();
+    }
+    function isoToTehranJalali(value) {
+      if (!value) return '';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return '';
+      const tehranDate = new Date(date.getTime() + TEHRAN_OFFSET_MINUTES * 60 * 1000);
+      const gy = tehranDate.getUTCFullYear(), gm = tehranDate.getUTCMonth() + 1, gd = tehranDate.getUTCDate();
+      const j = toJalaali(gy, gm, gd);
+      const hour = String(tehranDate.getUTCHours()).padStart(2, '0');
+      const minute = String(tehranDate.getUTCMinutes()).padStart(2, '0');
+      return `${j.jy}/${String(j.jm).padStart(2,'0')}/${String(j.jd).padStart(2,'0')} - ${hour}:${minute}`;
+    }
+    function setMessage(element, message, kind = '') {
+      element.textContent = message;
+      element.className = kind ? `notice ${kind}` : 'muted';
+    }
+    function effectiveDiscount(product) {
+      if (!product.is_discount_active || !product.discount_price || !product.discount_start || !product.discount_end) return false;
+      const now = Date.now(), start = new Date(product.discount_start).getTime(), end = new Date(product.discount_end).getTime();
+      return Number.isFinite(start) && Number.isFinite(end) && now >= start && now <= end && Number(product.discount_price) > 0 && Number(product.discount_price) < Number(product.price);
+    }
+    function productCard(product) {
+      const discounted = effectiveDiscount(product);
+      const shownPrice = discounted ? product.discount_price : product.price;
+      const image = product.image_url
+        ? `<img src="${safe(product.image_url)}" alt="${safe(product.name)}" loading="lazy">`
+        : '<div style="height:155px;background:#e2e8f0;display:grid;place-items:center;color:#64748b">بدون تصویر</div>';
+      const uniqueBadge = product.is_unique ? '<span class="badge">تک‌نسخه‌ای</span>' : '';
+      const discountBadge = discounted ? '<span class="badge">تخفیف فعال</span>' : '';
+      const oldPrice = discounted ? `<span class="old-price">${money(product.price)}</span>` : '';
+      return `<article class="product">${image}<div class="info"><b>${safe(product.name)}</b><p class="muted">${safe(product.category || '')}</p>${uniqueBadge}${discountBadge}<p>${safe(productDescription(product))}</p><div class="price">${money(shownPrice)} ${oldPrice}</div><div><small class="muted">موجودی: ${Number(product.stock || 0).toLocaleString('fa-IR')}</small> ${Number(product.stock || 0) < 1 ? '<span class="badge stock-out">ناموجود</span>' : Number(product.stock || 0) <= 3 ? '<span class="badge stock-low">موجودی محدود</span>' : '<span class="badge stock-ok">موجود</span>'}</div><div class="product-actions"><button type="button" class="details-btn" data-product-details="${safe(product.id)}">جزئیات کالا</button><button type="button" class="add-cart" data-add-cart="${safe(product.id)}" ${Number(product.stock || 0) < 1 ? 'disabled' : ''}>${Number(product.stock || 0) < 1 ? 'فعلاً ناموجود' : 'افزودن به سبد'}</button></div></div></article>`;
+    }
+
+    $('pimageFile').addEventListener('change', () => {
+      const file = $('pimageFile').files[0], preview = $('pimagePreview');
+      if (!file) {
+        if (currentImageUrl && editingId) { preview.src = currentImageUrl; preview.classList.remove('hidden'); }
+        else { preview.classList.add('hidden'); preview.removeAttribute('src'); }
+        return;
+      }
+      if (!file.type.startsWith('image/')) {
+        alert('لطفاً یک فایل تصویری انتخاب کن.'); $('pimageFile').value = ''; preview.classList.add('hidden'); return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        alert('حجم تصویر باید حداکثر ۵ مگابایت باشد.'); $('pimageFile').value = ''; preview.classList.add('hidden'); return;
+      }
+      preview.src = URL.createObjectURL(file); preview.classList.remove('hidden');
+    });
+    async function uploadProductImage(file) {
+      if (!file) return currentImageUrl;
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      const path = `${crypto.randomUUID()}-${safeName}`;
+      const { error } = await db.storage.from('product-images').upload(path, file, { cacheControl: '3600', upsert: false, contentType: file.type });
+      if (error) throw error;
+      const { data } = db.storage.from('product-images').getPublicUrl(path);
+      return data.publicUrl;
+    }
+    function siteRedirectUrl() { return window.location.origin + window.location.pathname; }
+    function showRecoveryForm() {
+      $('loginPanel').classList.add('hidden'); $('adminPanel').classList.add('hidden'); $('adminToggle').classList.add('hidden');
+      $('resetPanel').classList.remove('hidden'); $('resetMsg').textContent = '';
+    }
+    function clearRecoveryMarker() { window.history.replaceState({}, document.title, window.location.pathname + window.location.search); }
+
+    $('forgotButton').onclick = async () => {
+      const email = $('email').value.trim();
+      if (!email) { setMessage($('loginMsg'), 'ابتدا ایمیل حساب مدیر را در کادر ایمیل وارد کن.'); $('email').focus(); return; }
+      setMessage($('loginMsg'), 'در حال ارسال لینک بازیابی…');
+      const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: siteRedirectUrl() });
+      if (error) setMessage($('loginMsg'), 'ارسال لینک انجام نشد: ' + error.message, 'error');
+      else setMessage($('loginMsg'), 'اگر این ایمیل در سامانه ثبت شده باشد، لینک بازیابی برای آن ارسال می‌شود. پوشه Spam را هم بررسی کن.', 'success');
+    };
+    $('loginForm').onsubmit = async event => {
+      event.preventDefault(); setMessage($('loginMsg'), 'در حال ورود…');
+      const { error } = await db.auth.signInWithPassword({ email: $('email').value.trim(), password: $('password').value });
+      if (error) { setMessage($('loginMsg'), 'ورود انجام نشد: ' + error.message, 'error'); return; }
+      $('loginPanel').classList.add('hidden'); await showAdmin();
+    };
+    $('resetForm').onsubmit = async event => {
+      event.preventDefault();
+      const password = $('newPassword').value, confirmPassword = $('confirmPassword').value;
+      if (password.length < 8) { setMessage($('resetMsg'), 'رمز باید حداقل ۸ نویسه داشته باشد.', 'error'); return; }
+      if (password !== confirmPassword) { setMessage($('resetMsg'), 'دو رمز واردشده یکسان نیستند.', 'error'); return; }
+      $('resetButton').disabled = true; $('resetButton').textContent = 'در حال ذخیره…';
+      const { error } = await db.auth.updateUser({ password });
+      $('resetButton').disabled = false; $('resetButton').textContent = 'ذخیره رمز جدید';
+      if (error) { setMessage($('resetMsg'), 'تغییر رمز انجام نشد: ' + error.message + ' — ممکن است لینک منقضی شده باشد؛ در این صورت یک لینک تازه درخواست کن.', 'error'); return; }
+      setMessage($('resetMsg'), 'رمز جدید با موفقیت ذخیره شد. اکنون می‌توانی با رمز جدید وارد شوی.', 'success');
+      $('resetForm').classList.add('hidden'); await db.auth.signOut(); clearRecoveryMarker(); $('loginPanel').classList.remove('hidden'); $('adminToggle').classList.add('hidden');
+    };
+    $('logout').onclick = async () => { await db.auth.signOut(); $('adminPanel').classList.add('hidden'); $('adminToggle').classList.remove('hidden'); };
+
+    async function loadProducts() {
+      const { data, error } = await db.from('products')
+        .select('id,name,category,description,price,stock,image_url,image_urls,is_unique,is_discount_active,discount_price,discount_start,discount_end')
+        .eq('active', true).order('created_at', { ascending: false });
+      if (error) { $('products').textContent = 'دریافت محصولات ناموفق بود. تنظیمات دسترسی جدول products را بررسی کنید.'; return; }
+      productCache = data || []; refreshCategoryControls(); renderProducts();
+    }
+    const DEFAULT_CLOTHING_CATEGORIES = ['پوشاک زنانه','پوشاک مردانه','پوشاک بچگانه','لباس راحتی','کیف','کفش','اکسسوری'];
+    const CLOTHING_CATEGORY_STORAGE_KEY = 'mardis_shop_clothing_categories_v1';
+    function readClothingCategories() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(CLOTHING_CATEGORY_STORAGE_KEY) || '[]');
+        return Array.isArray(saved) ? saved.filter(x => typeof x === 'string' && x.trim()).map(x => x.trim()) : [];
+      } catch { return []; }
+    }
+    function allClothingCategories() {
+      return [...new Set([...DEFAULT_CLOTHING_CATEGORIES, ...readClothingCategories(),
+        ...productCache.map(p => String(p.category || '').trim()).filter(Boolean)])]
+        .sort((a, b) => a.localeCompare(b, 'fa'));
+    }
+    function refreshCategoryControls() {
+      const categories = allClothingCategories();
+      const datalist = $('clothingCategoryOptions');
+      if (datalist) datalist.innerHTML = categories.map(c => `<option value="${safe(c)}">`).join('');
+      const chips = $('adminCategoryChips');
+      if (chips) chips.innerHTML = categories.map(c => `<span class="category-chip">${safe(c)}</span>`).join('');
+      populateCategoryFilter();
+    }
+    function addClothingCategory() {
+      const input = $('newClothingCategory');
+      const category = input.value.trim().replace(/\\s+/g, ' ');
+      if (!category) { setMessage($('adminMsg'), 'نام موضوع پوشاک را وارد کنید.', 'error'); input.focus(); return; }
+      const categories = readClothingCategories();
+      if (allClothingCategories().some(c => c.toLocaleLowerCase() === category.toLocaleLowerCase())) {
+        setMessage($('adminMsg'), 'این موضوع از قبل در دسته‌بندی‌ها وجود دارد.', 'error'); return;
+      }
+      categories.push(category);
+      localStorage.setItem(CLOTHING_CATEGORY_STORAGE_KEY, JSON.stringify(categories));
+      input.value = '';
+      refreshCategoryControls();
+      $('pcategory').value = category;
+      setMessage($('adminMsg'), `موضوع «${category}» به فهرست این مرورگر اضافه شد. برای نمایش عمومی، محصولی را با همین موضوع ثبت کنید.`, 'success');
+    }
+    $('addClothingCategory').addEventListener('click', addClothingCategory);
+    $('newClothingCategory').addEventListener('keydown', event => {
+      if (event.key === 'Enter') { event.preventDefault(); addClothingCategory(); }
+    });
+    function populateCategoryFilter() {
+      const select = $('categoryFilter');
+      if (!select) return;
+      const previous = select.value;
+      const categories = allClothingCategories();
+      select.innerHTML = '<option value="">همه موضوعات پوشاک</option>' +
+        categories.map(category => `<option value="${safe(category)}">${safe(category)}</option>`).join('');
+      if (categories.includes(previous)) select.value = previous;
+    }
+    function renderProducts() {
+      const term = $('productSearch').value.trim().toLocaleLowerCase();
+      const category = $('categoryFilter')?.value || '';
+      const availability = $('availabilityFilter')?.value || 'all';
+      const sort = $('sortProducts')?.value || 'newest';
+      let filtered = productCache.filter(p => {
+        const matchesTerm = !term || [p.name, p.category, productDescription(p)]
+          .some(v => String(v || '').toLocaleLowerCase().includes(term));
+        const matchesCategory = !category || String(p.category || '').trim() === category;
+        const matchesAvailability = availability === 'available' ? Number(p.stock || 0) > 0 :
+          availability === 'discount' ? effectiveDiscount(p) : true;
+        return matchesTerm && matchesCategory && matchesAvailability;
+      });
+      const priceOf = p => Number(effectiveDiscount(p) ? p.discount_price : p.price);
+      if (sort === 'price-asc') filtered.sort((a,b) => priceOf(a)-priceOf(b));
+      else if (sort === 'price-desc') filtered.sort((a,b) => priceOf(b)-priceOf(a));
+      else if (sort === 'name') filtered.sort((a,b) => String(a.name || '').localeCompare(String(b.name || ''), 'fa'));
+      else filtered.sort((a,b) => new Date(b.created_at || 0)-new Date(a.created_at || 0));
+      $('products').innerHTML = filtered.length ? filtered.map(productCard).join('') : '<p>محصولی مطابق فیلترهای انتخاب‌شده پیدا نشد.</p>';
+      const count = $('productsCount');
+      if (count) count.textContent = `${filtered.length.toLocaleString('fa-IR')} کالا`;
+      renderCart();
+    }
+    $('productSearch').addEventListener('input', renderProducts);
+    $('categoryFilter').addEventListener('change', renderProducts);
+    $('availabilityFilter').addEventListener('change', renderProducts);
+    $('sortProducts').addEventListener('change', renderProducts);
+
+
+    function openProductDetails(productId, activeIndex = 0) {
+      const product = cartProduct(productId);
+      if (!product) return;
+      const discounted = effectiveDiscount(product);
+      const price = discounted ? product.discount_price : product.price;
+      const gallery = [...new Set([product.image_url, ...(Array.isArray(product.image_urls) ? product.image_urls : [])].filter(Boolean))];
+      const safeIndex = Math.max(0, Math.min(activeIndex, Math.max(0, gallery.length - 1)));
+      const mainImage = gallery[safeIndex]
+        ? `<img class="dialog-gallery-main" src="${safe(gallery[safeIndex])}" alt="${safe(product.name)} - تصویر ${safeIndex + 1}">`
+        : '<div style="min-height:180px;display:grid;place-items:center;background:#f7faf8;border-radius:14px;color:#71818b">تصویری ثبت نشده است</div>';
+      const thumbs = gallery.length > 1 ? `<div class="dialog-gallery-thumbs" aria-label="تصاویر دیگر کالا">${gallery.map((url, index) => `<button type="button" data-gallery-image="${index}" data-gallery-product="${safe(product.id)}" class="${index === safeIndex ? 'active' : ''}" aria-label="نمایش تصویر ${index + 1}"><img src="${safe(url)}" alt="نمای کوچک ${index + 1}"></button>`).join('')}</div>` : '';
+      const stock = Number(product.stock || 0);
+      $('productDialogContent').innerHTML = `<div class="dialog-product-layout"><div>${mainImage}${thumbs}</div><div><h3 id="dialogProductName">${safe(product.name)}</h3><p class="muted">${safe(product.category || 'بدون دسته‌بندی')}</p><p class="dialog-product-description">${safe(productDescription(product) || 'توضیحی برای این کالا ثبت نشده است.')}</p>${productSpecsHtml(product)}<p class="price">${money(price)} ${discounted ? `<span class="old-price">${money(product.price)}</span>` : ''}</p><p>${stock > 0 ? `موجودی: ${stock.toLocaleString('fa-IR')} عدد` : 'این کالا فعلاً ناموجود است.'}</p><button type="button" data-dialog-add="${safe(product.id)}" ${stock < 1 ? 'disabled' : ''}>افزودن به سبد خرید</button></div></div>`;
+      $('productDialog').classList.remove('hidden');
+      $('closeProductDialog').focus();
+    }
+    function closeProductDetails() {
+      $('productDialog').classList.add('hidden');
+    }
+    $('closeProductDialog').addEventListener('click', closeProductDetails);
+    $('productDialog').addEventListener('click', event => {
+      if (event.target === $('productDialog')) closeProductDetails();
+      const thumb = event.target.closest('[data-gallery-image]');
+      if (thumb) { openProductDetails(thumb.dataset.galleryProduct, Number(thumb.dataset.galleryImage)); return; }
+      const add = event.target.closest('[data-dialog-add]');
+      if (add) { addToCart(add.dataset.dialogAdd); closeProductDetails(); }
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') { closeProductDetails(); if (!$('cartModal').classList.contains('hidden')) closeCart(); }
+    });
+    $('products').addEventListener('click', event => {
+      const details = event.target.closest('[data-product-details]');
+      if (details) { openProductDetails(details.dataset.productDetails); return; }
+      const button = event.target.closest('[data-add-cart]');
+      if (button) addToCart(button.dataset.addCart);
+    });
+    $('cartItems').addEventListener('click', event => {
+      const plus = event.target.closest('[data-plus]');
+      const minus = event.target.closest('[data-minus]');
+      const remove = event.target.closest('[data-remove]');
+      if (plus) changeCartQuantity(plus.dataset.plus, 1);
+      if (minus) changeCartQuantity(minus.dataset.minus, -1);
+      if (remove) {
+        cart = cart.filter(x => x.product_id !== Number(remove.dataset.remove));
+        saveCart();
+      }
+    });
+    function showOrderConfirmation(orderId, orderedLines) {
+      const lines = orderedLines.map(line => {
+        const product = cartProduct(line.product_id);
+        const name = product?.name || `محصول شماره ${line.product_id}`;
+        const unitPrice = product ? (effectiveDiscount(product) ? Number(product.discount_price) : Number(product.price)) : 0;
+        return { name, quantity: line.quantity, unitPrice, subtotal: unitPrice * line.quantity };
+      });
+      const total = lines.reduce((sum, line) => sum + line.subtotal, 0);
+      $('confirmationOrderId').textContent = String(orderId || 'ثبت‌شده');
+      $('confirmationItems').innerHTML = lines.map(line =>
+        `<div class="confirmation-item"><span>${safe(line.name)} × ${line.quantity.toLocaleString('fa-IR')}</span><b>${money(line.subtotal)}</b></div>`
+      ).join('') + `<div class="confirmation-total"><span>جمع تقریبی اقلام</span><span>${money(total)}</span></div>`;
+      $('orderConfirmation').classList.remove('hidden');
+      $('confirmationClose').focus();
+    }
+    let activePaymentOrderId = null;
+    let activePaymentPhone = '';
+    let paymentSettings = { bank_name: '', card_number: '', card_holder: '', instructions: '' };
+    const PAYMENT_SETTING_KEY = 'payment_details';
+    function normalizeCardNumber(value) { return String(value || '').replace(/\\D/g, ''); }
+    function renderPaymentDetails() {
+      $('paymentBankName').textContent = paymentSettings.bank_name || '—';
+      $('paymentCardNumber').textContent = paymentSettings.card_number || '—';
+      $('paymentCardHolder').textContent = paymentSettings.card_holder || '—';
+      $('bankPaymentInstructions').textContent = paymentSettings.instructions || 'پس از واریز، کد پیگیری را در همین فرم وارد کنید.';
+      $('bankPaymentBox').classList.toggle('hidden', !normalizeCardNumber(paymentSettings.card_number) || !paymentSettings.card_holder);
+    }
+    async function loadPaymentSettings() {
+      const { data, error } = await db.from('site_settings').select('value').eq('key', PAYMENT_SETTING_KEY).maybeSingle();
+      if (!error && data?.value && typeof data.value === 'object') paymentSettings = { ...paymentSettings, ...data.value };
+      renderPaymentDetails();
+      if ($('paymentSettingsBank')) {
+        $('paymentSettingsBank').value = paymentSettings.bank_name || '';
+        $('paymentSettingsCard').value = paymentSettings.card_number || '';
+        $('paymentSettingsHolder').value = paymentSettings.card_holder || '';
+        $('paymentSettingsInstructions').value = paymentSettings.instructions || '';
+      }
+    }
+    $('copyPaymentCard')?.addEventListener('click', async () => {
+      const card = normalizeCardNumber(paymentSettings.card_number);
+      if (!card) return;
+      try { await navigator.clipboard.writeText(card); setMessage($('paymentReferenceMessage'), 'شماره کارت کپی شد.', 'success'); }
+      catch { setMessage($('paymentReferenceMessage'), 'امکان کپی خودکار نیست؛ شماره کارت را دستی انتخاب کنید.', 'error'); }
+    });
+    $('paymentSettingsForm')?.addEventListener('submit', async event => {
+      event.preventDefault();
+      const card = normalizeCardNumber($('paymentSettingsCard').value);
+      if (card && !/^\\d{16}$/.test(card)) { setMessage($('paymentSettingsMessage'), 'شماره کارت باید دقیقاً ۱۶ رقم باشد.', 'error'); return; }
+      const settings = {
+        bank_name: $('paymentSettingsBank').value.trim(),
+        card_number: card,
+        card_holder: $('paymentSettingsHolder').value.trim(),
+        instructions: $('paymentSettingsInstructions').value.trim()
+      };
+      if (card && (!settings.bank_name || !settings.card_holder)) { setMessage($('paymentSettingsMessage'), 'برای نمایش شماره کارت، نام بانک و صاحب کارت را هم وارد کنید.', 'error'); return; }
+      const button = $('savePaymentSettingsButton'); button.disabled = true;
+      const { error } = await db.from('site_settings').upsert({ key: PAYMENT_SETTING_KEY, value: settings, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+      button.disabled = false;
+      if (error) { setMessage($('paymentSettingsMessage'), 'ذخیره اطلاعات پرداخت ناموفق بود: ' + error.message, 'error'); return; }
+      paymentSettings = settings; renderPaymentDetails();
+      setMessage($('paymentSettingsMessage'), 'اطلاعات پرداخت ذخیره شد.', 'success');
+    });
+    $('paymentReferenceForm')?.addEventListener('submit', async event => {
+      event.preventDefault();
+      const reference = $('paymentReference').value.trim();
+      if (!activePaymentOrderId || !activePaymentPhone || reference.length < 4) {
+        setMessage($('paymentReferenceMessage'), 'کد پیگیری معتبر را وارد کنید.', 'error'); return;
+      }
+      const button = $('submitPaymentReference'); button.disabled = true;
+      const { data, error } = await db.rpc('submit_order_payment_reference', {
+        p_order_id: activePaymentOrderId,
+        p_phone: activePaymentPhone,
+        p_reference: reference
+      });
+      button.disabled = false;
+      if (error || data?.success !== true) {
+        setMessage($('paymentReferenceMessage'), 'ثبت کد پیگیری انجام نشد. ' + (error?.message || data?.error || ''), 'error'); return;
+      }
+      setMessage($('paymentReferenceMessage'), 'کد پیگیری ثبت شد و در انتظار بررسی مدیر است.', 'success');
+      $('paymentReference').value = '';
+    });
+    function closeOrderConfirmation() {
+      $('orderConfirmation').classList.add('hidden');
+      $('productsSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    $('confirmationClose').addEventListener('click', closeOrderConfirmation);
+    $('confirmationContact').addEventListener('click', () => {
+      $('orderConfirmation').classList.add('hidden');
+      $('contactSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    $('orderConfirmation').addEventListener('click', event => {
+      if (event.target === $('orderConfirmation')) closeOrderConfirmation();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !$('orderConfirmation').classList.contains('hidden')) closeOrderConfirmation();
+    });
+
+    $('checkoutForm').onsubmit = async event => {
+      event.preventDefault();
+      if (!cart.length) { setMessage($('checkoutMessage'), 'سبد خرید خالی است.', 'error'); return; }
+      const customerName = $('checkoutName').value.trim();
+      const phone = $('checkoutPhone').value.trim();
+      const address = $('checkoutAddress').value.trim();
+      const postalCode = $('checkoutPostal').value.trim();
+      if (!customerName || !phone || !address) {
+        setMessage($('checkoutMessage'), 'نام، شماره تماس و نشانی را کامل وارد کنید.', 'error');
+        return;
+      }
+      const orderedLines = cart.map(line => ({ product_id: line.product_id, quantity: line.quantity }));
+      const button = $('checkoutButton');
+      button.disabled = true;
+      button.textContent = 'در حال ثبت سفارش…';
+      setMessage($('checkoutMessage'), 'در حال بررسی موجودی و ثبت سفارش…');
+      try {
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/create-order`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+          body: JSON.stringify({
+            customer_name: customerName,
+            phone,
+            address,
+            postal_code: postalCode,
+            items: cart.map(line => ({ product_id: line.product_id, quantity: line.quantity }))
+          })
+        });
+        let result = {};
+        try { result = await response.json(); } catch {}
+        if (!response.ok || result.success === false) {
+          throw new Error(result.error || 'ثبت سفارش انجام نشد. لطفاً دوباره تلاش کنید.');
+        }
+        const orderId = result.order_id ?? result.order?.order_id ?? result.id ?? '';
+        activePaymentOrderId = orderId;
+        activePaymentPhone = phone;
+        await loadPaymentSettings();
+        cart = [];
+        saveCart();
+        $('checkoutForm').reset();
+        closeCart();
+        setMessage($('checkoutMessage'), 'سفارش با موفقیت ثبت شد. رسید سفارش نمایش داده شده است.', 'success');
+        showOrderConfirmation(orderId, orderedLines);
+        await Promise.all([loadProducts(), loadSocialLinks(), loadPaymentSettings()]);
+      } catch (error) {
+        setMessage($('checkoutMessage'), error.message || 'خطا در ارتباط با سرور ثبت سفارش.', 'error');
+      } finally {
+        button.disabled = cart.length === 0;
+        button.textContent = 'ثبت سفارش';
+      }
+    };
+
+    const SOCIAL_SETTING_KEY = 'social_links';
+    const SOCIAL_FIELDS = [
+      ['instagram', 'socialInstagram', 'اینستاگرام'],
+      ['whatsapp', 'socialWhatsapp', 'واتساپ'],
+      ['telegram', 'socialTelegram', 'تلگرام'],
+      ['rubika', 'socialRubika', 'روبیکا']
+    ];
+    function validSocialUrl(value) {
+      const raw = String(value || '').trim();
+      if (!raw) return '';
+      try { const parsed = new URL(raw); return ['https:', 'http:'].includes(parsed.protocol) ? parsed.href : null; }
+      catch { return null; }
+    }
+    function renderSocialLinks(links = {}) {
+      const holder = $('socialLinksPublic');
+      if (!holder) return;
+      holder.innerHTML = SOCIAL_FIELDS.map(([key, , label]) => {
+        const href = validSocialUrl(links[key]);
+        return href ? `<a href="${safe(href)}" target="_blank" rel="noopener noreferrer">${label}</a>` : '';
+      }).join('');
+      if (!holder.innerHTML) holder.innerHTML = '<span class="muted">لینک شبکه‌های اجتماعی هنوز ثبت نشده است.</span>';
+    }
+    async function loadSocialLinks() {
+      const { data, error } = await db.from('site_settings').select('value').eq('key', SOCIAL_SETTING_KEY).maybeSingle();
+      if (error) { renderSocialLinks({}); return; }
+      const links = data?.value && typeof data.value === 'object' ? data.value : {};
+      renderSocialLinks(links);
+      SOCIAL_FIELDS.forEach(([key, inputId]) => { if ($(inputId)) $(inputId).value = validSocialUrl(links[key]) || ''; });
+    }
+    $('socialLinksForm')?.addEventListener('submit', async event => {
+      event.preventDefault();
+      const button = $('saveSocialLinksButton');
+      const links = {};
+      for (const [key, inputId, label] of SOCIAL_FIELDS) {
+        const raw = $(inputId).value.trim();
+        const normalized = validSocialUrl(raw);
+        if (raw && !normalized) { setMessage($('socialLinksAdminMsg'), `نشانی ${label} معتبر نیست؛ لینک را با http:// یا https:// وارد کنید.`, 'error'); $(inputId).focus(); return; }
+        links[key] = normalized;
+      }
+      button.disabled = true;
+      const { error } = await db.from('site_settings').upsert({ key: SOCIAL_SETTING_KEY, value: links, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+      button.disabled = false;
+      if (error) { setMessage($('socialLinksAdminMsg'), 'ذخیره انجام نشد. ابتدا فایل SQL تنظیمات سایت را در Supabase اجرا کنید. ' + error.message, 'error'); return; }
+      renderSocialLinks(links);
+      setMessage($('socialLinksAdminMsg'), 'لینک‌های شبکه‌های اجتماعی ذخیره شد و در سایت نمایش داده می‌شود.', 'success');
+    });
+
+    async function showAdmin() {
+      const { data: { user } } = await db.auth.getUser();
+      if (!user) return;
+      const { data: allowed, error } = await db.rpc('is_admin');
+      if (error || allowed !== true) { setMessage($('loginMsg'), 'این حساب دسترسی مدیر ندارد.', 'error'); await db.auth.signOut(); return; }
+      $('adminPanel').classList.remove('hidden'); $('adminToggle').classList.add('hidden');
+      await Promise.all([loadProducts(), loadManageProducts(), loadOrders(), loadSocialLinks(), loadPaymentSettings()]);
+    }
+    async function loadManageProducts() {
+      const { data, error } = await db.from('products').select('*').order('created_at', { ascending: false });
+      if (error) { $('manageProducts').textContent = 'خطا در دریافت محصولات: ' + error.message; return; }
+      const rows = data || [];
+      window.__mardisProducts = rows;
+      const lowStockCount = rows.filter(p => !p.is_unique && Number(p.stock || 0) > 0 && Number(p.stock || 0) <= 3).length;
+      const outOfStockCount = rows.filter(p => Number(p.stock || 0) < 1).length;
+      $('manageProducts').innerHTML = rows.length
+        ? `<div class="stock-summary"><span>محصولات کم‌موجود: <b>${lowStockCount.toLocaleString('fa-IR')}</b></span><span>محصولات ناموجود: <b>${outOfStockCount.toLocaleString('fa-IR')}</b></span></div><div style="overflow-x:auto"><table><thead><tr><th>محصول</th><th>قیمت</th><th>موجودی</th><th>وضعیت</th><th>مدیریت موجودی</th><th>عملیات</th></tr></thead><tbody>${rows.map(p => {
+          const stock = Number(p.stock || 0);
+          const stockLabel = stock < 1 ? '<span class="badge stock-out">ناموجود</span>' : (!p.is_unique && stock <= 3 ? '<span class="badge stock-low">کم‌موجود</span>' : '<span class="badge stock-ok">موجود</span>');
+          const stockControls = p.is_unique
+            ? '<small class="muted">تک‌نسخه‌ای؛ از فرم ویرایش</small>'
+            : `<div class="stock-tools"><button type="button" class="secondary" data-stock-adjust="${safe(p.id)}" data-stock-direction="1" aria-label="افزایش موجودی">＋</button><button type="button" class="danger" data-stock-adjust="${safe(p.id)}" data-stock-direction="-1" aria-label="کاهش موجودی" ${stock < 1 ? 'disabled' : ''}>−</button></div>`;
+          return `<tr><td>${safe(p.name)}</td><td>${money(p.price)}</td><td>${stock.toLocaleString('fa-IR')}</td><td>${p.active ? 'فعال' : 'غیرفعال'}<br>${stockLabel}</td><td>${stockControls}</td><td><button type="button" data-edit="${safe(p.id)}" class="secondary">ویرایش</button><button type="button" data-toggle-active="${safe(p.id)}" class="secondary">${p.active ? 'غیرفعال‌سازی' : 'فعال‌سازی'}</button><button type="button" data-del="${safe(p.id)}" class="danger">حذف</button></td></tr>`;
+        }).join('')}</tbody></table></div>`
+        : 'محصولی ثبت نشده است.';
+      $('manageProducts').querySelectorAll('[data-edit]').forEach(button => button.onclick = () => editProduct(rows.find(p => String(p.id) === button.dataset.edit)));
+      $('manageProducts').querySelectorAll('[data-del]').forEach(button => button.onclick = () => deleteProduct(button.dataset.del));
+      $('manageProducts').querySelectorAll('[data-toggle-active]').forEach(button => button.onclick = () => toggleProductActive(button.dataset.toggleActive));
+      $('manageProducts').querySelectorAll('[data-stock-adjust]').forEach(button => button.onclick = () => adjustProductStock(button.dataset.stockAdjust, Number(button.dataset.stockDirection), button));
+    }
+    async function adjustProductStock(productId, direction, button) {
+      const amountText = prompt(direction > 0 ? 'چند عدد به موجودی اضافه شود؟' : 'چند عدد از موجودی کم شود؟', '1');
+      if (amountText === null) return;
+      const normalized = normalizeDigits(amountText).trim();
+      if (!/^\\d+$/.test(normalized) || Number(normalized) < 1 || !Number.isSafeInteger(Number(normalized))) {
+        setMessage($('adminMsg'), 'تعداد باید یک عدد صحیح مثبت باشد.', 'error');
+        return;
+      }
+      const amount = Number(normalized);
+      const delta = direction * amount;
+      const product = (window.__mardisProducts || []).find(p => String(p.id) === String(productId));
+      if (!product) {
+        setMessage($('adminMsg'), 'محصول پیدا نشد؛ فهرست را تازه‌سازی کنید.', 'error');
+        return;
+      }
+      if (product.is_unique) {
+        setMessage($('adminMsg'), 'برای محصول تک‌نسخه‌ای، موجودی را از فرم ویرایش مدیریت کنید.', 'error');
+        return;
+      }
+      if (direction < 0 && amount > Number(product.stock || 0)) {
+        setMessage($('adminMsg'), 'مقدار کاهش از موجودی فعلی بیشتر است.', 'error');
+        return;
+      }
+      button.disabled = true;
+      try {
+        const { data, error } = await db.rpc('admin_adjust_product_stock', {
+          p_product_id: productId,
+          p_delta: delta
+        });
+        if (error) throw error;
+        if (data?.success !== true) throw new Error(data?.error || 'تغییر موجودی انجام نشد.');
+        setMessage($('adminMsg'), `موجودی «${product.name}» با موفقیت به‌روزرسانی شد. موجودی جدید: ${Number(data.stock).toLocaleString('fa-IR')}`, 'success');
+        await Promise.all([loadProducts(), loadManageProducts()]);
+      } catch (error) {
+        setMessage($('adminMsg'), 'تغییر موجودی انجام نشد: ' + (error?.message || error), 'error');
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function renderGalleryPreview() {
+      const holder = $('pGalleryPreview');
+      if (!holder) return;
+      holder.innerHTML = currentGalleryUrls.map((url, index) => `<div class="admin-gallery-item"><img src="${safe(url)}" alt="تصویر تکمیلی ${index + 1}"><button type="button" data-remove-gallery="${index}" aria-label="حذف تصویر">×</button></div>`).join('');
+    }
+    $('pGalleryPreview').addEventListener('click', event => {
+      const remove = event.target.closest('[data-remove-gallery]');
+      if (!remove) return;
+      currentGalleryUrls.splice(Number(remove.dataset.removeGallery), 1);
+      renderGalleryPreview();
+    });
+    $('pGalleryFiles').addEventListener('change', () => {
+      const files = [...$('pGalleryFiles').files];
+      if (files.some(file => !file.type.startsWith('image/') || file.size > 5 * 1024 * 1024)) {
+        alert('همه فایل‌ها باید تصویر و حداکثر ۵ مگابایت باشند.'); $('pGalleryFiles').value = ''; return;
+      }
+      if (currentGalleryUrls.length + files.length > 9) {
+        alert('حداکثر ۹ تصویر تکمیلی برای هر کالا قابل ثبت است.'); $('pGalleryFiles').value = ''; return;
+      }
+      $('galleryFileNote').textContent = files.length ? `${files.length.toLocaleString('fa-IR')} تصویر جدید برای بارگذاری انتخاب شده است.` : 'می‌توانید حداکثر ۹ تصویر تکمیلی انتخاب کنید.';
+    });
+    async function uploadGalleryImages(files) {
+      const urls = [];
+      for (const file of files) urls.push(await uploadProductImage(file));
+      return urls;
+    }
+
+    function editProduct(product) {
+      if (!product) return;
+      editingId = product.id; editingProductActive = product.active !== false; currentImageUrl = product.image_url || null; currentGalleryUrls = Array.isArray(product.image_urls) ? [...product.image_urls] : [];
+      $('pname').value = product.name || ''; $('pcategory').value = product.category || '';
+      $('pprice').value = product.price ?? ''; $('pstock').value = product.stock ?? 0;
+      $('pUnique').checked = Boolean(product.is_unique); $('pDiscountActive').checked = Boolean(product.is_discount_active);
+      $('pDiscountPrice').value = product.discount_price ?? '';
+      $('pDiscountStart').value = isoToTehranJalali(product.discount_start);
+      $('pDiscountEnd').value = isoToTehranJalali(product.discount_end);
+      const unpacked = unpackProductDescription(product.description); $('pdescription').value = unpacked.description || ''; $('pSizes').value = unpacked.meta.sizes || ''; $('pColors').value = unpacked.meta.colors || ''; $('pMaterial').value = unpacked.meta.material || ''; $('pCare').value = unpacked.meta.care || ''; $('pimageFile').value = ''; $('pGalleryFiles').value = ''; renderGalleryPreview();
+      const preview = $('pimagePreview');
+      if (currentImageUrl) { preview.src = currentImageUrl; preview.classList.remove('hidden'); }
+      else { preview.removeAttribute('src'); preview.classList.add('hidden'); }
+      $('productFormTitle').textContent = 'ویرایش محصول'; $('saveProductButton').textContent = 'ذخیره تغییرات'; $('cancelEditButton').classList.remove('hidden');
+      $('productForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    function cancelProductEdit() {
+      editingId = null; editingProductActive = true; currentImageUrl = null; currentGalleryUrls = []; $('productForm').reset(); $('pstock').value = 1; $('pGalleryFiles').value = ''; renderGalleryPreview();
+      $('pimagePreview').removeAttribute('src'); $('pimagePreview').classList.add('hidden');
+      $('productFormTitle').textContent = 'افزودن محصول'; $('saveProductButton').textContent = 'ثبت محصول';
+      $('cancelEditButton').classList.add('hidden');
+    }
+    $('cancelEditButton').onclick = cancelProductEdit;
+
+    $('productForm').onsubmit = async event => {
+      event.preventDefault();
+      const submitButton = $('saveProductButton'); submitButton.disabled = true; submitButton.textContent = 'در حال ذخیره محصول…';
+      try {
+        const name = $('pname').value.trim(), category = $('pcategory').value.trim();
+        const price = Number($('pprice').value), stockInput = Number($('pstock').value);
+        if (!name || !category) throw new Error('نام محصول و دسته‌بندی را وارد کنید.');
+        if (!Number.isFinite(price) || price <= 0) throw new Error('قیمت محصول باید عددی بزرگ‌تر از صفر باشد.');
+        if (!Number.isInteger(stockInput) || stockInput < 0) throw new Error('موجودی باید عدد صحیح و صفر یا بیشتر باشد.');
+        const unique = $('pUnique').checked, discountEnabled = $('pDiscountActive').checked;
+        const discountPriceRaw = $('pDiscountPrice').value.trim();
+        const discountStartRaw = $('pDiscountStart').value.trim(), discountEndRaw = $('pDiscountEnd').value.trim();
+        let discountStart = null, discountEnd = null, discountPrice = null;
+        if (discountPriceRaw !== '') {
+          discountPrice = Number(discountPriceRaw);
+          if (!Number.isFinite(discountPrice) || discountPrice <= 0 || discountPrice >= price) throw new Error('قیمت تخفیف باید بیشتر از صفر و کمتر از قیمت اصلی باشد.');
+        }
+        if (discountEnabled) {
+          if (discountPrice === null) throw new Error('برای فعال‌کردن تخفیف، قیمت تخفیفی را وارد کنید.');
+          if (!discountStartRaw || !discountEndRaw) throw new Error('تاریخ شروع و پایان تخفیف را وارد کنید.');
+          discountStart = jalaliToISO(discountStartRaw); discountEnd = jalaliToISO(discountEndRaw);
+          if (new Date(discountEnd) <= new Date(discountStart)) throw new Error('تاریخ پایان باید بعد از تاریخ شروع باشد.');
+        } else {
+          if (discountStartRaw) discountStart = jalaliToISO(discountStartRaw);
+          if (discountEndRaw) discountEnd = jalaliToISO(discountEndRaw);
+          if ((discountStart && !discountEnd) || (!discountStart && discountEnd)) throw new Error('برای ثبت تاریخ تخفیف، هر دو تاریخ شروع و پایان را وارد کنید یا هر دو را خالی بگذارید.');
+          if (discountStart && new Date(discountEnd) <= new Date(discountStart)) throw new Error('تاریخ پایان باید بعد از تاریخ شروع باشد.');
+        }
+        const selectedFile = $('pimageFile').files[0];
+        if (selectedFile && (!selectedFile.type.startsWith('image/') || selectedFile.size > 5 * 1024 * 1024)) throw new Error('تصویر باید از نوع عکس و حداکثر ۵ مگابایت باشد.');
+        const imageUrl = selectedFile ? await uploadProductImage(selectedFile) : currentImageUrl;
+        const galleryFiles = [...$('pGalleryFiles').files];
+        if (galleryFiles.some(file => !file.type.startsWith('image/') || file.size > 5 * 1024 * 1024)) throw new Error('هر تصویر تکمیلی باید عکس و حداکثر ۵ مگابایت باشد.');
+        if (currentGalleryUrls.length + galleryFiles.length > 9) throw new Error('حداکثر ۹ تصویر تکمیلی برای هر کالا مجاز است.');
+        const uploadedGallery = await uploadGalleryImages(galleryFiles);
+        const item = {
+          name, category, price, stock: unique ? 1 : stockInput,
+          is_unique: unique, is_discount_active: discountEnabled,
+          discount_price: discountPrice, discount_start: discountStart, discount_end: discountEnd,
+          image_url: imageUrl || null, image_urls: [...currentGalleryUrls, ...uploadedGallery], description: packProductDescription($('pdescription').value, { sizes: $('pSizes').value, colors: $('pColors').value, material: $('pMaterial').value, care: $('pCare').value }), active: editingId ? editingProductActive : true
+        };
+        const result = editingId
+          ? await db.from('products').update(item).eq('id', editingId)
+          : await db.from('products').insert(item);
+        if (result.error) throw result.error;
+        cancelProductEdit(); setMessage($('adminMsg'), 'محصول با موفقیت ذخیره شد.', 'success');
+        await Promise.all([loadProducts(), loadManageProducts()]);
+      } catch (error) {
+        setMessage($('adminMsg'), 'خطا در ذخیره محصول یا آپلود تصویر: ' + (error.message || error), 'error');
+      } finally {
+        submitButton.disabled = false;
+        if (!editingId) submitButton.textContent = 'ثبت محصول';
+        else submitButton.textContent = 'ذخیره تغییرات';
+      }
+    };
+    async function toggleProductActive(id) {
+      const product = (window.__mardisProducts || []).find(p => String(p.id) === String(id));
+      if (!product) return;
+      const next = !product.active;
+      const promptText = next ? 'این محصول دوباره در ویترین نمایش داده شود؟' : 'این محصول از ویترین پنهان شود؟ سوابق سفارش‌ها حفظ می‌شود.';
+      if (!confirm(promptText)) return;
+      const { error } = await db.from('products').update({ active: next }).eq('id', id);
+      if (error) { setMessage($('adminMsg'), 'تغییر وضعیت محصول انجام نشد: ' + error.message, 'error'); return; }
+      setMessage($('adminMsg'), next ? 'محصول دوباره فعال شد.' : 'محصول از ویترین پنهان شد؛ اطلاعات و سوابق آن حذف نشد.', 'success');
+      await Promise.all([loadProducts(), loadManageProducts()]);
+    }
+    async function deleteProduct(id) {
+      if (!confirm('این محصول حذف شود؟')) return;
+      const { error } = await db.from('products').delete().eq('id', id);
+      if (error) { setMessage($('adminMsg'), 'خطا در حذف: ' + error.message, 'error'); return; }
+      setMessage($('adminMsg'), 'محصول حذف شد.', 'success'); await Promise.all([loadProducts(), loadManageProducts()]);
+    }
+    const ORDER_STATUSES = {
+      pending: 'در انتظار بررسی',
+      confirmed: 'تأیید شده',
+      processing: 'در حال آماده‌سازی',
+      shipped: 'ارسال شده',
+      delivered: 'تحویل داده شده',
+      cancelled: 'لغو شده'
+    };
+
+    async function showOrderDetails(orderId, button) {
+      // شناسه سفارش UUID است؛ برای پیدا کردن عنصر نیازی به CSS.escape نداریم.
+      const target = document.getElementById('order-details-' + String(orderId));
+      if (!target) {
+        setMessage($('adminMsg'), 'بخش نمایش جزئیات سفارش در صفحه پیدا نشد. صفحه را تازه‌سازی کنید.', 'error');
+        return;
+      }
+      if (!target.classList.contains('hidden')) {
+        target.classList.add('hidden');
+        button.textContent = 'جزئیات';
+        return;
+      }
+      target.classList.remove('hidden');
+      target.innerHTML = '<p class="muted">در حال دریافت جزئیات سفارش…</p>';
+      button.textContent = 'بستن جزئیات';
+      button.disabled = true;
+
+      try {
+        const { data: items, error } = await db.from('order_items')
+          .select('product_name,quantity,unit_price')
+          .eq('order_id', orderId);
+        if (error) throw error;
+
+        const order = (window.__mardisOrders || []).find(o => String(o.id) === String(orderId));
+        const itemRows = items || [];
+        target.innerHTML = `
+        <div class="notice">
+          <b>نام مشتری:</b> ${safe(order?.customer_name)}<br>
+          <b>شماره تماس:</b> ${safe(order?.phone)}<br>
+          <b>نشانی:</b> ${safe(order?.address)}<br>
+          <b>تاریخ ثبت:</b> ${order?.created_at ? safe(new Date(order.created_at).toLocaleString('fa-IR')) : '—'}<br>
+          <b>مبلغ کل:</b> ${money(order?.total_amount)}
+        </div>
+        <h3>محصولات سفارش</h3>
+        ${itemRows.length ? `<div style="overflow-x:auto"><table>
+          <thead><tr><th>محصول</th><th>تعداد</th><th>قیمت واحد</th><th>جمع</th></tr></thead>
+          <tbody>${itemRows.map(item => `<tr>
+            <td>${safe(item.product_name)}</td>
+            <td>${Number(item.quantity).toLocaleString('fa-IR')}</td>
+            <td>${money(item.unit_price)}</td>
+            <td>${money(Number(item.quantity) * Number(item.unit_price))}</td>
+          </tr>`).join('')}</tbody>
+        </table></div>` : '<p class="muted">برای این سفارش قلمی ثبت نشده است.</p>'}
+        <div class="notice" style="margin-top:16px">
+          <h3 style="margin:0 0 8px">وضعیت پرداخت</h3>
+          <p><b>وضعیت:</b> ${safe(({unpaid:'پرداخت ثبت نشده',pending_review:'در انتظار تأیید مدیر',paid:'پرداخت تأیید شده',rejected:'پرداخت رد شده'})[order?.payment_status] || order?.payment_status || 'پرداخت ثبت نشده')}</p>
+          <p><b>کد پیگیری مشتری:</b> ${safe(order?.payment_reference || '—')}</p>
+          <p><b>زمان ثبت کد:</b> ${order?.payment_submitted_at ? safe(new Date(order.payment_submitted_at).toLocaleString('fa-IR')) : '—'}</p>
+          <label>تغییر وضعیت پرداخت
+            <select id="payment-status-${safe(orderId)}">
+              <option value="pending_review" ${order?.payment_status === 'pending_review' ? 'selected' : ''}>در انتظار تأیید مدیر</option>
+              <option value="paid" ${order?.payment_status === 'paid' ? 'selected' : ''}>تأیید شده</option>
+              <option value="rejected" ${order?.payment_status === 'rejected' ? 'selected' : ''}>رد شده</option>
+              <option value="unpaid" ${order?.payment_status === 'unpaid' ? 'selected' : ''}>پرداخت ثبت نشده</option>
+            </select>
+          </label>
+          <button type="button" data-save-payment-status="${safe(orderId)}">ذخیره وضعیت پرداخت</button>
+        </div>
+        <div class="notice" style="margin-top:16px">
+          <h3 style="margin:0 0 8px">اطلاعات ارسال</h3>
+          <div class="row">
+            <label style="flex:2">کد رهگیری مرسوله<input type="text" maxlength="100" id="tracking-${safe(orderId)}" value="${safe(order?.tracking_number || '')}" placeholder="کد رهگیری پستی"></label>
+            <label style="flex:1">تاریخ ارسال<input type="date" id="shipped-${safe(orderId)}" value="${order?.shipped_at ? safe(new Date(order.shipped_at).toISOString().slice(0,10)) : ''}"></label>
+          </div>
+          <button type="button" data-save-shipping="${safe(orderId)}">ذخیره اطلاعات ارسال</button>
+          <p class="muted">وضعیت فعلی: ${safe(ORDER_STATUSES[order?.status] || order?.status || '—')}</p>
+        </div>
+        `;
+        const shippingSaveButton = target.querySelector('[data-save-shipping]');
+        if (shippingSaveButton) shippingSaveButton.addEventListener('click', () => saveOrderShipping(orderId, shippingSaveButton));
+        const paymentSaveButton = target.querySelector('[data-save-payment-status]');
+        if (paymentSaveButton) paymentSaveButton.addEventListener('click', () => saveOrderPaymentStatus(orderId, paymentSaveButton));
+      } catch (error) {
+        target.innerHTML = `<p class="notice error">نمایش جزئیات سفارش با خطا روبه‌رو شد: ${safe(error?.message || error)}</p>`;
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function saveOrderPaymentStatus(orderId, button) {
+      const status = $('payment-status-' + orderId)?.value;
+      if (!['unpaid','pending_review','paid','rejected'].includes(status)) return;
+      if (!confirm('وضعیت پرداخت این سفارش تغییر کند؟')) return;
+      button.disabled = true;
+      const { data, error } = await db.rpc('admin_update_order_payment_status', { p_order_id: orderId, p_status: status });
+      button.disabled = false;
+      if (error || data?.success !== true) {
+        setMessage($('adminMsg'), 'تغییر وضعیت پرداخت انجام نشد. فایل SQL همراه نسخه را اجرا کنید. ' + (error?.message || data?.error || ''), 'error'); return;
+      }
+      setMessage($('adminMsg'), 'وضعیت پرداخت ذخیره شد.', 'success');
+      await loadOrders();
+    }
+
+    async function saveOrderShipping(orderId, button) {
+      const tracking = $('tracking-' + orderId)?.value.trim() || '';
+      const dateValue = $('shipped-' + orderId)?.value || '';
+      if (tracking && !dateValue) {
+        if (!confirm('کد رهگیری وارد شده اما تاریخ ارسال خالی است. فقط کد رهگیری ذخیره شود؟')) return;
+      }
+      const shippedAt = dateValue ? new Date(dateValue + 'T12:00:00+03:30').toISOString() : null;
+      button.disabled = true;
+      const { data, error } = await db.rpc('admin_update_order_shipping', {
+        p_order_id: orderId,
+        p_tracking_number: tracking || null,
+        p_shipped_at: shippedAt
+      });
+      button.disabled = false;
+      if (error || data?.success !== true) {
+        setMessage($('adminMsg'), 'ذخیره اطلاعات ارسال انجام نشد. ابتدا فایل SQL همراه نسخه جدید را در Supabase اجرا کنید. ' + (error?.message || data?.error || ''), 'error');
+        return;
+      }
+      setMessage($('adminMsg'), 'اطلاعات ارسال سفارش ذخیره شد.', 'success');
+      await loadOrders();
+    }
+
+    async function changeOrderStatus(orderId, status, button) {
+      if (!Object.hasOwn(ORDER_STATUSES, status)) {
+        setMessage($('adminMsg'), 'وضعیت انتخاب‌شده معتبر نیست.', 'error');
+        return;
+      }
+      if (!confirm(`وضعیت سفارش به «${ORDER_STATUSES[status]}» تغییر کند؟`)) return;
+      button.disabled = true;
+      const { data, error } = await db.rpc('admin_update_order_status', {
+        p_order_id: orderId,
+        p_status: status
+      });
+      button.disabled = false;
+      if (error || data?.success !== true) {
+        setMessage($('adminMsg'), 'تغییر وضعیت انجام نشد. ابتدا دستور SQL همراه فایل را در Supabase اجرا کنید. ' + (error?.message || data?.error || ''), 'error');
+        return;
+      }
+      setMessage($('adminMsg'), 'وضعیت سفارش با موفقیت تغییر کرد.', 'success');
+      await loadOrders();
+    }
+
+    async function loadOrders() {
+      const { data, error } = await db.from('orders')
+        .select('id,customer_name,phone,address,total_amount,status,created_at,tracking_number,shipped_at,payment_status,payment_reference,payment_submitted_at')
+        .order('created_at', { ascending: false });
+      if (error) { $('orders').textContent = 'خطا در دریافت سفارش‌ها: ' + error.message; return; }
+      const rows = data || [];
+      window.__mardisOrders = rows;
+      $('orders').innerHTML = rows.length
+        ? `<div style="overflow-x:auto"><table><thead><tr><th>شماره</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th><th>جزئیات و عملیات</th></tr></thead><tbody>${rows.map(o => `
+          <tr>
+            <td>${safe(o.id)}</td>
+            <td>${safe(o.customer_name)}<br><small>${safe(o.phone)}</small></td>
+            <td>${money(o.total_amount)}</td>
+            <td>
+              <select aria-label="وضعیت سفارش ${safe(o.id)}" data-order-status="${safe(o.id)}">
+                ${Object.entries(ORDER_STATUSES).map(([value,label]) => `<option value="${value}" ${o.status === value ? 'selected' : ''}>${label}</option>`).join('')}
+                ${!Object.hasOwn(ORDER_STATUSES, o.status) ? `<option value="${safe(o.status)}" selected>${safe(o.status)}</option>` : ''}
+              </select>
+            </td>
+            <td>${o.created_at ? new Date(o.created_at).toLocaleDateString('fa-IR') : '—'}</td>
+            <td><button type="button" class="secondary" data-order-details="${safe(o.id)}">جزئیات</button>
+                <button type="button" data-save-order-status="${safe(o.id)}">ذخیره وضعیت</button></td>
+          </tr>
+          <tr><td colspan="6"><div id="order-details-${safe(o.id)}" class="hidden"></div></td></tr>
+        `).join('')}</tbody></table></div>`
+        : 'هنوز سفارشی ثبت نشده است.';
+
+      $('orders').querySelectorAll('[data-order-details]').forEach(button => {
+        button.addEventListener('click', () => showOrderDetails(button.dataset.orderDetails, button));
+      });
+      $('orders').querySelectorAll('[data-save-order-status]').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = button.dataset.saveOrderStatus;
+          const select = $('orders').querySelector('[data-order-status="' + id + '"]');
+          if (select) changeOrderStatus(id, select.value, button);
+        });
+      });
+    }
+
+    const TRACKING_ORDER_STATUS_LABELS = {
+      pending: 'در انتظار بررسی', confirmed: 'تأیید شده', processing: 'در حال آماده‌سازی',
+      shipped: 'ارسال شده', delivered: 'تحویل داده شده', cancelled: 'لغو شده'
+    };
+    $('orderTrackingForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const orderId = $('trackingOrderId').value.trim();
+      const phone = $('trackingPhone').value.trim();
+      const button = $('trackOrderButton');
+      const resultBox = $('trackingLookupResult');
+      resultBox.classList.add('hidden');
+      resultBox.innerHTML = '';
+      if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(orderId)) {
+        setMessage($('trackingLookupMessage'), 'شماره سفارش معتبر نیست. شناسه کامل درج‌شده در رسید را وارد کنید.', 'error');
+        return;
+      }
+      if (phone.replace(/\D/g, '').length < 8) {
+        setMessage($('trackingLookupMessage'), 'شماره موبایل را بررسی کنید.', 'error');
+        return;
+      }
+      button.disabled = true;
+      button.textContent = 'در حال جستجو…';
+      setMessage($('trackingLookupMessage'), 'در حال دریافت وضعیت سفارش…');
+      try {
+        const { data, error } = await db.rpc('customer_track_order', {
+          p_order_id: orderId,
+          p_phone: phone
+        });
+        if (error) throw error;
+        if (!data || data.success !== true) {
+          setMessage($('trackingLookupMessage'), data?.error || 'سفارشی با این اطلاعات پیدا نشد. شماره سفارش و موبایل را بررسی کنید.', 'error');
+          return;
+        }
+        const statusLabel = TRACKING_ORDER_STATUS_LABELS[data.status] || 'در حال بررسی';
+        const shippedDate = data.shipped_at ? new Date(data.shipped_at).toLocaleDateString('fa-IR') : '';
+        resultBox.innerHTML = `
+          <div class="notice" style="margin-top:16px">
+            <h3 style="margin-top:0">نتیجه پیگیری سفارش</h3>
+            <p><b>شماره سفارش:</b> <span dir="ltr">${safe(data.order_id)}</span></p>
+            <p><b>وضعیت سفارش:</b> ${safe(statusLabel)}</p>
+            <p><b>مبلغ سفارش:</b> ${money(data.total_amount)}</p>
+            <p><b>کد رهگیری مرسوله:</b> ${data.tracking_number ? `<strong dir="ltr">${safe(data.tracking_number)}</strong>` : 'هنوز ثبت نشده است.'}</p>
+            ${shippedDate ? `<p><b>تاریخ ارسال:</b> ${safe(shippedDate)}</p>` : ''}
+            ${data.status === 'shipped' && data.tracking_number ? '<p class="muted">کد رهگیری را می‌توانید در سامانه شرکت حمل‌ونقل مربوط وارد کنید.</p>' : ''}
+          </div>`;
+        resultBox.classList.remove('hidden');
+        setMessage($('trackingLookupMessage'), 'اطلاعات سفارش با موفقیت دریافت شد.', 'success');
+      } catch (error) {
+        setMessage($('trackingLookupMessage'), 'در دریافت اطلاعات خطایی رخ داد. اگر فایل SQL پیگیری را اجرا نکرده‌اید، ابتدا آن را در Supabase اجرا کنید. ' + (error?.message || ''), 'error');
+      } finally {
+        button.disabled = false;
+        button.textContent = 'پیگیری سفارش';
+      }
+    });
+
+    renderCart();
+    db.auth.onAuthStateChange(event => { if (event === 'PASSWORD_RECOVERY') showRecoveryForm(); });
+    const urlHash = new URLSearchParams(window.location.hash.slice(1));
+    const urlError = urlHash.get('error_description') || urlHash.get('error');
+    if (urlError) {
+      $('loginPanel').classList.remove('hidden'); $('adminToggle').classList.add('hidden');
+      setMessage($('loginMsg'), 'لینک بازیابی معتبر نیست یا منقضی شده است. از گزینه «رمز عبورم را فراموش کرده‌ام» یک لینک تازه درخواست کن.', 'error');
+    } else {
+      const { data: { session } } = await db.auth.getSession();
+      if (urlHash.get('type') === 'recovery' || (session && urlHash.get('access_token'))) showRecoveryForm();
+      else if (session) await showAdmin();
+    }
+    renderCart();
+    await Promise.all([loadProducts(), loadSocialLinks(), loadPaymentSettings()]);
+  </script>
+</body>
+</html>
