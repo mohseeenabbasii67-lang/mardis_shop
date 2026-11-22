@@ -75,6 +75,7 @@ body {
     .info-tile h3{margin:0 0 8px;color:var(--navy);font-size:16px}
     .contact-link{display:inline-block;margin:5px 8px 5px 0;padding:8px 13px;border-radius:22px;background:#e8f7f6;color:#075e68;text-decoration:none;font-weight:bold}
     .social-placeholder{display:inline-block;margin:5px 8px 5px 0;padding:8px 13px;border:1px dashed #9aabb8;border-radius:22px;color:var(--muted);text-decoration:none}
+    .social-links-public a{display:inline-block;margin:5px 8px 5px 0;padding:8px 14px;border-radius:22px;background:#e7f4f0;color:#116e67;text-decoration:none;font-weight:700}
     .policy-list{padding-right:22px;margin:8px 0}
     .policy-list li{margin:7px 0}
 
@@ -313,10 +314,8 @@ body {
         </div>
       </div>
       <h3>شبکه‌های اجتماعی</h3>
-      <p class="muted">نشانی شبکه‌های اجتماعی پس از راه‌اندازی در همین قسمت اضافه می‌شود.</p>
-      <a class="social-placeholder" href="#contactSection" aria-label="نشانی اینستاگرام بعداً اضافه می‌شود">اینستاگرام — به‌زودی</a>
-      <a class="social-placeholder" href="#contactSection" aria-label="نشانی تلگرام بعداً اضافه می‌شود">تلگرام — به‌زودی</a>
-      <!-- برای افزودن شبکه‌های اجتماعی، نشانی لینک‌های بالا را با آدرس واقعی صفحه جایگزین کنید. -->
+      <p class="muted" id="socialLinksHint">راه‌های ارتباطی رسمی مردیس‌شاپ</p>
+      <div id="socialLinksPublic" class="social-links-public" aria-live="polite"></div>
     </section>
 
     <section id="purchaseRules" class="card">
@@ -362,6 +361,20 @@ body {
     </section>
     <section id="adminPanel" class="hidden">
       <div class="card"><div class="row" style="align-items:center"><h2 style="flex:2">پنل مدیریت مردیس</h2><button id="logout" class="secondary" style="max-width:150px">خروج</button></div><div id="adminMsg" class="notice">وارد پنل مدیریت شده‌اید.</div></div>
+      <div class="card">
+        <h2>تنظیمات شبکه‌های اجتماعی</h2>
+        <p class="muted">نشانی هر صفحه را وارد کنید؛ فیلدها اختیاری هستند و هر زمان از همین بخش قابل ویرایش‌اند. پس از ذخیره، لینک‌ها برای همه بازدیدکنندگان نمایش داده می‌شوند.</p>
+        <form id="socialLinksForm">
+          <div class="grid">
+            <label>اینستاگرام<input id="socialInstagram" type="url" inputmode="url" placeholder="https://instagram.com/yourpage"></label>
+            <label>واتساپ<input id="socialWhatsapp" type="url" inputmode="url" placeholder="https://wa.me/989..."></label>
+            <label>تلگرام<input id="socialTelegram" type="url" inputmode="url" placeholder="https://t.me/yourpage"></label>
+            <label>روبیکا<input id="socialRubika" type="url" inputmode="url" placeholder="https://rubika.ir/yourpage"></label>
+          </div>
+          <button id="saveSocialLinksButton" type="submit">ذخیره لینک‌های شبکه‌های اجتماعی</button>
+          <p id="socialLinksAdminMsg" class="muted" aria-live="polite"></p>
+        </form>
+      </div>
       <div class="card">
         <h2 id="productFormTitle">افزودن محصول</h2>
         <form id="productForm">
@@ -842,7 +855,7 @@ body {
         closeCart();
         setMessage($('checkoutMessage'), 'سفارش با موفقیت ثبت شد. رسید سفارش نمایش داده شده است.', 'success');
         showOrderConfirmation(orderId, orderedLines);
-        await loadProducts();
+        await Promise.all([loadProducts(), loadSocialLinks()]);
       } catch (error) {
         setMessage($('checkoutMessage'), error.message || 'خطا در ارتباط با سرور ثبت سفارش.', 'error');
       } finally {
@@ -851,13 +864,60 @@ body {
       }
     };
 
+    const SOCIAL_SETTING_KEY = 'social_links';
+    const SOCIAL_FIELDS = [
+      ['instagram', 'socialInstagram', 'اینستاگرام'],
+      ['whatsapp', 'socialWhatsapp', 'واتساپ'],
+      ['telegram', 'socialTelegram', 'تلگرام'],
+      ['rubika', 'socialRubika', 'روبیکا']
+    ];
+    function validSocialUrl(value) {
+      const raw = String(value || '').trim();
+      if (!raw) return '';
+      try { const parsed = new URL(raw); return ['https:', 'http:'].includes(parsed.protocol) ? parsed.href : null; }
+      catch { return null; }
+    }
+    function renderSocialLinks(links = {}) {
+      const holder = $('socialLinksPublic');
+      if (!holder) return;
+      holder.innerHTML = SOCIAL_FIELDS.map(([key, , label]) => {
+        const href = validSocialUrl(links[key]);
+        return href ? `<a href="${safe(href)}" target="_blank" rel="noopener noreferrer">${label}</a>` : '';
+      }).join('');
+      if (!holder.innerHTML) holder.innerHTML = '<span class="muted">لینک شبکه‌های اجتماعی هنوز ثبت نشده است.</span>';
+    }
+    async function loadSocialLinks() {
+      const { data, error } = await db.from('site_settings').select('value').eq('key', SOCIAL_SETTING_KEY).maybeSingle();
+      if (error) { renderSocialLinks({}); return; }
+      const links = data?.value && typeof data.value === 'object' ? data.value : {};
+      renderSocialLinks(links);
+      SOCIAL_FIELDS.forEach(([key, inputId]) => { if ($(inputId)) $(inputId).value = validSocialUrl(links[key]) || ''; });
+    }
+    $('socialLinksForm')?.addEventListener('submit', async event => {
+      event.preventDefault();
+      const button = $('saveSocialLinksButton');
+      const links = {};
+      for (const [key, inputId, label] of SOCIAL_FIELDS) {
+        const raw = $(inputId).value.trim();
+        const normalized = validSocialUrl(raw);
+        if (raw && !normalized) { setMessage($('socialLinksAdminMsg'), `نشانی ${label} معتبر نیست؛ لینک را با http:// یا https:// وارد کنید.`, 'error'); $(inputId).focus(); return; }
+        links[key] = normalized;
+      }
+      button.disabled = true;
+      const { error } = await db.from('site_settings').upsert({ key: SOCIAL_SETTING_KEY, value: links, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+      button.disabled = false;
+      if (error) { setMessage($('socialLinksAdminMsg'), 'ذخیره انجام نشد. ابتدا فایل SQL تنظیمات سایت را در Supabase اجرا کنید. ' + error.message, 'error'); return; }
+      renderSocialLinks(links);
+      setMessage($('socialLinksAdminMsg'), 'لینک‌های شبکه‌های اجتماعی ذخیره شد و در سایت نمایش داده می‌شود.', 'success');
+    });
+
     async function showAdmin() {
       const { data: { user } } = await db.auth.getUser();
       if (!user) return;
       const { data: allowed, error } = await db.rpc('is_admin');
       if (error || allowed !== true) { setMessage($('loginMsg'), 'این حساب دسترسی مدیر ندارد.', 'error'); await db.auth.signOut(); return; }
       $('adminPanel').classList.remove('hidden'); $('adminToggle').classList.add('hidden');
-      await Promise.all([loadProducts(), loadManageProducts(), loadOrders()]);
+      await Promise.all([loadProducts(), loadManageProducts(), loadOrders(), loadSocialLinks()]);
     }
     async function loadManageProducts() {
       const { data, error } = await db.from('products').select('*').order('created_at', { ascending: false });
@@ -1209,7 +1269,7 @@ body {
       else if (session) await showAdmin();
     }
     renderCart();
-    await loadProducts();
+    await Promise.all([loadProducts(), loadSocialLinks()]);
   </script>
 </body>
 </html>
