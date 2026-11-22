@@ -119,7 +119,7 @@ body {
     .wrap{max-width:1320px;margin:30px auto;padding:0 22px}
     .hero{min-height:330px;border-radius:26px;padding:35px 5%;grid-template-columns:.9fr 1.35fr .9fr;gap:24px;background:radial-gradient(circle at 78% 18%,#20b5a633 0,transparent 24%),radial-gradient(circle at 12% 95%,#e8b85c2c 0,transparent 27%),linear-gradient(118deg,#102d3b 0%,#14545a 56%,#0d3945 100%);box-shadow:0 20px 45px #102d3b20}
     .hero-copy{text-align:right;max-width:520px}.eyebrow{display:inline-block;color:#bce8dc;font-size:12px;font-weight:800;letter-spacing:.2px;margin-bottom:10px}.hero-copy h2{font-size:clamp(30px,4.3vw,49px);line-height:1.35;margin:0 0 13px;letter-spacing:-1px}.hero-copy p{max-width:490px;font-size:15px;color:#e1efed;line-height:2;margin-bottom:22px}
-    .hero-tracking{margin-top:18px;padding:14px 16px;border:1px solid #d8f2e755;border-radius:16px;background:#ffffff12;backdrop-filter:blur(5px);text-align:right}
+    .hero-tracking{grid-column:1/-1;width:100%;box-sizing:border-box;margin-top:8px;padding:14px 16px;border:1px solid #d8f2e755;border-radius:16px;background:#ffffff12;backdrop-filter:blur(5px);text-align:right}
     .hero-tracking h3{margin:0 0 4px;color:#f6d58e;font-size:18px}
     .hero-tracking>p{margin:0 0 8px;color:#e1efed;font-size:12px;line-height:1.8}
     .hero-tracking .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
@@ -245,6 +245,8 @@ body {
     <section class="hero">
       <div class="hero-art" aria-hidden="true"><span class="hero-orbit orbit-one"></span><span class="hero-orbit orbit-two"></span><span class="hero-monogram">M</span><small>MARDIS SHOP</small></div>
       <div class="hero-copy"><span class="eyebrow">به فروشگاه مردیس خوش آمدید</span><h2>انتخابی ساده،<br>خریدی مطمئن‌تر</h2><p>محصولات متنوع را ببینید، مشخصات و موجودی را بررسی کنید و سفارش خود را به‌آسانی ثبت کنید.</p><a class="hero-btn" href="#productsSection">مشاهده محصولات <span aria-hidden="true">←</span></a>
+      </div>
+      <div class="hero-points"><span>مشاهده موجودی کالا</span><span>ثبت سفارش آسان</span><span>پشتیبانی تلفنی و واتساپ</span></div>
         <div id="orderTrackingSection" class="hero-tracking">
           <h3>پیگیری سفارش</h3>
           <p>برای مشاهده وضعیت سفارش، شماره سفارش و شماره موبایلی را که هنگام خرید ثبت کرده‌اید وارد کنید.</p>
@@ -258,8 +260,6 @@ body {
           </form>
           <div id="trackingLookupResult" class="hidden" aria-live="polite"></div>
         </div>
-      </div>
-      <div class="hero-points"><span>مشاهده موجودی کالا</span><span>ثبت سفارش آسان</span><span>پشتیبانی تلفنی و واتساپ</span></div>
     </section>
     <section id="productsSection" class="card products-panel"><div class="section-heading"><div><span class="eyebrow dark-eyebrow">ویترین مردیس</span><h2>محصولات فروشگاه</h2><p class="muted">محصولات فعال فروشگاه را بررسی و کالای موردنظرتان را انتخاب کنید.</p></div><span id="productsCount" class="products-count">در حال دریافت…</span></div><div class="catalog-tools" aria-label="فیلتر و مرتب‌سازی محصولات">
   <label>دسته‌بندی
