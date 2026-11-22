@@ -226,6 +226,61 @@ body {
   #adminToggle.is-open { box-shadow: 0 0 0 3px rgba(12, 132, 140, .20); filter: brightness(1.06); }
   #adminToggle:focus-visible { outline: 3px solid rgba(12, 132, 140, .45); outline-offset: 3px; }
 </style>
+
+<style id="mardis-hero-tracking-final-layout">
+  .hero{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr) !important;
+    grid-template-areas:
+      "points copy art"
+      "tracking tracking tracking" !important;
+    align-items:center;
+    row-gap:22px !important;
+    min-height:0 !important;
+    padding:35px 5% 28px !important;
+  }
+  .hero-art{grid-area:art; min-width:0}
+  .hero-copy{grid-area:copy; min-width:0}
+  .hero-points{grid-area:points; min-width:0}
+  #orderTrackingSection.hero-tracking{
+    grid-area:tracking !important;
+    position:relative !important;
+    inset:auto !important;
+    float:none !important;
+    width:100% !important;
+    min-width:0 !important;
+    margin:0 !important;
+    box-sizing:border-box !important;
+    z-index:1;
+  }
+  #orderTrackingSection{scroll-margin-top:90px}
+  @media(max-width:800px){
+    .hero{
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+      grid-template-areas:
+        "points art"
+        "copy copy"
+        "tracking tracking" !important;
+      row-gap:18px !important;
+    }
+  }
+  @media(max-width:520px){
+    .hero{
+      grid-template-columns:minmax(0,1fr) !important;
+      grid-template-areas:
+        "copy"
+        "art"
+        "points"
+        "tracking" !important;
+      padding:24px 18px !important;
+      row-gap:12px !important;
+    }
+    .hero-points{justify-items:center}
+    #orderTrackingSection.hero-tracking{padding:12px}
+    #orderTrackingSection .grid{grid-template-columns:minmax(0,1fr) !important}
+  }
+</style>
+
 </head>
 <body>
   <div class="topbar"><span>پشتیبانی مردیس‌شاپ: ۰۹۳۳۷۲۲۴۵۰۰ | ۰۹۳۶۹۴۳۶۵۶۲</span><span>ارسال به تمام شهرهای ایران</span><span>فروشگاه آنلاین مردیس</span></div>
