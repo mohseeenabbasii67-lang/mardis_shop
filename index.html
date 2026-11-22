@@ -227,59 +227,76 @@ body {
   #adminToggle:focus-visible { outline: 3px solid rgba(12, 132, 140, .45); outline-offset: 3px; }
 </style>
 
-<style id="mardis-hero-tracking-final-layout">
-  .hero{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr) !important;
-    grid-template-areas:
-      "points copy art"
-      "tracking tracking tracking" !important;
-    align-items:center;
-    row-gap:22px !important;
-    min-height:0 !important;
-    padding:35px 5% 28px !important;
-  }
-  .hero-art{grid-area:art; min-width:0}
-  .hero-copy{grid-area:copy; min-width:0}
-  .hero-points{grid-area:points; min-width:0}
-  #orderTrackingSection.hero-tracking{
-    grid-area:tracking !important;
-    position:relative !important;
+
+<style id="mardis-tracking-nav-dropdown">
+  .hero{grid-template-areas:"points copy art" !important; row-gap:18px !important;}
+  .hero-art{grid-area:art;min-width:0}
+  .hero-copy{grid-area:copy;min-width:0}
+  .hero-points{grid-area:points;min-width:0}
+  .tracking-dropdown{
+    position:fixed !important;
+    z-index:3000 !important;
     inset:auto !important;
-    float:none !important;
-    width:100% !important;
-    min-width:0 !important;
+    top:var(--tracking-dropdown-top,100px) !important;
+    right:var(--tracking-dropdown-right,16px) !important;
+    left:auto !important;
+    width:min(620px,calc(100vw - 24px)) !important;
+    max-height:calc(100vh - var(--tracking-dropdown-top,100px) - 16px);
+    overflow:auto;
     margin:0 !important;
-    box-sizing:border-box !important;
-    z-index:1;
+    padding:18px 20px !important;
+    background:linear-gradient(135deg,#174e55,#103c49) !important;
+    border:1px solid #d8f2e755 !important;
+    border-radius:16px !important;
+    box-shadow:0 18px 48px #071d2680 !important;
+    text-align:right;
   }
-  #orderTrackingSection{scroll-margin-top:90px}
-  @media(max-width:800px){
-    .hero{
-      grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-      grid-template-areas:
-        "points art"
-        "copy copy"
-        "tracking tracking" !important;
-      row-gap:18px !important;
-    }
+  .tracking-dropdown.hidden{display:none !important}
+  .tracking-dropdown-close{
+    position:absolute;left:10px;top:8px;width:30px;height:30px;
+    margin:0;padding:0;border-radius:50%;background:#ffffff20;color:#fff;
+    font-size:22px;line-height:1
   }
+  #trackingMenuToggle[aria-expanded="true"]{color:var(--teal);font-weight:900}
   @media(max-width:520px){
-    .hero{
-      grid-template-columns:minmax(0,1fr) !important;
-      grid-template-areas:
-        "copy"
-        "art"
-        "points"
-        "tracking" !important;
-      padding:24px 18px !important;
-      row-gap:12px !important;
-    }
-    .hero-points{justify-items:center}
-    #orderTrackingSection.hero-tracking{padding:12px}
-    #orderTrackingSection .grid{grid-template-columns:minmax(0,1fr) !important}
+    .hero{grid-template-areas:"copy" "art" "points" !important}
+    .tracking-dropdown{padding:16px 12px !important}
+    .tracking-dropdown .grid{grid-template-columns:minmax(0,1fr) !important}
   }
 </style>
+<script id="tracking-nav-dropdown-script">
+document.addEventListener('DOMContentLoaded',function(){
+  const trigger=document.getElementById('trackingMenuToggle');
+  const panel=document.getElementById('orderTrackingSection');
+  const close=document.getElementById('closeTrackingDropdown');
+  const nav=document.querySelector('nav');
+  if(!trigger||!panel||!nav)return;
+  function positionPanel(){
+    const rect=trigger.getBoundingClientRect();
+    const width=Math.min(620,window.innerWidth-24);
+    const right=Math.max(12,Math.min(window.innerWidth- width-12,window.innerWidth-rect.right));
+    panel.style.setProperty('--tracking-dropdown-top',(nav.getBoundingClientRect().bottom+8)+'px');
+    panel.style.setProperty('--tracking-dropdown-right',right+'px');
+  }
+  function setOpen(open){
+    panel.classList.toggle('hidden',!open);
+    trigger.setAttribute('aria-expanded',String(open));
+    if(open){positionPanel();}
+  }
+  trigger.addEventListener('click',function(event){
+    event.preventDefault();
+    setOpen(panel.classList.contains('hidden'));
+  });
+  close?.addEventListener('click',()=>setOpen(false));
+  document.addEventListener('click',function(event){
+    if(!panel.classList.contains('hidden')&&!panel.contains(event.target)&&!trigger.contains(event.target))setOpen(false);
+  });
+  document.addEventListener('keydown',function(event){if(event.key==='Escape')setOpen(false);});
+  window.addEventListener('resize',()=>{if(!panel.classList.contains('hidden'))positionPanel();});
+  window.addEventListener('scroll',()=>{if(!panel.classList.contains('hidden'))positionPanel();},true);
+});
+</script>
+
 
 </head>
 <body>
@@ -295,15 +312,10 @@ body {
       <button id="adminToggle" type="button" aria-controls="loginPanel" aria-expanded="false" onclick="const panel=document.getElementById('loginPanel');const opened=panel.classList.toggle('hidden')===false;this.classList.toggle('is-open',opened);this.setAttribute('aria-expanded',String(opened));">ورود مدیر</button>
     </div>
   </header>
-  <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a href="#orderTrackingSection">پیگیری سفارش</a><a href="#features">مزایای خرید</a><a href="#aboutSection">درباره مردیس</a><a href="#contactSection">تماس با ما</a><a href="#purchaseRules">قوانین خرید</a><a href="#shippingReturns">ارسال و مرجوعی</a></nav>
-  <main class="wrap">
-    <section class="hero">
-      <div class="hero-art" aria-hidden="true"><span class="hero-orbit orbit-one"></span><span class="hero-orbit orbit-two"></span><span class="hero-monogram">M</span><small>MARDIS SHOP</small></div>
-      <div class="hero-copy"><span class="eyebrow">به فروشگاه مردیس خوش آمدید</span><h2>انتخابی ساده،<br>خریدی مطمئن‌تر</h2><p>محصولات متنوع را ببینید، مشخصات و موجودی را بررسی کنید و سفارش خود را به‌آسانی ثبت کنید.</p><a class="hero-btn" href="#productsSection">مشاهده محصولات <span aria-hidden="true">←</span></a>
-      </div>
-      <div class="hero-points"><span>مشاهده موجودی کالا</span><span>ثبت سفارش آسان</span><span>پشتیبانی تلفنی و واتساپ</span></div>
-        <div id="orderTrackingSection" class="hero-tracking">
-          <h3>پیگیری سفارش</h3>
+  <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a id="trackingMenuToggle" href="#orderTrackingSection" aria-controls="orderTrackingSection" aria-expanded="false">پیگیری سفارش</a><a href="#features">مزایای خرید</a><a href="#aboutSection">درباره مردیس</a><a href="#contactSection">تماس با ما</a><a href="#purchaseRules">قوانین خرید</a><a href="#shippingReturns">ارسال و مرجوعی</a>
+  <div id="orderTrackingSection" class="hero-tracking tracking-dropdown hidden" role="region" aria-label="فرم پیگیری سفارش">
+    <button type="button" id="closeTrackingDropdown" class="tracking-dropdown-close" aria-label="بستن فرم پیگیری">×</button>
+    <h3>پیگیری سفارش</h3>
           <p>برای مشاهده وضعیت سفارش، شماره سفارش و شماره موبایلی را که هنگام خرید ثبت کرده‌اید وارد کنید.</p>
           <form id="orderTrackingForm">
             <div class="grid">
@@ -314,8 +326,16 @@ body {
             <p id="trackingLookupMessage" aria-live="polite"></p>
           </form>
           <div id="trackingLookupResult" class="hidden" aria-live="polite"></div>
-        </div>
-    </section>
+  </div>
+
+</nav>
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-art" aria-hidden="true"><span class="hero-orbit orbit-one"></span><span class="hero-orbit orbit-two"></span><span class="hero-monogram">M</span><small>MARDIS SHOP</small></div>
+      <div class="hero-copy"><span class="eyebrow">به فروشگاه مردیس خوش آمدید</span><h2>انتخابی ساده،<br>خریدی مطمئن‌تر</h2><p>محصولات متنوع را ببینید، مشخصات و موجودی را بررسی کنید و سفارش خود را به‌آسانی ثبت کنید.</p><a class="hero-btn" href="#productsSection">مشاهده محصولات <span aria-hidden="true">←</span></a>
+      </div>
+      <div class="hero-points"><span>مشاهده موجودی کالا</span><span>ثبت سفارش آسان</span><span>پشتیبانی تلفنی و واتساپ</span></div>
+</section>
     <section id="productsSection" class="card products-panel"><div class="section-heading"><div><span class="eyebrow dark-eyebrow">ویترین مردیس</span><h2>محصولات فروشگاه</h2><p class="muted">محصولات فعال فروشگاه را بررسی و کالای موردنظرتان را انتخاب کنید.</p></div><span id="productsCount" class="products-count">در حال دریافت…</span></div><div class="catalog-tools" aria-label="فیلتر و مرتب‌سازی محصولات">
   <label>دسته‌بندی
     <select id="categoryFilter"><option value="">همه موضوعات پوشاک</option></select>
