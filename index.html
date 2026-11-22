@@ -219,12 +219,24 @@ body {
       <button id="adminToggle" type="button" onclick="document.getElementById('loginPanel').classList.toggle('hidden')">ورود مدیر</button>
     </div>
   </header>
-  <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a href="#features">مزایای خرید</a><a href="#aboutSection">درباره مردیس</a><a href="#contactSection">تماس با ما</a><a href="#purchaseRules">قوانین خرید</a><a href="#shippingReturns">ارسال و مرجوعی</a></nav>
+  <nav aria-label="منوی اصلی"><a href="#">خانه</a><a href="#productsSection">محصولات</a><a href="#orderTrackingSection">پیگیری سفارش</a><a href="#features">مزایای خرید</a><a href="#aboutSection">درباره مردیس</a><a href="#contactSection">تماس با ما</a><a href="#purchaseRules">قوانین خرید</a><a href="#shippingReturns">ارسال و مرجوعی</a></nav>
   <main class="wrap">
     <section class="hero">
       <div class="hero-art" aria-hidden="true"><span class="hero-orbit orbit-one"></span><span class="hero-orbit orbit-two"></span><span class="hero-monogram">M</span><small>MARDIS SHOP</small></div>
       <div class="hero-copy"><span class="eyebrow">به فروشگاه مردیس خوش آمدید</span><h2>انتخابی ساده،<br>خریدی مطمئن‌تر</h2><p>محصولات متنوع را ببینید، مشخصات و موجودی را بررسی کنید و سفارش خود را به‌آسانی ثبت کنید.</p><a class="hero-btn" href="#productsSection">مشاهده محصولات <span aria-hidden="true">←</span></a></div>
       <div class="hero-points"><span>مشاهده موجودی کالا</span><span>ثبت سفارش آسان</span><span>پشتیبانی تلفنی و واتساپ</span></div>
+    </section>
+    <section id="orderTrackingSection" class="card" style="margin:24px 0">
+      <div class="section-heading"><div><span class="eyebrow dark-eyebrow">پیگیری خرید</span><h2>پیگیری وضعیت سفارش</h2><p class="muted">شماره سفارش و شماره موبایلی را که هنگام خرید ثبت کرده‌اید وارد کنید.</p></div></div>
+      <form id="orderTrackingForm">
+        <div class="grid">
+          <label>شماره سفارش<input id="trackingOrderId" type="text" maxlength="36" placeholder="شناسه سفارش درج‌شده در رسید" autocomplete="off" required></label>
+          <label>شماره موبایل ثبت‌شده<input id="trackingPhone" type="tel" maxlength="30" placeholder="مثلاً 09xxxxxxxxx" autocomplete="tel" required></label>
+        </div>
+        <button id="trackOrderButton" type="submit">پیگیری سفارش</button>
+        <p id="trackingLookupMessage" class="muted" aria-live="polite"></p>
+      </form>
+      <div id="trackingLookupResult" class="hidden" aria-live="polite"></div>
     </section>
     <section id="productsSection" class="card products-panel"><div class="section-heading"><div><span class="eyebrow dark-eyebrow">ویترین مردیس</span><h2>محصولات فروشگاه</h2><p class="muted">محصولات فعال فروشگاه را بررسی و کالای موردنظرتان را انتخاب کنید.</p></div><span id="productsCount" class="products-count">در حال دریافت…</span></div><div class="catalog-tools" aria-label="فیلتر و مرتب‌سازی محصولات">
   <label>دسته‌بندی
@@ -1383,6 +1395,61 @@ body {
         });
       });
     }
+
+    const TRACKING_ORDER_STATUS_LABELS = {
+      pending: 'در انتظار بررسی', confirmed: 'تأیید شده', processing: 'در حال آماده‌سازی',
+      shipped: 'ارسال شده', delivered: 'تحویل داده شده', cancelled: 'لغو شده'
+    };
+    $('orderTrackingForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const orderId = $('trackingOrderId').value.trim();
+      const phone = $('trackingPhone').value.trim();
+      const button = $('trackOrderButton');
+      const resultBox = $('trackingLookupResult');
+      resultBox.classList.add('hidden');
+      resultBox.innerHTML = '';
+      if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(orderId)) {
+        setMessage($('trackingLookupMessage'), 'شماره سفارش معتبر نیست. شناسه کامل درج‌شده در رسید را وارد کنید.', 'error');
+        return;
+      }
+      if (phone.replace(/\D/g, '').length < 8) {
+        setMessage($('trackingLookupMessage'), 'شماره موبایل را بررسی کنید.', 'error');
+        return;
+      }
+      button.disabled = true;
+      button.textContent = 'در حال جستجو…';
+      setMessage($('trackingLookupMessage'), 'در حال دریافت وضعیت سفارش…');
+      try {
+        const { data, error } = await db.rpc('customer_track_order', {
+          p_order_id: orderId,
+          p_phone: phone
+        });
+        if (error) throw error;
+        if (!data || data.success !== true) {
+          setMessage($('trackingLookupMessage'), data?.error || 'سفارشی با این اطلاعات پیدا نشد. شماره سفارش و موبایل را بررسی کنید.', 'error');
+          return;
+        }
+        const statusLabel = TRACKING_ORDER_STATUS_LABELS[data.status] || 'در حال بررسی';
+        const shippedDate = data.shipped_at ? new Date(data.shipped_at).toLocaleDateString('fa-IR') : '';
+        resultBox.innerHTML = `
+          <div class="notice" style="margin-top:16px">
+            <h3 style="margin-top:0">نتیجه پیگیری سفارش</h3>
+            <p><b>شماره سفارش:</b> <span dir="ltr">${safe(data.order_id)}</span></p>
+            <p><b>وضعیت سفارش:</b> ${safe(statusLabel)}</p>
+            <p><b>مبلغ سفارش:</b> ${money(data.total_amount)}</p>
+            <p><b>کد رهگیری مرسوله:</b> ${data.tracking_number ? `<strong dir="ltr">${safe(data.tracking_number)}</strong>` : 'هنوز ثبت نشده است.'}</p>
+            ${shippedDate ? `<p><b>تاریخ ارسال:</b> ${safe(shippedDate)}</p>` : ''}
+            ${data.status === 'shipped' && data.tracking_number ? '<p class="muted">کد رهگیری را می‌توانید در سامانه شرکت حمل‌ونقل مربوط وارد کنید.</p>' : ''}
+          </div>`;
+        resultBox.classList.remove('hidden');
+        setMessage($('trackingLookupMessage'), 'اطلاعات سفارش با موفقیت دریافت شد.', 'success');
+      } catch (error) {
+        setMessage($('trackingLookupMessage'), 'در دریافت اطلاعات خطایی رخ داد. اگر فایل SQL پیگیری را اجرا نکرده‌اید، ابتدا آن را در Supabase اجرا کنید. ' + (error?.message || ''), 'error');
+      } finally {
+        button.disabled = false;
+        button.textContent = 'پیگیری سفارش';
+      }
+    });
 
     renderCart();
     db.auth.onAuthStateChange(event => { if (event === 'PASSWORD_RECOVERY') showRecoveryForm(); });
