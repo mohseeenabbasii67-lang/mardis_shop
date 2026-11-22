@@ -208,7 +208,7 @@ body {
 <body>
   <div class="topbar"><span>پشتیبانی مردیس‌شاپ: ۰۹۳۳۷۲۲۴۵۰۰ | ۰۹۳۶۹۴۳۶۵۶۲</span><span>ارسال به تمام شهرهای ایران</span><span>فروشگاه آنلاین مردیس</span></div>
   <header>
-    <div class="brand"><div class="brand-line"><span class="brand-mark">م</span><div><h1>مردیس‌شاپ</h1><p>انتخاب هوشمندانه شما</p></div></div></div>
+    <div class="brand"><div class="brand-line"><span class="brand-mark" aria-label="نشان مردیس‌شاپ"><svg viewBox="0 0 48 48" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 8a4 4 0 1 1 4 4c-2 0-3 1-3 3v2l15 10c2 1 1 4-1 4H9c-2 0-3-3-1-4l15-10"/><path d="M14 33v7h20v-7"/></svg></span><div><h1>مردیس‌شاپ</h1><p>انتخاب هوشمندانه شما</p></div></div></div>
     <div class="searchbox"><input id="productSearch" type="search" placeholder="جستجو در محصولات..." aria-label="جستجو در محصولات"><span class="search-icon">⌕</span></div>
     <div class="header-actions">
       <button id="openCartButton" class="cart-header-button" type="button" aria-label="باز کردن سبد خرید" aria-haspopup="dialog" aria-controls="cartModal">
@@ -392,6 +392,12 @@ body {
           </div>
           <img id="pimagePreview" class="hidden" alt="پیش‌نمایش تصویر محصول" style="max-width:180px;max-height:180px;object-fit:contain;border:1px solid #e5e7eb;border-radius:10px;margin:8px 0">
           <div id="pGalleryPreview" class="admin-gallery-preview"></div><p id="galleryFileNote" class="muted">برای ذخیره تصاویر، فضای product-images در Supabase Storage باید ساخته شده و دسترسی لازم برای مدیر تنظیم شده باشد. تصاویر قبلی را با × از گالری محصول حذف کنید.</p>
+          <div class="grid" style="margin-top:12px">
+            <input id="pSizes" placeholder="سایزبندی (مثلاً S، M، L، XL)">
+            <input id="pColors" placeholder="رنگ‌بندی (مثلاً مشکی، کرم، سبز)">
+            <input id="pMaterial" placeholder="جنس پارچه یا متریال">
+            <input id="pCare" placeholder="راهنمای نگهداری و شست‌وشو">
+          </div>
           <textarea id="pdescription" placeholder="توضیحات محصول"></textarea>
           <div class="row"><button id="saveProductButton" type="submit">ثبت محصول</button><button id="cancelEditButton" class="secondary hidden" type="button">لغو ویرایش</button></div>
         </form>
@@ -417,8 +423,32 @@ body {
     const $ = id => document.getElementById(id);
     const money = n => Number(n || 0).toLocaleString('fa-IR') + ' تومان';
     const safe = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const PRODUCT_META_PREFIX = '\n\n<!--MARDIS_META:';
+    function unpackProductDescription(raw) {
+      const text = String(raw || '');
+      const at = text.lastIndexOf(PRODUCT_META_PREFIX);
+      if (at < 0) return { description: text, meta: {} };
+      const tail = text.slice(at + PRODUCT_META_PREFIX.length);
+      const end = tail.indexOf('-->');
+      if (end < 0) return { description: text, meta: {} };
+      try { return { description: text.slice(0, at), meta: JSON.parse(tail.slice(0, end)) || {} }; }
+      catch { return { description: text, meta: {} }; }
+    }
+    function packProductDescription(description, meta) {
+      const clean = String(description || '').trim();
+      const details = Object.fromEntries(Object.entries(meta).map(([k,v]) => [k, String(v || '').trim()]).filter(([,v]) => v));
+      return Object.keys(details).length ? `${clean}${PRODUCT_META_PREFIX}${JSON.stringify(details)}-->` : clean;
+    }
+    function productDescription(product) { return unpackProductDescription(product.description).description; }
+    function productSpecsHtml(product) {
+      const m = unpackProductDescription(product.description).meta;
+      const rows = [['سایزبندی',m.sizes],['رنگ‌بندی',m.colors],['جنس',m.material],['نگهداری',m.care]].filter(([,v]) => v);
+      return rows.length ? `<div class="info-tile" style="margin:12px 0"><b>مشخصات پوشاک</b>${rows.map(([k,v])=>`<p><strong>${k}:</strong> ${safe(v)}</p>`).join('')}</div>` : '';
+    }
+
     const TEHRAN_OFFSET_MINUTES = 210;
     let editingId = null;
+    let editingProductActive = true;
     let currentImageUrl = null;
     let currentGalleryUrls = [];
 
@@ -546,7 +576,7 @@ body {
       const uniqueBadge = product.is_unique ? '<span class="badge">تک‌نسخه‌ای</span>' : '';
       const discountBadge = discounted ? '<span class="badge">تخفیف فعال</span>' : '';
       const oldPrice = discounted ? `<span class="old-price">${money(product.price)}</span>` : '';
-      return `<article class="product">${image}<div class="info"><b>${safe(product.name)}</b><p class="muted">${safe(product.category || '')}</p>${uniqueBadge}${discountBadge}<p>${safe(product.description || '')}</p><div class="price">${money(shownPrice)} ${oldPrice}</div><div><small class="muted">موجودی: ${Number(product.stock || 0).toLocaleString('fa-IR')}</small> ${Number(product.stock || 0) < 1 ? '<span class="badge stock-out">ناموجود</span>' : Number(product.stock || 0) <= 3 ? '<span class="badge stock-low">موجودی محدود</span>' : '<span class="badge stock-ok">موجود</span>'}</div><div class="product-actions"><button type="button" class="details-btn" data-product-details="${safe(product.id)}">جزئیات کالا</button><button type="button" class="add-cart" data-add-cart="${safe(product.id)}" ${Number(product.stock || 0) < 1 ? 'disabled' : ''}>${Number(product.stock || 0) < 1 ? 'فعلاً ناموجود' : 'افزودن به سبد'}</button></div></div></article>`;
+      return `<article class="product">${image}<div class="info"><b>${safe(product.name)}</b><p class="muted">${safe(product.category || '')}</p>${uniqueBadge}${discountBadge}<p>${safe(productDescription(product))}</p><div class="price">${money(shownPrice)} ${oldPrice}</div><div><small class="muted">موجودی: ${Number(product.stock || 0).toLocaleString('fa-IR')}</small> ${Number(product.stock || 0) < 1 ? '<span class="badge stock-out">ناموجود</span>' : Number(product.stock || 0) <= 3 ? '<span class="badge stock-low">موجودی محدود</span>' : '<span class="badge stock-ok">موجود</span>'}</div><div class="product-actions"><button type="button" class="details-btn" data-product-details="${safe(product.id)}">جزئیات کالا</button><button type="button" class="add-cart" data-add-cart="${safe(product.id)}" ${Number(product.stock || 0) < 1 ? 'disabled' : ''}>${Number(product.stock || 0) < 1 ? 'فعلاً ناموجود' : 'افزودن به سبد'}</button></div></div></article>`;
     }
 
     $('pimageFile').addEventListener('change', () => {
@@ -671,7 +701,7 @@ body {
       const availability = $('availabilityFilter')?.value || 'all';
       const sort = $('sortProducts')?.value || 'newest';
       let filtered = productCache.filter(p => {
-        const matchesTerm = !term || [p.name, p.category, p.description]
+        const matchesTerm = !term || [p.name, p.category, productDescription(p)]
           .some(v => String(v || '').toLocaleLowerCase().includes(term));
         const matchesCategory = !category || String(p.category || '').trim() === category;
         const matchesAvailability = availability === 'available' ? Number(p.stock || 0) > 0 :
@@ -706,7 +736,7 @@ body {
         : '<div style="min-height:180px;display:grid;place-items:center;background:#f7faf8;border-radius:14px;color:#71818b">تصویری ثبت نشده است</div>';
       const thumbs = gallery.length > 1 ? `<div class="dialog-gallery-thumbs" aria-label="تصاویر دیگر کالا">${gallery.map((url, index) => `<button type="button" data-gallery-image="${index}" data-gallery-product="${safe(product.id)}" class="${index === safeIndex ? 'active' : ''}" aria-label="نمایش تصویر ${index + 1}"><img src="${safe(url)}" alt="نمای کوچک ${index + 1}"></button>`).join('')}</div>` : '';
       const stock = Number(product.stock || 0);
-      $('productDialogContent').innerHTML = `<div class="dialog-product-layout"><div>${mainImage}${thumbs}</div><div><h3 id="dialogProductName">${safe(product.name)}</h3><p class="muted">${safe(product.category || 'بدون دسته‌بندی')}</p><p class="dialog-product-description">${safe(product.description || 'توضیحی برای این کالا ثبت نشده است.')}</p><p class="price">${money(price)} ${discounted ? `<span class="old-price">${money(product.price)}</span>` : ''}</p><p>${stock > 0 ? `موجودی: ${stock.toLocaleString('fa-IR')} عدد` : 'این کالا فعلاً ناموجود است.'}</p><button type="button" data-dialog-add="${safe(product.id)}" ${stock < 1 ? 'disabled' : ''}>افزودن به سبد خرید</button></div></div>`;
+      $('productDialogContent').innerHTML = `<div class="dialog-product-layout"><div>${mainImage}${thumbs}</div><div><h3 id="dialogProductName">${safe(product.name)}</h3><p class="muted">${safe(product.category || 'بدون دسته‌بندی')}</p><p class="dialog-product-description">${safe(productDescription(product) || 'توضیحی برای این کالا ثبت نشده است.')}</p>${productSpecsHtml(product)}<p class="price">${money(price)} ${discounted ? `<span class="old-price">${money(product.price)}</span>` : ''}</p><p>${stock > 0 ? `موجودی: ${stock.toLocaleString('fa-IR')} عدد` : 'این کالا فعلاً ناموجود است.'}</p><button type="button" data-dialog-add="${safe(product.id)}" ${stock < 1 ? 'disabled' : ''}>افزودن به سبد خرید</button></div></div>`;
       $('productDialog').classList.remove('hidden');
       $('closeProductDialog').focus();
     }
@@ -843,11 +873,12 @@ body {
           const stockControls = p.is_unique
             ? '<small class="muted">تک‌نسخه‌ای؛ از فرم ویرایش</small>'
             : `<div class="stock-tools"><button type="button" class="secondary" data-stock-adjust="${safe(p.id)}" data-stock-direction="1" aria-label="افزایش موجودی">＋</button><button type="button" class="danger" data-stock-adjust="${safe(p.id)}" data-stock-direction="-1" aria-label="کاهش موجودی" ${stock < 1 ? 'disabled' : ''}>−</button></div>`;
-          return `<tr><td>${safe(p.name)}</td><td>${money(p.price)}</td><td>${stock.toLocaleString('fa-IR')}</td><td>${p.active ? 'فعال' : 'غیرفعال'}<br>${stockLabel}</td><td>${stockControls}</td><td><button type="button" data-edit="${safe(p.id)}" class="secondary">ویرایش</button><button type="button" data-del="${safe(p.id)}" class="danger">حذف</button></td></tr>`;
+          return `<tr><td>${safe(p.name)}</td><td>${money(p.price)}</td><td>${stock.toLocaleString('fa-IR')}</td><td>${p.active ? 'فعال' : 'غیرفعال'}<br>${stockLabel}</td><td>${stockControls}</td><td><button type="button" data-edit="${safe(p.id)}" class="secondary">ویرایش</button><button type="button" data-toggle-active="${safe(p.id)}" class="secondary">${p.active ? 'غیرفعال‌سازی' : 'فعال‌سازی'}</button><button type="button" data-del="${safe(p.id)}" class="danger">حذف</button></td></tr>`;
         }).join('')}</tbody></table></div>`
         : 'محصولی ثبت نشده است.';
       $('manageProducts').querySelectorAll('[data-edit]').forEach(button => button.onclick = () => editProduct(rows.find(p => String(p.id) === button.dataset.edit)));
       $('manageProducts').querySelectorAll('[data-del]').forEach(button => button.onclick = () => deleteProduct(button.dataset.del));
+      $('manageProducts').querySelectorAll('[data-toggle-active]').forEach(button => button.onclick = () => toggleProductActive(button.dataset.toggleActive));
       $('manageProducts').querySelectorAll('[data-stock-adjust]').forEach(button => button.onclick = () => adjustProductStock(button.dataset.stockAdjust, Number(button.dataset.stockDirection), button));
     }
     async function adjustProductStock(productId, direction, button) {
@@ -919,14 +950,14 @@ body {
 
     function editProduct(product) {
       if (!product) return;
-      editingId = product.id; currentImageUrl = product.image_url || null; currentGalleryUrls = Array.isArray(product.image_urls) ? [...product.image_urls] : [];
+      editingId = product.id; editingProductActive = product.active !== false; currentImageUrl = product.image_url || null; currentGalleryUrls = Array.isArray(product.image_urls) ? [...product.image_urls] : [];
       $('pname').value = product.name || ''; $('pcategory').value = product.category || '';
       $('pprice').value = product.price ?? ''; $('pstock').value = product.stock ?? 0;
       $('pUnique').checked = Boolean(product.is_unique); $('pDiscountActive').checked = Boolean(product.is_discount_active);
       $('pDiscountPrice').value = product.discount_price ?? '';
       $('pDiscountStart').value = isoToTehranJalali(product.discount_start);
       $('pDiscountEnd').value = isoToTehranJalali(product.discount_end);
-      $('pdescription').value = product.description || ''; $('pimageFile').value = ''; $('pGalleryFiles').value = ''; renderGalleryPreview();
+      const unpacked = unpackProductDescription(product.description); $('pdescription').value = unpacked.description || ''; $('pSizes').value = unpacked.meta.sizes || ''; $('pColors').value = unpacked.meta.colors || ''; $('pMaterial').value = unpacked.meta.material || ''; $('pCare').value = unpacked.meta.care || ''; $('pimageFile').value = ''; $('pGalleryFiles').value = ''; renderGalleryPreview();
       const preview = $('pimagePreview');
       if (currentImageUrl) { preview.src = currentImageUrl; preview.classList.remove('hidden'); }
       else { preview.removeAttribute('src'); preview.classList.add('hidden'); }
@@ -934,7 +965,7 @@ body {
       $('productForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     function cancelProductEdit() {
-      editingId = null; currentImageUrl = null; currentGalleryUrls = []; $('productForm').reset(); $('pstock').value = 1; $('pGalleryFiles').value = ''; renderGalleryPreview();
+      editingId = null; editingProductActive = true; currentImageUrl = null; currentGalleryUrls = []; $('productForm').reset(); $('pstock').value = 1; $('pGalleryFiles').value = ''; renderGalleryPreview();
       $('pimagePreview').removeAttribute('src'); $('pimagePreview').classList.add('hidden');
       $('productFormTitle').textContent = 'افزودن محصول'; $('saveProductButton').textContent = 'ثبت محصول';
       $('cancelEditButton').classList.add('hidden');
@@ -980,7 +1011,7 @@ body {
           name, category, price, stock: unique ? 1 : stockInput,
           is_unique: unique, is_discount_active: discountEnabled,
           discount_price: discountPrice, discount_start: discountStart, discount_end: discountEnd,
-          image_url: imageUrl || null, image_urls: [...currentGalleryUrls, ...uploadedGallery], description: $('pdescription').value.trim(), active: true
+          image_url: imageUrl || null, image_urls: [...currentGalleryUrls, ...uploadedGallery], description: packProductDescription($('pdescription').value, { sizes: $('pSizes').value, colors: $('pColors').value, material: $('pMaterial').value, care: $('pCare').value }), active: editingId ? editingProductActive : true
         };
         const result = editingId
           ? await db.from('products').update(item).eq('id', editingId)
@@ -996,6 +1027,17 @@ body {
         else submitButton.textContent = 'ذخیره تغییرات';
       }
     };
+    async function toggleProductActive(id) {
+      const product = (window.__mardisProducts || []).find(p => String(p.id) === String(id));
+      if (!product) return;
+      const next = !product.active;
+      const promptText = next ? 'این محصول دوباره در ویترین نمایش داده شود؟' : 'این محصول از ویترین پنهان شود؟ سوابق سفارش‌ها حفظ می‌شود.';
+      if (!confirm(promptText)) return;
+      const { error } = await db.from('products').update({ active: next }).eq('id', id);
+      if (error) { setMessage($('adminMsg'), 'تغییر وضعیت محصول انجام نشد: ' + error.message, 'error'); return; }
+      setMessage($('adminMsg'), next ? 'محصول دوباره فعال شد.' : 'محصول از ویترین پنهان شد؛ اطلاعات و سوابق آن حذف نشد.', 'success');
+      await Promise.all([loadProducts(), loadManageProducts()]);
+    }
     async function deleteProduct(id) {
       if (!confirm('این محصول حذف شود؟')) return;
       const { error } = await db.from('products').delete().eq('id', id);
