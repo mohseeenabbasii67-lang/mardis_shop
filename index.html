@@ -213,7 +213,46 @@ body {
     #contactSection .info-tile{background:linear-gradient(145deg,#f2f8f5,#fffaf1);border-color:#e5e6d8}
     #purchaseRules{background:linear-gradient(120deg,#fff 0%,#f8f2e7 100%)}
     @media(max-width:520px){.category-add-button{max-width:none}}
-\n  </style>
+\n  
+/* ویترین تازه‌سازی‌شده مردیس */
+:root{--mardis-plum:#633b58;--mardis-rose:#c76b83;--mardis-cream:#fff8f3;--mardis-mint:#e8f5ef}
+body{background:linear-gradient(180deg,#fffaf7 0%,#f5f8f6 48%,#f1f5f8 100%)}
+.topbar{background:linear-gradient(100deg,#3e2941,#633b58 55%,#245c5a)}
+header{background:rgba(255,255,255,.96);box-shadow:0 8px 26px #482c3b0b}
+.brand h1{background:linear-gradient(100deg,#633b58,#087f89);-webkit-background-clip:text;background-clip:text;color:transparent}
+nav{background:linear-gradient(100deg,#3e2941,#633b58 60%,#245c5a);border-bottom:3px solid #e7b76d}
+.hero{background:radial-gradient(circle at 15% 15%,#d58ba0 0,transparent 30%),radial-gradient(circle at 88% 85%,#20a69b 0,transparent 28%),linear-gradient(115deg,#3c2942,#75445f 48%,#075c67);box-shadow:0 18px 38px #56354b30}
+.hero-btn{background:linear-gradient(135deg,#ffe4a9,#edbd69);box-shadow:0 7px 18px #20132830;transition:transform .2s,box-shadow .2s}.hero-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px #20132840}
+.feature{border-color:#f0e5e7;background:linear-gradient(145deg,#fff,#fff8f6);box-shadow:0 8px 22px #633b580d}.feature b{color:#a14e70}
+.card{border-color:#eee5e8;box-shadow:0 10px 28px #633b580b}
+.product{border-color:#eee3e7;box-shadow:0 8px 22px #633b5810}.product:hover{box-shadow:0 16px 30px #633b5822}.product img{background:linear-gradient(145deg,#fffaf8,#f4f7f5)}
+.price{color:#a34e70}.product .add-cart{background:linear-gradient(100deg,#633b58,#087f89)}
+.badge{background:#fff0d4;color:#79531a}
+.contact-link,.social-links-public a{background:#f7eaf0;color:#713d58}
+#siteFooter{background:linear-gradient(110deg,#3e2941,#633b58 55%,#075c67)}
+@media(hover:hover){.product .add-cart:hover{filter:brightness(1.08)}}
+/* فضای مدیریت */
+#adminPanel{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;align-items:start;margin-top:22px}
+#adminPanel .admin-sidebar{position:sticky;top:12px;background:linear-gradient(160deg,#3e2941,#633b58 62%,#075c67);color:white;border-radius:20px;padding:17px;box-shadow:0 14px 30px #39253d25}
+.admin-brand{font-size:20px;font-weight:900;padding:7px 9px 14px;border-bottom:1px solid #ffffff30;margin-bottom:12px}
+.admin-sidebar button{display:flex;align-items:center;justify-content:space-between;text-align:right;background:transparent;color:#f9edf3;border:1px solid transparent;padding:11px 12px;margin:5px 0;border-radius:12px}
+.admin-sidebar button.active,.admin-sidebar button:hover{background:#ffffff20;border-color:#ffffff30;color:#fff}
+.admin-sidebar .admin-logout{background:#ffffff18;margin-top:18px}
+.admin-main{min-width:0}.admin-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:linear-gradient(110deg,#fff,#fff7f8);border:1px solid #f0e4e9;border-radius:18px;padding:16px 20px;margin-bottom:16px}
+.admin-topline h2{margin:0;color:#633b58}.admin-topline p{margin:3px 0 0;color:#77818a;font-size:13px}
+.admin-alert-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.admin-alert-tools button{width:auto;margin:0;padding:9px 12px;font-size:12px}
+.admin-live{font-size:12px;padding:7px 10px;border-radius:20px;background:#fff1d6;color:#76520e}.admin-live.online{background:#e4f7eb;color:#17643a}
+.admin-view{display:none}.admin-view.active{display:block}.admin-view>.card{margin-bottom:16px}
+.admin-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.admin-stat{background:linear-gradient(145deg,#fff,#fff8f7);border:1px solid #f0e4e8;border-radius:17px;padding:17px;box-shadow:0 8px 20px #633b580b}
+.admin-stat span{display:block;color:#77818a;font-size:12px}.admin-stat strong{display:block;font-size:25px;color:#633b58;margin-top:5px}
+.admin-view .card h2{color:#633b58}.admin-count{display:inline-grid;place-items:center;min-width:21px;height:21px;padding:0 6px;background:#f4c76e;color:#4d3541;border-radius:20px;font-size:11px}
+.admin-toast{position:fixed;z-index:3000;left:18px;bottom:18px;max-width:min(390px,calc(100vw - 36px));background:#3e2941;color:#fff;padding:14px 17px;border-radius:14px;box-shadow:0 14px 35px #0003;transform:translateY(20px);opacity:0;pointer-events:none;transition:.25s}.admin-toast.show{transform:translateY(0);opacity:1}
+#orders table tbody tr:nth-child(4n+1){background:#fffaf8}
+@media(max-width:850px){#adminPanel{grid-template-columns:1fr}.admin-sidebar{position:static!important;display:flex;gap:6px;overflow-x:auto;align-items:center}.admin-brand{display:none}.admin-sidebar button{white-space:nowrap;min-width:max-content;margin:0}.admin-sidebar .admin-logout{margin:0}.admin-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.admin-topline{padding:13px}.admin-alert-tools{width:100%}.admin-alert-tools button{flex:1}.admin-stats{gap:8px}.admin-stat{padding:13px}.admin-stat strong{font-size:21px}.admin-sidebar{padding:9px}.admin-sidebar button{font-size:12px;padding:9px}}
+
+</style>
 
 <style id="admin-toggle-feedback">
   #adminToggle {
@@ -705,7 +744,7 @@ body {
       setMessage($('resetMsg'), 'رمز جدید با موفقیت ذخیره شد. اکنون می‌توانی با رمز جدید وارد شوی.', 'success');
       $('resetForm').classList.add('hidden'); await db.auth.signOut(); clearRecoveryMarker(); $('loginPanel').classList.remove('hidden'); $('adminToggle').classList.add('hidden');
     };
-    $('logout').onclick = async () => { await db.auth.signOut(); $('adminPanel').classList.add('hidden'); $('adminToggle').classList.remove('hidden'); };
+    $('logout').onclick = async () => { stopOrdersRealtime(); await db.auth.signOut(); $('adminPanel').classList.add('hidden'); $('adminToggle').classList.remove('hidden'); };
 
     async function loadProducts() {
       const { data, error } = await db.from('products')
@@ -1035,19 +1074,119 @@ body {
       setMessage($('socialLinksAdminMsg'), 'لینک‌های شبکه‌های اجتماعی ذخیره شد و در سایت نمایش داده می‌شود.', 'success');
     });
 
+
+    let ordersRealtimeChannel = null;
+    let realtimeKnownOrderIds = new Set();
+    let newOrdersUnread = 0;
+    let adminWorkspaceBuilt = false;
+    function adminToast(message) {
+      let toast = $('adminToast');
+      if (!toast) { toast = document.createElement('div'); toast.id='adminToast'; toast.className='admin-toast'; document.body.appendChild(toast); }
+      toast.textContent = message; toast.classList.add('show');
+      clearTimeout(window.__mardisToastTimer); window.__mardisToastTimer=setTimeout(()=>toast.classList.remove('show'),4200);
+    }
+    function playNewOrderTone() {
+      try {
+        const Ctx = window.AudioContext || window.webkitAudioContext; if (!Ctx) return;
+        const ctx = new Ctx(); const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.type='sine'; osc.frequency.setValueAtTime(880,ctx.currentTime); osc.frequency.setValueAtTime(1174,ctx.currentTime+.13);
+        gain.gain.setValueAtTime(.0001,ctx.currentTime); gain.gain.exponentialRampToValueAtTime(.12,ctx.currentTime+.025); gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.42);
+        osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime+.44); osc.onended=()=>ctx.close();
+      } catch(e) { console.info('صدای اعلان در این مرورگر فعال نشد.',e); }
+    }
+    function notifyNewOrder(order) {
+      newOrdersUnread++;
+      const badge=$('adminNewOrdersBadge'); if(badge){badge.textContent=newOrdersUnread.toLocaleString('fa-IR');badge.classList.remove('hidden');}
+      const metric=$('adminNewOrderMetric'); if(metric) metric.textContent=newOrdersUnread.toLocaleString('fa-IR');
+      adminToast('سفارش جدید ثبت شد' + (order?.id ? ' · شماره '+order.id : ''));
+      playNewOrderTone();
+      if ('Notification' in window && Notification.permission==='granted') {
+        try { new Notification('سفارش جدید مردیس‌شاپ',{body:'یک سفارش تازه ثبت شده است. برای بررسی وارد پنل مدیریت شوید.',tag:'mardis-order-'+order.id}); } catch(e) {}
+      }
+    }
+    function updateAdminMetrics() {
+      const orders=window.__mardisOrders||[], products=window.__mardisProducts||[];
+      const put=(id,val)=>{const el=$(id);if(el)el.textContent=Number(val||0).toLocaleString('fa-IR');};
+      put('adminOrdersMetric',orders.length); put('adminPendingMetric',orders.filter(o=>!['delivered','cancelled'].includes(o.status)).length);
+      put('adminProductsMetric',products.length); put('adminStockMetric',products.filter(p=>Number(p.stock||0)<1).length);
+    }
+    function buildAdminWorkspace() {
+      if(adminWorkspaceBuilt) return;
+      const panel=$('adminPanel'); if(!panel) return;
+      const cards=[...panel.querySelectorAll(':scope > .card')];
+      const header=cards.shift(); if(!header) return;
+      const sidebar=document.createElement('aside'); sidebar.className='admin-sidebar';
+      sidebar.innerHTML='<div class="admin-brand">✦ مدیریت مردیس</div><button type="button" data-admin-tab="dashboard" class="active">نمای کلی</button><button type="button" data-admin-tab="orders">سفارش‌ها <span id="adminNewOrdersBadge" class="admin-count hidden">0</span></button><button type="button" data-admin-tab="products">محصولات و موجودی</button><button type="button" data-admin-tab="settings">تنظیمات فروشگاه</button>';
+      const main=document.createElement('div'); main.className='admin-main';
+      const top=document.createElement('div'); top.className='admin-topline'; top.innerHTML='<div><h2>پنل مدیریت مردیس‌شاپ</h2><p>مدیریت فروشگاه، سفارش‌ها و ویترین در یک نگاه</p></div><div class="admin-alert-tools"><span id="adminRealtimeStatus" class="admin-live">در حال اتصال اعلان زنده…</span><button type="button" id="enableBrowserAlerts" class="secondary">فعال‌سازی اعلان مرورگر</button></div>';
+      main.appendChild(top);
+      const dashboard=document.createElement('section'); dashboard.className='admin-view active'; dashboard.dataset.adminView='dashboard';
+      dashboard.innerHTML='<div class="admin-stats"><div class="admin-stat"><span>کل سفارش‌ها</span><strong id="adminOrdersMetric">۰</strong></div><div class="admin-stat"><span>سفارش‌های در جریان</span><strong id="adminPendingMetric">۰</strong></div><div class="admin-stat"><span>تعداد محصولات</span><strong id="adminProductsMetric">۰</strong></div><div class="admin-stat"><span>محصولات ناموجود</span><strong id="adminStockMetric">۰</strong></div></div><div class="admin-stat"><span>سفارش‌های جدید دریافت‌شده در این نشست</span><strong id="adminNewOrderMetric">۰</strong><p class="muted">برای دریافت اعلان زنده، صفحه پنل باید باز باشد و قابلیت Realtime جدول orders در Supabase فعال باشد.</p></div>';
+      main.appendChild(dashboard);
+      const views={orders:document.createElement('section'),products:document.createElement('section'),settings:document.createElement('section')};
+      Object.entries(views).forEach(([key,el])=>{el.className='admin-view';el.dataset.adminView=key;main.appendChild(el);});
+      cards.forEach(card=>{
+        const title=(card.querySelector('h2')?.textContent||'').trim();
+        let target='settings';
+        if(title.includes('سفارش')) target='orders';
+        else if(title.includes('محصول')||title.includes('مدیریت محصولات')) target='products';
+        views[target].appendChild(card);
+      });
+      header.querySelector('h2').textContent='مدیریت فروشگاه';
+      header.classList.add('admin-original-header');
+      header.querySelector('.row').style.marginBottom='8px';
+      header.querySelector('.row').appendChild(sidebar.querySelector('.admin-logout')||document.createElement('span'));
+      // خروج اصلی را به نوار کناری منتقل می‌کنیم؛ همان دکمه و همان شناسه حفظ می‌شود.
+      const logout=header.querySelector('#logout'); logout.classList.add('admin-logout'); sidebar.appendChild(logout);
+      header.querySelector('#adminMsg').textContent='وارد پنل مدیریت شده‌اید.';
+      main.insertBefore(header,top); panel.innerHTML=''; panel.append(sidebar,main);
+      sidebar.querySelectorAll('[data-admin-tab]').forEach(btn=>btn.addEventListener('click',()=>{
+        sidebar.querySelectorAll('[data-admin-tab]').forEach(b=>b.classList.toggle('active',b===btn));
+        main.querySelectorAll('[data-admin-view]').forEach(v=>v.classList.toggle('active',v.dataset.adminView===btn.dataset.adminTab));
+        if(btn.dataset.adminTab==='orders'){newOrdersUnread=0;const b=$('adminNewOrdersBadge');if(b)b.classList.add('hidden');}
+      }));
+      $('enableBrowserAlerts').addEventListener('click',async()=>{
+        if(!('Notification' in window)){adminToast('اعلان مرورگر در این مرورگر پشتیبانی نمی‌شود.');return;}
+        const permission=await Notification.requestPermission();
+        adminToast(permission==='granted'?'اعلان مرورگر فعال شد.':'اجازه اعلان داده نشد.');
+      });
+      adminWorkspaceBuilt=true;
+    }
+    function startOrdersRealtime() {
+      if(ordersRealtimeChannel) return;
+      (window.__mardisOrders||[]).forEach(o=>realtimeKnownOrderIds.add(String(o.id)));
+      const status=$('adminRealtimeStatus');
+      try {
+        ordersRealtimeChannel=db.channel('mardis-admin-orders-live')
+          .on('postgres_changes',{event:'INSERT',schema:'public',table:'orders'},payload=>{
+            const row=payload.new||{}; if(!row.id||realtimeKnownOrderIds.has(String(row.id)))return;
+            realtimeKnownOrderIds.add(String(row.id)); notifyNewOrder(row); loadOrders();
+          })
+          .subscribe(state=>{
+            if(!status)return;
+            if(state==='SUBSCRIBED'){status.textContent='اعلان زنده فعال است';status.classList.add('online');}
+            else if(state==='CHANNEL_ERROR'||state==='TIMED_OUT'||state==='CLOSED'){status.textContent='Realtime فعال نیست؛ تنظیمات Supabase را بررسی کنید';status.classList.remove('online');}
+          });
+      } catch(e) { if(status)status.textContent='اتصال اعلان زنده برقرار نشد'; }
+    }
+    function stopOrdersRealtime(){ if(ordersRealtimeChannel){db.removeChannel(ordersRealtimeChannel);ordersRealtimeChannel=null;} }
+
     async function showAdmin() {
       const { data: { user } } = await db.auth.getUser();
       if (!user) return;
       const { data: allowed, error } = await db.rpc('is_admin');
       if (error || allowed !== true) { setMessage($('loginMsg'), 'این حساب دسترسی مدیر ندارد.', 'error'); await db.auth.signOut(); return; }
       $('adminPanel').classList.remove('hidden'); $('adminToggle').classList.add('hidden');
+      buildAdminWorkspace();
       await Promise.all([loadProducts(), loadManageProducts(), loadOrders(), loadSocialLinks(), loadPaymentSettings()]);
+      updateAdminMetrics(); startOrdersRealtime();
     }
     async function loadManageProducts() {
       const { data, error } = await db.from('products').select('*').order('created_at', { ascending: false });
       if (error) { $('manageProducts').textContent = 'خطا در دریافت محصولات: ' + error.message; return; }
       const rows = data || [];
       window.__mardisProducts = rows;
+      if (typeof updateAdminMetrics === 'function') updateAdminMetrics();
       const lowStockCount = rows.filter(p => !p.is_unique && Number(p.stock || 0) > 0 && Number(p.stock || 0) <= 3).length;
       const outOfStockCount = rows.filter(p => Number(p.stock || 0) < 1).length;
       $('manageProducts').innerHTML = rows.length
@@ -1379,6 +1518,7 @@ body {
       if (error) { $('orders').textContent = 'خطا در دریافت سفارش‌ها: ' + error.message; return; }
       const rows = data || [];
       window.__mardisOrders = rows;
+      if (typeof updateAdminMetrics === 'function') updateAdminMetrics();
       $('orders').innerHTML = rows.length
         ? `<div style="overflow-x:auto"><table><thead><tr><th>شماره</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th><th>جزئیات و عملیات</th></tr></thead><tbody>${rows.map(o => `
           <tr>
