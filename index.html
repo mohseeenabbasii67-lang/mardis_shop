@@ -607,6 +607,38 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       <small>© مردیس‌شاپ</small>
     </footer>
 
+  <script>
+    // تشخیص مستقل از ماژول اصلی: اگر کتابخانه‌های خارجی بارگذاری نشوند، صفحه بی‌نهایت در حالت انتظار نمی‌ماند.
+    (function () {
+      var finished = false;
+      function showDiagnostic(message) {
+        if (finished) return;
+        finished = true;
+        var box = document.getElementById('products');
+        if (box) {
+          box.innerHTML = '<div class="notice error" style="direction:rtl;text-align:right">' +
+            '<strong>بارگذاری فروشگاه متوقف شده است.</strong><br>' + message +
+            '<br><small>لطفاً از این قسمت تصویر بفرستید تا علت را دقیق‌تر بررسی کنیم.</small></div>';
+        }
+      }
+      window.addEventListener('error', function (event) {
+        var target = event.target;
+        if (target && (target.tagName === 'SCRIPT' || target.tagName === 'LINK')) {
+          showDiagnostic('یکی از فایل‌ها یا کتابخانه‌های موردنیاز بارگذاری نشد: ' + (target.src || target.href || 'منبع خارجی'));
+        } else if (event.message) {
+          showDiagnostic('خطای اجرای جاوااسکریپت: ' + event.message);
+        }
+      }, true);
+      window.addEventListener('unhandledrejection', function (event) {
+        var reason = event.reason;
+        showDiagnostic('خطای پردازش: ' + (reason && reason.message ? reason.message : String(reason || 'نامشخص')));
+      });
+      window.setTimeout(function () {
+        showDiagnostic('پس از ۲۰ ثانیه هنوز پاسخ بارگذاری دریافت نشده است. این معمولاً به بارگذاری نشدن کتابخانه سایت یا معطل ماندن ارتباط با سرویس مربوط است.');
+      }, 20000);
+    })();
+  </script>
+
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
     import { toGregorian, toJalaali, isValidJalaaliDate } from 'https://cdn.jsdelivr.net/npm/jalaali-js@1.2.8/+esm';
