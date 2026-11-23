@@ -832,11 +832,20 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
     $('logout').onclick = async () => { stopOrdersRealtime(); await db.auth.signOut(); $('adminPanel').classList.add('hidden'); $('adminToggle').classList.remove('hidden'); };
 
     async function loadProducts() {
-      const { data, error } = await db.from('products')
-        .select('id,name,category,description,price,stock,image_url,image_urls,is_unique,is_discount_active,discount_price,discount_start,discount_end')
-        .eq('active', true).order('created_at', { ascending: false });
-      if (error) { $('products').textContent = 'دریافت محصولات ناموفق بود. تنظیمات دسترسی جدول products را بررسی کنید.'; return; }
-      productCache = data || []; refreshCategoryControls(); renderProducts();
+      const target = $('products');
+      if (target) target.innerHTML = '<p class="muted">در حال دریافت محصولات…</p>';
+      try {
+        const { data, error } = await db.from('products')
+          .select('id,name,category,description,price,stock,image_url,image_urls,is_unique,is_discount_active,discount_price,discount_start,discount_end,created_at')
+          .eq('active', true).order('created_at', { ascending: false });
+        if (error) throw error;
+        productCache = data || [];
+        refreshCategoryControls();
+        renderProducts();
+      } catch (error) {
+        console.error('Mardis public products load failed:', error);
+        if (target) target.innerHTML = '<p class="notice error">دریافت محصولات انجام نشد. لطفاً صفحه را دوباره بارگذاری کنید. ' + safe(error?.message || 'خطای ارتباط با سرویس') + '</p>';
+      }
     }
     const DEFAULT_CLOTHING_CATEGORIES = ['پوشاک زنانه','پوشاک مردانه','پوشاک بچگانه','لباس راحتی','کیف','کفش','اکسسوری'];
     const CLOTHING_CATEGORY_STORAGE_KEY = 'mardis_shop_clothing_categories_v1';
@@ -1693,18 +1702,27 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
 
     renderCart();
     db.auth.onAuthStateChange(event => { if (event === 'PASSWORD_RECOVERY') showRecoveryForm(); });
+
+    // داده‌های عمومی ویترین مستقل از بررسی نشست مدیر بارگذاری می‌شوند.
+    void loadProducts();
+    void loadSocialLinks().catch(error => console.error('Mardis social links load failed:', error));
+    void loadPaymentSettings().catch(error => console.error('Mardis payment settings load failed:', error));
+
     const urlHash = new URLSearchParams(window.location.hash.slice(1));
     const urlError = urlHash.get('error_description') || urlHash.get('error');
     if (urlError) {
       $('loginPanel').classList.remove('hidden'); $('adminToggle').classList.add('hidden');
       setMessage($('loginMsg'), 'لینک بازیابی معتبر نیست یا منقضی شده است. از گزینه «رمز عبورم را فراموش کرده‌ام» یک لینک تازه درخواست کن.', 'error');
     } else {
-      const { data: { session } } = await db.auth.getSession();
-      if (urlHash.get('type') === 'recovery' || (session && urlHash.get('access_token'))) showRecoveryForm();
-      else if (session) await showAdmin();
+      try {
+        const { data: { session } } = await db.auth.getSession();
+        if (urlHash.get('type') === 'recovery' || (session && urlHash.get('access_token'))) showRecoveryForm();
+        else if (session) await showAdmin();
+      } catch (error) {
+        console.error('Mardis auth session check failed:', error);
+      }
     }
     renderCart();
-    await Promise.all([loadProducts(), loadSocialLinks(), loadPaymentSettings()]);
   </script>
 </body>
 </html>
