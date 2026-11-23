@@ -252,6 +252,49 @@ nav{background:linear-gradient(100deg,#3e2941,#633b58 60%,#245c5a);border-bottom
 @media(max-width:850px){#adminPanel{grid-template-columns:1fr}.admin-sidebar{position:static!important;display:flex;gap:6px;overflow-x:auto;align-items:center}.admin-brand{display:none}.admin-sidebar button{white-space:nowrap;min-width:max-content;margin:0}.admin-sidebar .admin-logout{margin:0}.admin-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.admin-topline{padding:13px}.admin-alert-tools{width:100%}.admin-alert-tools button{flex:1}.admin-stats{gap:8px}.admin-stat{padding:13px}.admin-stat strong{font-size:21px}.admin-sidebar{padding:9px}.admin-sidebar button{font-size:12px;padding:9px}}
 
+
+/* منوی رنگی کامل مردیس‌شاپ */
+nav[aria-label="منوی اصلی"]{
+  display:flex; flex-wrap:nowrap; gap:9px; padding:10px 14px;
+  align-items:center; overflow-x:auto; scrollbar-width:thin;
+  background:linear-gradient(105deg,#34263f,#51344f 48%,#174f50);
+}
+nav[aria-label="منوی اصلی"] a{
+  flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center;
+  min-height:40px; padding:8px 15px; border-radius:999px;
+  color:#fff !important; text-decoration:none; font-weight:700;
+  border:1px solid rgba(255,255,255,.3);
+  box-shadow:0 3px 10px rgba(0,0,0,.12);
+  transition:transform .18s ease,filter .18s ease;
+}
+nav[aria-label="منوی اصلی"] a:nth-child(1){background:#a92d50}
+nav[aria-label="منوی اصلی"] a:nth-child(2){background:#087f83}
+nav[aria-label="منوی اصلی"] a:nth-child(3){background:#e9ad3e;color:#35243a !important}
+nav[aria-label="منوی اصلی"] a:nth-child(4){background:#5265a8}
+nav[aria-label="منوی اصلی"] a:nth-child(5){background:#8a4c91}
+nav[aria-label="منوی اصلی"] a:nth-child(6){background:#287b59}
+nav[aria-label="منوی اصلی"] a:nth-child(7){background:#b65b32}
+nav[aria-label="منوی اصلی"] a:nth-child(8){background:#426b91}
+nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:translateY(-2px)}
+@media(max-width:600px){
+ nav[aria-label="منوی اصلی"]{gap:7px;padding:9px 10px}
+ nav[aria-label="منوی اصلی"] a{font-size:12px;padding:8px 12px;min-height:38px}
+}
+/* بخش‌های راهنما به شکل آکاردئون برای کوتاه‌شدن صفحه */
+.info-accordion{padding:0!important;overflow:hidden;margin-block:10px}
+.info-accordion>summary{
+  list-style:none; cursor:pointer; position:relative;
+  padding:16px 20px; font-weight:800; font-size:16px;
+  color:#263b46; background:linear-gradient(100deg,#f7f2f7,#edf8f5);
+}
+.info-accordion>summary::-webkit-details-marker{display:none}
+.info-accordion>summary::after{content:"＋";float:left;color:#087f83;font-size:20px;line-height:1}
+.info-accordion[open]>summary::after{content:"−"}
+.info-accordion[open]>summary{border-bottom:1px solid #e5e9e8}
+.info-accordion .accordion-content{padding:16px 20px}
+.info-accordion .accordion-content>h2{display:none}
+.info-accordion .accordion-content p:last-child{margin-bottom:0}
+
 </style>
 
 <style id="admin-toggle-feedback">
@@ -386,15 +429,11 @@ nav{background:linear-gradient(100deg,#3e2941,#633b58 60%,#245c5a);border-bottom
       </div>
     </div>
 
-    <section id="aboutSection" class="card">
-      <h2>درباره مردیس‌شاپ</h2>
-      <p>مردیس‌شاپ فروشگاهی برای انتخاب و خرید پوشاک و کالاهای مکمل است؛ تلاش می‌کنیم تجربه‌ای ساده، شفاف و دلنشین از خرید آنلاین فراهم کنیم.</p>
+    <details id="aboutSection" class="card info-accordion"><summary>درباره مردیس‌شاپ</summary><div class="accordion-content"><p>مردیس‌شاپ فروشگاهی برای انتخاب و خرید پوشاک و کالاهای مکمل است؛ تلاش می‌کنیم تجربه‌ای ساده، شفاف و دلنشین از خرید آنلاین فراهم کنیم.</p>
       <p>گروه‌های فروشگاه با توجه به نیاز مشتریان گسترش پیدا می‌کنند؛ از پوشاک زنانه، مردانه و بچگانه تا کیف، کفش و اکسسوری. موجودی و مشخصات هر کالا در صفحه همان محصول درج خواهد شد.</p>
-    </section>
+    </div></details>
 
-    <section id="contactSection" class="card">
-      <h2>تماس با ما و پشتیبانی</h2>
-      <p>برای پرسش درباره محصولات، پیگیری سفارش یا هماهنگی خرید می‌توانید از راه‌های زیر با پشتیبانی مردیس‌شاپ در ارتباط باشید. هر دو شماره امکان تماس و پیام در واتساپ دارند.</p>
+    <details id="contactSection" class="card info-accordion"><summary>تماس با ما و پشتیبانی</summary><div class="accordion-content"><p>برای پرسش درباره محصولات، پیگیری سفارش یا هماهنگی خرید می‌توانید از راه‌های زیر با پشتیبانی مردیس‌شاپ در ارتباط باشید. هر دو شماره امکان تماس و پیام در واتساپ دارند.</p>
       <div class="info-grid">
         <div class="info-tile">
           <h3>شماره پشتیبانی اول</h3>
@@ -410,11 +449,9 @@ nav{background:linear-gradient(100deg,#3e2941,#633b58 60%,#245c5a);border-bottom
       <h3>شبکه‌های اجتماعی</h3>
       <p class="muted" id="socialLinksHint">راه‌های ارتباطی رسمی مردیس‌شاپ</p>
       <div id="socialLinksPublic" class="social-links-public" aria-live="polite"></div>
-    </section>
+    </div></details>
 
-    <section id="purchaseRules" class="card">
-      <h2>قوانین خرید</h2>
-      <ul class="policy-list">
+    <details id="purchaseRules" class="card info-accordion"><summary>قوانین خرید</summary><div class="accordion-content"><ul class="policy-list">
         <li>لطفاً پیش از ثبت سفارش، نام و مشخصات کالا، قیمت و موجودی درج‌شده در سایت را بررسی کنید.</li>
         <li>ثبت سفارش به معنی دریافت درخواست خرید است؛ سفارش پس از بررسی موجودی و هماهنگی با مشتری تأیید می‌شود.</li>
         <li>در حال حاضر پرداخت آنلاین در سایت فعال نیست. روش و زمان پرداخت پس از ثبت سفارش با مشتری هماهنگ خواهد شد.</li>
@@ -422,10 +459,10 @@ nav{background:linear-gradient(100deg,#3e2941,#633b58 60%,#245c5a);border-bottom
         <li>قیمت و موجودی نهایی سفارش بر اساس اطلاعات تأییدشده هنگام هماهنگی با پشتیبانی مشخص می‌شود.</li>
         <li>در صورت وجود ابهام درباره کالا یا سفارش، پیش از نهایی‌کردن خرید با پشتیبانی تماس بگیرید.</li>
       </ul>
-    </section>
+    </div></details>
 
-    <section id="shippingReturns" class="card">
-      <div class="shipping-intro"><span class="eyebrow">راهنمای خرید مطمئن</span><h2>شرایط ارسال و مرجوعی</h2><p>اطلاعات زیر به شما کمک می‌کند پیش از ثبت سفارش، با روند ارسال، پیگیری و درخواست بررسی کالا آشنا شوید.</p></div>
+    <details id="shippingReturns" class="card info-accordion"><summary>ارسال و مرجوعی</summary><div class="accordion-content">
+      <div class="shipping-intro"><span class="eyebrow">راهنمای خرید مطمئن</span><p>اطلاعات زیر به شما کمک می‌کند پیش از ثبت سفارش، با روند ارسال، پیگیری و درخواست بررسی کالا آشنا شوید.</p></div>
       <div class="info-grid">
         <div class="info-tile">
           <h3>ارسال سفارش</h3>
@@ -441,7 +478,7 @@ nav{background:linear-gradient(100deg,#3e2941,#633b58 60%,#245c5a);border-bottom
         </div>
       </div>
       <p class="muted">شرایط دقیق بررسی مرجوعی، امکان تعویض و هزینه‌های احتمالی با توجه به نوع کالا و مقررات مربوط، پیش از اقدام با پشتیبانی هماهنگ می‌شود. این توضیحات حقوق قانونی مصرف‌کننده را محدود نمی‌کند.</p>
-    </section>
+    </div></details>
 
     <section id="loginPanel" class="card hidden">
       <h2>ورود مدیر فروشگاه</h2>
