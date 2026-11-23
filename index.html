@@ -634,7 +634,10 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
         showDiagnostic('خطای پردازش: ' + (reason && reason.message ? reason.message : String(reason || 'نامشخص')));
       });
       window.setTimeout(function () {
-        showDiagnostic('پس از ۲۰ ثانیه هنوز پاسخ بارگذاری دریافت نشده است. این معمولاً به بارگذاری نشدن کتابخانه سایت یا معطل ماندن ارتباط با سرویس مربوط است.');
+        // فقط وقتی هشدار بده که بارگذاری محصولات واقعاً هنوز تمام نشده باشد.
+        if (!window.__mardisProductsLoaded) {
+          showDiagnostic('پس از ۲۰ ثانیه هنوز پاسخ بارگذاری دریافت نشده است. این معمولاً به بارگذاری نشدن کتابخانه سایت یا معطل ماندن ارتباط با سرویس مربوط است.');
+        }
       }, 20000);
     })();
   </script>
@@ -874,7 +877,9 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
         productCache = data || [];
         refreshCategoryControls();
         renderProducts();
+        window.__mardisProductsLoaded = true;
       } catch (error) {
+        window.__mardisProductsLoaded = true;
         console.error('Mardis public products load failed:', error);
         if (target) target.innerHTML = '<p class="notice error">دریافت محصولات انجام نشد. لطفاً صفحه را دوباره بارگذاری کنید. ' + safe(error?.message || 'خطای ارتباط با سرویس') + '</p>';
       }
