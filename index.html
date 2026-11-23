@@ -1028,7 +1028,12 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
     let activePaymentPhone = '';
     let paymentSettings = { bank_name: '', card_number: '', card_holder: '', instructions: '' };
     const PAYMENT_SETTING_KEY = 'payment_details';
-    function normalizeCardNumber(value) { return String(value || '').replace(/\\D/g, ''); }
+    function normalizeCardNumber(value) {
+      const digits = String(value || '')
+        .replace(/[۰-۹]/g, ch => String(ch.charCodeAt(0) - 1776))
+        .replace(/[٠-٩]/g, ch => String(ch.charCodeAt(0) - 1632));
+      return digits.replace(/[^0-9]/g, '');
+    }
     function renderPaymentDetails() {
       $('paymentBankName').textContent = paymentSettings.bank_name || '—';
       $('paymentCardNumber').textContent = paymentSettings.card_number || '—';
@@ -1056,7 +1061,7 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
     $('paymentSettingsForm')?.addEventListener('submit', async event => {
       event.preventDefault();
       const card = normalizeCardNumber($('paymentSettingsCard').value);
-      if (card && !/^\\d{16}$/.test(card)) { setMessage($('paymentSettingsMessage'), 'شماره کارت باید دقیقاً ۱۶ رقم باشد.', 'error'); return; }
+      if (card && card.length !== 16) { setMessage($('paymentSettingsMessage'), 'شماره کارت باید دقیقاً ۱۶ رقم باشد.', 'error'); return; }
       const settings = {
         bank_name: $('paymentSettingsBank').value.trim(),
         card_number: card,
