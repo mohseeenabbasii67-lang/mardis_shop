@@ -1681,7 +1681,7 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       pending: 'در انتظار بررسی', confirmed: 'تأیید شده', processing: 'در حال آماده‌سازی',
       shipped: 'ارسال شده', delivered: 'تحویل داده شده', cancelled: 'لغو شده'
     };
-    $('orderTrackingForm').addEventListener('submit', async event => {
+    $('orderTrackingForm')?.addEventListener('submit', async event => {
       event.preventDefault();
       const orderId = $('trackingOrderId').value.trim();
       const phone = $('trackingPhone').value.trim();
