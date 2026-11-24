@@ -417,8 +417,10 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
     <p class="confirmation-subtitle">از اعتماد شما به مردیس‌شاپ سپاسگزاریم.</p>
     <div class="confirmation-number"><small>شماره سفارش</small><strong id="confirmationOrderId">—</strong></div>
     <div id="confirmationItems" class="confirmation-items"></div>
-    <div class="confirmation-status">وضعیت سفارش: <b>در انتظار بررسی</b><br>پس از ثبت سفارش، اطلاعات پرداخت کارت‌به‌کارت را بررسی کنید. سفارش پس از تأیید مدیر وارد مرحله آماده‌سازی می‌شود.</div>
-    <section id="bankPaymentBox" class="info-tile" style="margin:14px 0">
+    <div class="confirmation-status">سفارش شما با موفقیت ثبت شد. شماره سفارش را نگه دارید؛ برای پیگیری سفارش به آن نیاز دارید. وضعیت فعلی: <b>در انتظار بررسی</b>.</div>
+    <button type="button" id="continueToPaymentButton">ادامه و مشاهده اطلاعات پرداخت</button>
+    <p id="paymentSetupNotice" class="muted hidden" aria-live="polite"></p>
+    <section id="bankPaymentBox" class="info-tile hidden" style="margin:14px 0">
       <h3>پرداخت کارت‌به‌کارت</h3>
       <p id="bankPaymentInstructions" class="muted">در حال دریافت اطلاعات پرداخت…</p>
       <p><b>بانک:</b> <span id="paymentBankName">—</span></p>
@@ -1021,9 +1023,26 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       $('confirmationItems').innerHTML = lines.map(line =>
         `<div class="confirmation-item"><span>${safe(line.name)} × ${line.quantity.toLocaleString('fa-IR')}</span><b>${money(line.subtotal)}</b></div>`
       ).join('') + `<div class="confirmation-total"><span>جمع تقریبی اقلام</span><span>${money(total)}</span></div>`;
+      $('bankPaymentBox').classList.add('hidden');
+      $('continueToPaymentButton').classList.remove('hidden');
+      $('paymentSetupNotice').classList.add('hidden');
+      $('paymentSetupNotice').textContent = '';
+      $('paymentReference').value = '';
+      $('paymentReferenceMessage').textContent = '';
       $('orderConfirmation').classList.remove('hidden');
       $('confirmationClose').focus();
     }
+    $('continueToPaymentButton').addEventListener('click', () => {
+      const cardReady = normalizeCardNumber(paymentSettings.card_number).length === 16 && Boolean(paymentSettings.bank_name && paymentSettings.card_holder);
+      if (!cardReady) {
+        $('paymentSetupNotice').textContent = 'اطلاعات کارت‌به‌کارت هنوز توسط مدیر فروشگاه تنظیم نشده است. شماره سفارش شما ثبت شده و محفوظ است؛ لطفاً برای روش پرداخت با پشتیبانی تماس بگیرید.';
+        $('paymentSetupNotice').classList.remove('hidden');
+        return;
+      }
+      $('continueToPaymentButton').classList.add('hidden');
+      $('bankPaymentBox').classList.remove('hidden');
+      $('bankPaymentBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
     let activePaymentOrderId = null;
     let activePaymentPhone = '';
     let paymentSettings = { bank_name: '', card_number: '', card_holder: '', instructions: '' };
@@ -1768,3 +1787,4 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
   </script>
 </body>
 </html>
+
