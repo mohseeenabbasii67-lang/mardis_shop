@@ -1262,8 +1262,11 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
     function updateAdminMetrics() {
       const orders=window.__mardisOrders||[], products=window.__mardisProducts||[];
       const put=(id,val)=>{const el=$(id);if(el)el.textContent=Number(val||0).toLocaleString('fa-IR');};
+      const newOrderCount=orders.filter(o=>o.status==='pending').length;
       put('adminOrdersMetric',orders.length); put('adminPendingMetric',orders.filter(o=>!['delivered','cancelled'].includes(o.status)).length);
       put('adminProductsMetric',products.length); put('adminStockMetric',products.filter(p=>Number(p.stock||0)<1).length);
+      const badge=$('adminNewOrdersBadge');
+      if(badge){badge.textContent=newOrderCount.toLocaleString('fa-IR');badge.classList.toggle('hidden',newOrderCount===0);}
     }
     function buildAdminWorkspace() {
       if(adminWorkspaceBuilt) return;
@@ -1298,7 +1301,7 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       sidebar.querySelectorAll('[data-admin-tab]').forEach(btn=>btn.addEventListener('click',()=>{
         sidebar.querySelectorAll('[data-admin-tab]').forEach(b=>b.classList.toggle('active',b===btn));
         main.querySelectorAll('[data-admin-view]').forEach(v=>v.classList.toggle('active',v.dataset.adminView===btn.dataset.adminTab));
-        if(btn.dataset.adminTab==='orders'){newOrdersUnread=0;const b=$('adminNewOrdersBadge');if(b)b.classList.add('hidden');}
+        if(btn.dataset.adminTab==='orders'){ /* شمارنده تا زمان رسیدگی به سفارش‌های در انتظار باقی می‌ماند. */ }
       }));
       $('enableBrowserAlerts').addEventListener('click',async()=>{
         if(!('Notification' in window)){adminToast('اعلان مرورگر در این مرورگر پشتیبانی نمی‌شود.');return;}
@@ -1593,7 +1596,7 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
           <h3 style="margin:0 0 8px">اطلاعات ارسال</h3>
           <div class="row">
             <label style="flex:2">کد رهگیری مرسوله<input type="text" maxlength="100" id="tracking-${safe(orderId)}" value="${safe(order?.tracking_number || '')}" placeholder="کد رهگیری پستی"></label>
-            <label style="flex:1">تاریخ ارسال<input type="date" id="shipped-${safe(orderId)}" value="${order?.shipped_at ? safe(new Date(order.shipped_at).toISOString().slice(0,10)) : ''}"></label>
+            <label style="flex:1">تاریخ ارسال (شمسی)<input type="text" inputmode="numeric" autocomplete="off" maxlength="10" id="shipped-${safe(orderId)}" value="${order?.shipped_at ? safe(isoToTehranJalali(order.shipped_at).split(' - ')[0]) : ''}" placeholder="۱۴۰۵/۰۹/۰۴"></label>
           </div>
           <button type="button" data-save-shipping="${safe(orderId)}">ذخیره اطلاعات ارسال</button>
           <p class="muted">وضعیت فعلی: ${safe(ORDER_STATUSES[order?.status] || order?.status || '—')}</p>
@@ -1612,38 +1615,56 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
 
     async function saveOrderPaymentStatus(orderId, button) {
       const status = $('payment-status-' + orderId)?.value;
-      if (!['unpaid','pending_review','paid','rejected'].includes(status)) return;
-      if (!confirm('وضعیت پرداخت این سفارش تغییر کند؟')) return;
-      button.disabled = true;
-      const { data, error } = await db.rpc('admin_update_order_payment_status', { p_order_id: orderId, p_status: status });
-      button.disabled = false;
-      if (error || data?.success !== true) {
-        setMessage($('adminMsg'), 'تغییر وضعیت پرداخت انجام نشد. فایل SQL همراه نسخه را اجرا کنید. ' + (error?.message || data?.error || ''), 'error'); return;
+      if (!['unpaid','pending_review','paid','rejected'].includes(status)) {
+        setMessage($('adminMsg'), 'وضعیت پرداخت معتبر نیست.', 'error'); return;
       }
-      setMessage($('adminMsg'), 'وضعیت پرداخت ذخیره شد.', 'success');
-      await loadOrders();
+      if (!window.confirm('وضعیت پرداخت این سفارش تغییر کند؟')) return;
+      const oldText = button.textContent;
+      button.disabled = true; button.textContent = 'در حال ذخیره…';
+      try {
+        const { data, error } = await db.rpc('admin_update_order_payment_status', {
+          p_order_id: Number(orderId), p_status: status
+        });
+        if (error || data?.success !== true) {
+          setMessage($('adminMsg'), 'تغییر وضعیت پرداخت انجام نشد: ' + (error?.message || data?.error || 'پاسخ نامعتبر از سرور'), 'error'); return;
+        }
+        setMessage($('adminMsg'), 'وضعیت پرداخت ذخیره شد.', 'success');
+        await loadOrders();
+      } catch (err) {
+        setMessage($('adminMsg'), 'ارتباط برای ذخیره وضعیت پرداخت برقرار نشد: ' + (err?.message || err), 'error');
+      } finally { button.disabled = false; button.textContent = oldText; }
     }
 
     async function saveOrderShipping(orderId, button) {
       const tracking = $('tracking-' + orderId)?.value.trim() || '';
-      const dateValue = $('shipped-' + orderId)?.value || '';
-      if (tracking && !dateValue) {
-        if (!confirm('کد رهگیری وارد شده اما تاریخ ارسال خالی است. فقط کد رهگیری ذخیره شود؟')) return;
+      const jalaliDate = $('shipped-' + orderId)?.value || '';
+      let shippedAt = null;
+      try {
+        if (jalaliDate.trim()) {
+          const normalizedDate = normalizeDigits(jalaliDate).trim();
+          if (!/^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}$/.test(normalizedDate)) {
+            throw new Error('تاریخ را به شکل ۱۴۰۵/۰۹/۰۴ وارد کنید.');
+          }
+          shippedAt = jalaliToISO(normalizedDate.replace(/[\/-]/g, '/') + ' - 12:00');
+        }
+        if (tracking && !shippedAt && !window.confirm('کد رهگیری وارد شده اما تاریخ ارسال خالی است. فقط کد رهگیری ذخیره شود؟')) return;
+        const oldText = button.textContent;
+        button.disabled = true; button.textContent = 'در حال ذخیره…';
+        try {
+          const { data, error } = await db.rpc('admin_update_order_shipping', {
+            p_order_id: Number(orderId),
+            p_tracking_number: tracking || null,
+            p_shipped_at: shippedAt
+          });
+          if (error || data?.success !== true) {
+            setMessage($('adminMsg'), 'ذخیره اطلاعات ارسال انجام نشد: ' + (error?.message || data?.error || 'پاسخ نامعتبر از سرور'), 'error'); return;
+          }
+          setMessage($('adminMsg'), 'اطلاعات ارسال سفارش ذخیره شد.', 'success');
+          await loadOrders();
+        } finally { button.disabled = false; button.textContent = oldText; }
+      } catch (err) {
+        setMessage($('adminMsg'), 'تاریخ ارسال یا ارتباط با سرور معتبر نیست: ' + (err?.message || err), 'error');
       }
-      const shippedAt = dateValue ? new Date(dateValue + 'T12:00:00+03:30').toISOString() : null;
-      button.disabled = true;
-      const { data, error } = await db.rpc('admin_update_order_shipping', {
-        p_order_id: orderId,
-        p_tracking_number: tracking || null,
-        p_shipped_at: shippedAt
-      });
-      button.disabled = false;
-      if (error || data?.success !== true) {
-        setMessage($('adminMsg'), 'ذخیره اطلاعات ارسال انجام نشد. ابتدا فایل SQL همراه نسخه جدید را در Supabase اجرا کنید. ' + (error?.message || data?.error || ''), 'error');
-        return;
-      }
-      setMessage($('adminMsg'), 'اطلاعات ارسال سفارش ذخیره شد.', 'success');
-      await loadOrders();
     }
 
     async function changeOrderStatus(orderId, status, button) {
