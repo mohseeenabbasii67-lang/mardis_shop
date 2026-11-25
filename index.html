@@ -330,6 +330,12 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
 @media(min-width:1100px){#products{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){.product,.product-media img,.product .product-actions button{transition:none}}
 
+
+    /* وضعیت رسیدگی سفارش‌ها */
+    .order-row-new{background:#fff6df!important;box-shadow:inset -4px 0 0 #e5a72d}
+    .order-new-badge{display:inline-block;background:#f4c45e;color:#503600;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:900;margin-top:5px}
+    .order-row-reviewed{background:#f2faf6!important}
+    .order-row-cancelled{background:#fff4f2!important}
 </style>
 
 <style id="admin-toggle-feedback">
@@ -1552,6 +1558,13 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       button.disabled = true;
 
       try {
+        const currentOrder = (window.__mardisOrders || []).find(o => String(o.id) === String(orderId));
+        if (currentOrder && !currentOrder.is_reviewed) {
+          const { data: reviewData, error: reviewError } = await db.rpc('admin_mark_order_reviewed', { p_order_id: Number(orderId) });
+          if (reviewError || reviewData?.success !== true) throw new Error('ثبت وضعیت بررسی سفارش انجام نشد: ' + (reviewError?.message || reviewData?.error || 'خطای نامشخص'));
+          currentOrder.is_reviewed = true;
+          currentOrder.reviewed_at = new Date().toISOString();
+        }
         const { data: items, error } = await db.from('order_items')
           .select('product_name,quantity,unit_price')
           .eq('order_id', orderId);
@@ -1602,6 +1615,20 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
           <p class="muted">وضعیت فعلی: ${safe(ORDER_STATUSES[order?.status] || order?.status || '—')}</p>
         </div>
         `;
+        if (currentOrder?.is_reviewed) {
+          const orderRow = button.closest('tr');
+          if (orderRow) {
+            orderRow.classList.remove('order-row-new');
+            orderRow.classList.add('order-row-reviewed');
+            const firstCell = orderRow.querySelector('td');
+            if (firstCell) firstCell.innerHTML = `${safe(orderId)}<br><small style="color:#16805e">بررسی شده ✓</small>`;
+          }
+          const newFilter = document.querySelector('[data-order-filter="new"]');
+          if (newFilter) {
+            const count = Math.max(0, Number((newFilter.textContent.match(/\d+/g) || ['0']).join('')) - 1);
+            newFilter.innerHTML = `بررسی‌نشده‌ها <span style="font-weight:800">(${count})</span>`;
+          }
+        }
         const shippingSaveButton = target.querySelector('[data-save-shipping]');
         if (shippingSaveButton) shippingSaveButton.addEventListener('click', () => saveOrderShipping(orderId, shippingSaveButton));
         const paymentSaveButton = target.querySelector('[data-save-payment-status]');
@@ -1697,7 +1724,7 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
 
     async function loadOrders() {
       const { data, error } = await db.from('orders')
-        .select('id,customer_name,phone,address,total_amount,status,created_at,tracking_number,shipped_at,payment_status,payment_reference,payment_submitted_at')
+        .select('id,customer_name,phone,address,total_amount,status,created_at,tracking_number,shipped_at,payment_status,payment_reference,payment_submitted_at,is_reviewed,reviewed_at')
         .order('created_at', { ascending: false });
       if (error) { $('orders').textContent = 'خطا در دریافت سفارش‌ها: ' + error.message; return; }
       const rows = data || [];
@@ -1707,13 +1734,18 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       const filter = window.__mardisOrderFilter;
       const confirmedCount = rows.filter(o => o.status === 'confirmed').length;
       const shippedCount = rows.filter(o => o.status === 'shipped').length;
+      const cancelledCount = rows.filter(o => o.status === 'cancelled').length;
+      const newCount = rows.filter(o => !o.is_reviewed && o.status !== 'cancelled').length;
+      const activeRows = rows.filter(o => o.status !== 'cancelled');
       const visibleRows = filter === 'confirmed' ? rows.filter(o => o.status === 'confirmed')
-        : filter === 'shipped' ? rows.filter(o => o.status === 'shipped') : rows;
+        : filter === 'shipped' ? rows.filter(o => o.status === 'shipped')
+        : filter === 'cancelled' ? rows.filter(o => o.status === 'cancelled')
+        : filter === 'new' ? rows.filter(o => !o.is_reviewed && o.status !== 'cancelled') : activeRows;
       const filterButton = (key, label, count) => `<button type="button" data-order-filter="${key}" class="${filter === key ? '' : 'secondary'}" aria-pressed="${filter === key}" style="margin:4px">${label} <span style="font-weight:800">(${count})</span></button>`;
-      $('orders').innerHTML = `<div class="order-filter-bar" style="display:flex;flex-wrap:wrap;gap:6px;margin:12px 0">${filterButton('all','همه سفارش‌ها',rows.length)}${filterButton('confirmed','سفارش‌های تأییدشده',confirmedCount)}${filterButton('shipped','سفارش‌های ارسالی',shippedCount)}</div>` + (visibleRows.length
+      $('orders').innerHTML = `<div class="order-filter-bar" style="display:flex;flex-wrap:wrap;gap:6px;margin:12px 0">${filterButton('all','همه سفارش‌ها',activeRows.length)}${filterButton('new','بررسی‌نشده‌ها',newCount)}${filterButton('confirmed','سفارش‌های تأییدشده',confirmedCount)}${filterButton('shipped','سفارش‌های ارسالی',shippedCount)}${filterButton('cancelled','لغوشده‌ها',cancelledCount)}</div>` + (visibleRows.length
         ? `<div style="overflow-x:auto"><table><thead><tr><th>شماره</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th><th>جزئیات و عملیات</th></tr></thead><tbody>${visibleRows.map(o => `
-          <tr>
-            <td>${safe(o.id)}</td>
+          <tr class="${o.status === 'cancelled' ? 'order-row-cancelled' : (!o.is_reviewed ? 'order-row-new' : 'order-row-reviewed')}">
+            <td>${safe(o.id)}${!o.is_reviewed && o.status !== 'cancelled' ? '<br><span class="order-new-badge">جدید · بررسی‌نشده</span>' : (o.is_reviewed ? '<br><small style="color:#16805e">بررسی شده ✓</small>' : '')}</td>
             <td>${safe(o.customer_name)}<br><small>${safe(o.phone)}</small></td>
             <td>${money(o.total_amount)}</td>
             <td>
@@ -1724,7 +1756,8 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
             </td>
             <td>${o.created_at ? new Date(o.created_at).toLocaleDateString('fa-IR') : '—'}</td>
             <td><button type="button" class="secondary" data-order-details="${safe(o.id)}">جزئیات</button>
-                <button type="button" data-save-order-status="${safe(o.id)}">ذخیره وضعیت</button></td>
+                <button type="button" data-save-order-status="${safe(o.id)}">ذخیره وضعیت</button>
+                <button type="button" class="secondary" data-delete-order="${safe(o.id)}" style="background:#fff0ee;color:#a32d22;border:1px solid #f0c6c1">حذف</button></td>
           </tr>
           <tr><td colspan="6"><div id="order-details-${safe(o.id)}" class="hidden"></div></td></tr>
         `).join('')}</tbody></table></div>`
@@ -1755,6 +1788,22 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
             return;
           }
           await changeOrderStatus(id, select.value, saveButton);
+          return;
+        }
+        const deleteButton = event.target.closest('[data-delete-order]');
+        if (deleteButton && ordersContainer.contains(deleteButton)) {
+          const id = String(deleteButton.dataset.deleteOrder || '');
+          if (!window.confirm(`سفارش شماره ${id} برای همیشه حذف شود؟ این کار قابل بازگشت نیست.`)) return;
+          deleteButton.disabled = true; deleteButton.textContent = 'در حال حذف…';
+          try {
+            const { data, error } = await db.rpc('admin_delete_order', { p_order_id: Number(id) });
+            if (error || data?.success !== true) throw new Error(error?.message || data?.error || 'پاسخ نامعتبر از سرور');
+            setMessage($('adminMsg'), `سفارش شماره ${id} حذف شد.`, 'success');
+            await loadOrders();
+          } catch (err) {
+            setMessage($('adminMsg'), 'حذف سفارش انجام نشد: ' + (err?.message || err), 'error');
+            deleteButton.disabled = false; deleteButton.textContent = 'حذف';
+          }
         }
       };
     }
