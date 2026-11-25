@@ -1703,8 +1703,15 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       const rows = data || [];
       window.__mardisOrders = rows;
       if (typeof updateAdminMetrics === 'function') updateAdminMetrics();
-      $('orders').innerHTML = rows.length
-        ? `<div style="overflow-x:auto"><table><thead><tr><th>شماره</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th><th>جزئیات و عملیات</th></tr></thead><tbody>${rows.map(o => `
+      window.__mardisOrderFilter = window.__mardisOrderFilter || 'all';
+      const filter = window.__mardisOrderFilter;
+      const confirmedCount = rows.filter(o => o.status === 'confirmed').length;
+      const shippedCount = rows.filter(o => o.status === 'shipped').length;
+      const visibleRows = filter === 'confirmed' ? rows.filter(o => o.status === 'confirmed')
+        : filter === 'shipped' ? rows.filter(o => o.status === 'shipped') : rows;
+      const filterButton = (key, label, count) => `<button type="button" data-order-filter="${key}" class="${filter === key ? '' : 'secondary'}" aria-pressed="${filter === key}" style="margin:4px">${label} <span style="font-weight:800">(${count})</span></button>`;
+      $('orders').innerHTML = `<div class="order-filter-bar" style="display:flex;flex-wrap:wrap;gap:6px;margin:12px 0">${filterButton('all','همه سفارش‌ها',rows.length)}${filterButton('confirmed','سفارش‌های تأییدشده',confirmedCount)}${filterButton('shipped','سفارش‌های ارسالی',shippedCount)}</div>` + (visibleRows.length
+        ? `<div style="overflow-x:auto"><table><thead><tr><th>شماره</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th><th>جزئیات و عملیات</th></tr></thead><tbody>${visibleRows.map(o => `
           <tr>
             <td>${safe(o.id)}</td>
             <td>${safe(o.customer_name)}<br><small>${safe(o.phone)}</small></td>
@@ -1721,11 +1728,17 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
           </tr>
           <tr><td colspan="6"><div id="order-details-${safe(o.id)}" class="hidden"></div></td></tr>
         `).join('')}</tbody></table></div>`
-        : 'هنوز سفارشی ثبت نشده است.';
+        : (rows.length ? 'در این دسته‌بندی سفارشی وجود ندارد.' : 'هنوز سفارشی ثبت نشده است.');
 
       // Delegated events: reliable even after the orders table is re-rendered.
       const ordersContainer = $('orders');
       ordersContainer.onclick = async (event) => {
+        const filterButton = event.target.closest('[data-order-filter]');
+        if (filterButton && ordersContainer.contains(filterButton)) {
+          window.__mardisOrderFilter = filterButton.dataset.orderFilter || 'all';
+          await loadOrders();
+          return;
+        }
         const detailsButton = event.target.closest('[data-order-details]');
         if (detailsButton && ordersContainer.contains(detailsButton)) {
           try { await showOrderDetails(detailsButton.dataset.orderDetails, detailsButton); }
