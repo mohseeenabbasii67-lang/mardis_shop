@@ -1651,19 +1651,27 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
         setMessage($('adminMsg'), 'وضعیت انتخاب‌شده معتبر نیست.', 'error');
         return;
       }
-      if (!confirm(`وضعیت سفارش به «${ORDER_STATUSES[status]}» تغییر کند؟`)) return;
+      if (!window.confirm(`وضعیت سفارش به «${ORDER_STATUSES[status]}» تغییر کند؟`)) return;
+      const oldText = button.textContent;
       button.disabled = true;
-      const { data, error } = await db.rpc('admin_update_order_status', {
-        p_order_id: orderId,
-        p_status: status
-      });
-      button.disabled = false;
-      if (error || data?.success !== true) {
-        setMessage($('adminMsg'), 'تغییر وضعیت انجام نشد. ابتدا دستور SQL همراه فایل را در Supabase اجرا کنید. ' + (error?.message || data?.error || ''), 'error');
-        return;
+      button.textContent = 'در حال ذخیره…';
+      try {
+        const { data, error } = await db.rpc('admin_update_order_status', {
+          p_order_id: Number(orderId),
+          p_status: status
+        });
+        if (error || data?.success !== true) {
+          setMessage($('adminMsg'), 'تغییر وضعیت انجام نشد: ' + (error?.message || data?.error || 'پاسخ نامعتبر از سرور'), 'error');
+          return;
+        }
+        setMessage($('adminMsg'), 'وضعیت سفارش با موفقیت تغییر کرد.', 'success');
+        await loadOrders();
+      } catch (err) {
+        setMessage($('adminMsg'), 'ارتباط برای ذخیره وضعیت برقرار نشد: ' + (err?.message || err), 'error');
+      } finally {
+        button.disabled = false;
+        button.textContent = oldText;
       }
-      setMessage($('adminMsg'), 'وضعیت سفارش با موفقیت تغییر کرد.', 'success');
-      await loadOrders();
     }
 
     async function loadOrders() {
@@ -1694,16 +1702,27 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
         `).join('')}</tbody></table></div>`
         : 'هنوز سفارشی ثبت نشده است.';
 
-      $('orders').querySelectorAll('[data-order-details]').forEach(button => {
-        button.addEventListener('click', () => showOrderDetails(button.dataset.orderDetails, button));
-      });
-      $('orders').querySelectorAll('[data-save-order-status]').forEach(button => {
-        button.addEventListener('click', () => {
-          const id = button.dataset.saveOrderStatus;
-          const select = $('orders').querySelector('[data-order-status="' + id + '"]');
-          if (select) changeOrderStatus(id, select.value, button);
-        });
-      });
+      // Delegated events: reliable even after the orders table is re-rendered.
+      const ordersContainer = $('orders');
+      ordersContainer.onclick = async (event) => {
+        const detailsButton = event.target.closest('[data-order-details]');
+        if (detailsButton && ordersContainer.contains(detailsButton)) {
+          try { await showOrderDetails(detailsButton.dataset.orderDetails, detailsButton); }
+          catch (err) { setMessage($('adminMsg'), 'نمایش جزئیات سفارش انجام نشد: ' + (err?.message || err), 'error'); }
+          return;
+        }
+        const saveButton = event.target.closest('[data-save-order-status]');
+        if (saveButton && ordersContainer.contains(saveButton)) {
+          const id = String(saveButton.dataset.saveOrderStatus || '');
+          const select = Array.from(ordersContainer.querySelectorAll('[data-order-status]'))
+            .find(el => String(el.dataset.orderStatus) === id);
+          if (!select) {
+            setMessage($('adminMsg'), 'فهرست وضعیت این سفارش پیدا نشد. صفحه را تازه‌سازی و دوباره امتحان کنید.', 'error');
+            return;
+          }
+          await changeOrderStatus(id, select.value, saveButton);
+        }
+      };
     }
 
     const TRACKING_ORDER_STATUS_LABELS = {
