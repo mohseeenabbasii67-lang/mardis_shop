@@ -1274,7 +1274,7 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       const put=(id,val)=>{const el=$(id);if(el)el.textContent=Number(val||0).toLocaleString('fa-IR');};
       const newOrderCount=orders.filter(o=>o.status==='pending').length;
       put('adminOrdersMetric',orders.length); put('adminPendingMetric',orders.filter(o=>!['delivered','cancelled'].includes(o.status)).length);
-      put('adminProductsMetric',products.length); put('adminStockMetric',products.filter(p=>Number(p.stock||0)<1).length);
+      put('adminProductsMetric',products.length); put('adminStockMetric',products.filter(p=>Number(p.stock||0)<1).length); put('adminLowStockMetric',products.filter(p=>!p.is_unique&&Number(p.stock||0)>0&&Number(p.stock||0)<=3).length);
       const badge=$('adminNewOrdersBadge');
       if(badge){badge.textContent=newOrderCount.toLocaleString('fa-IR');badge.classList.toggle('hidden',newOrderCount===0);}
     }
@@ -1308,14 +1308,70 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       holder.innerHTML=rows.length?`<div style="overflow-x:auto"><table class="admin-data-table"><thead><tr><th>مشتری</th><th>شماره تماس</th><th>تعداد سفارش</th><th>ارزش سفارش‌های ثبت‌شده</th><th>آخرین سفارش</th></tr></thead><tbody>${rows.map(c=>`<tr><td>${safe(c.name)}</td><td dir="ltr">${safe(c.phone)}</td><td>${c.count.toLocaleString('fa-IR')}</td><td>${money(c.total)}</td><td>${c.last?new Date(c.last).toLocaleDateString('fa-IR'):'—'}</td></tr>`).join('')}</tbody></table></div>`:'مشتری‌ای با این مشخصات پیدا نشد.';
     }
     async function askMardisAI(){
-      const input=$('mardisAiQuestion'),button=$('mardisAiAsk'),answer=$('mardisAiAnswer');const question=String(input?.value||'').trim();if(!question){adminToast('ابتدا سؤال خود را بنویسید.');return;}
-      button.disabled=true;answer.textContent='در حال دریافت پاسخ…';
-      try{const {data:{session}}=await db.auth.getSession();if(!session?.access_token)throw new Error('نشست مدیر معتبر نیست؛ دوباره وارد پنل شوید.');
+      const input=$('mardisAiQuestion'),button=$('mardisAiAsk'),answer=$('mardisAiAnswer');
+      const question=String(input?.value||'').trim();
+      if(!question){adminToast('ابتدا سؤال خود را بنویسید.');return;}
+      button.disabled=true;answer.textContent='در حال تحلیل اطلاعات فروشگاه…';
+      try{
         const orders=window.__mardisOrders||[],products=window.__mardisProducts||[],items=window.__mardisOrderItems||[];
-        const payload={question,analytics:{orders_count:orders.length,active_orders:orders.filter(o=>!['delivered','cancelled'].includes(o.status)).length,cancelled_orders:orders.filter(o=>o.status==='cancelled').length,order_value:orders.reduce((n,o)=>n+mardisOrderRevenue(o),0),pending_payment_count:orders.filter(o=>['pending_review','pending'].includes(o.payment_status)).length,product_count:products.length,out_of_stock:products.filter(p=>Number(p.stock||0)<1).length,low_stock:products.filter(p=>!p.is_unique&&Number(p.stock||0)>0&&Number(p.stock||0)<=3).length,top_products:(()=>{const m=new Map();items.forEach(i=>m.set(i.product_name,(m.get(i.product_name)||0)+Number(i.quantity||0)));return [...m.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5).map(([name,quantity])=>({name,quantity}));})()}};
-        const response=await fetch(`${SUPABASE_URL}/functions/v1/mardis-ai-assistant`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${session.access_token}`},body:JSON.stringify(payload)});
-        const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||`خطای سرویس (${response.status})`);answer.textContent=String(result.answer||'پاسخی دریافت نشد.');
-      }catch(error){answer.textContent='اتصال دستیار انجام نشد: '+(error?.message||error)+'\n\nمطمئن شوید تابع mardis-ai-assistant در Supabase منتشر شده و Secretهای سرویس تنظیم شده‌اند.';}finally{button.disabled=false;}
+        const now=new Date(), startToday=new Date(now);startToday.setHours(0,0,0,0);
+        const weekStart=new Date(startToday);weekStart.setDate(weekStart.getDate()-6);
+        const monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+        const valid=orders.filter(o=>o.status!=='cancelled');
+        const sum=list=>list.reduce((n,o)=>n+mardisOrderRevenue(o),0);
+        const todayOrders=orders.filter(o=>new Date(o.created_at)>=startToday);
+        const todaySales=sum(valid.filter(o=>new Date(o.created_at)>=startToday));
+        const weekSales=sum(valid.filter(o=>new Date(o.created_at)>=weekStart));
+        const monthSales=sum(valid.filter(o=>new Date(o.created_at)>=monthStart));
+        const pendingPayments=orders.filter(o=>['pending_review','pending'].includes(o.payment_status));
+        const low=products.filter(p=>!p.is_unique&&Number(p.stock||0)>0&&Number(p.stock||0)<=3);
+        const out=products.filter(p=>Number(p.stock||0)<1);
+        const customerCount=new Set(orders.map(o=>String(o.phone||'').replace(/\D/g,'')).filter(Boolean)).size;
+        const topMap=new Map();
+        const validIds=new Set(valid.map(o=>String(o.id)));
+        items.filter(i=>validIds.has(String(i.order_id))).forEach(i=>{
+          const name=String(i.product_name||'محصول');
+          const old=topMap.get(name)||0;topMap.set(name,old+Number(i.quantity||0));
+        });
+        const top=[...topMap.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5);
+        const q=question.toLowerCase();
+        const lines=[];
+        const add=(label,value)=>lines.push('• '+label+'：'+value);
+        const asksStock=/موجود|انبار|کمبود|تمام|ناموجود/.test(q);
+        const asksTop=/پرفروش|محبوب|فروش.*محصول|محصول.*فروش/.test(q);
+        const asksCustomer=/مشتری|crm|خریدار/.test(q);
+        const asksPayment=/پرداخت|واریز|تأیید|تایید/.test(q);
+        const asksSales=/فروش|درآمد|مبلغ|سفارش|گزارش|وضعیت/.test(q);
+        if(asksStock){
+          add('محصولات کم‌موجود (۳ عدد یا کمتر)',low.length?low.map(p=>`${p.name} (${Number(p.stock||0)})`).join('، '):'موردی نیست');
+          add('محصولات ناموجود',out.length?out.map(p=>p.name).join('، '):'موردی نیست');
+        }
+        if(asksTop||(!asksStock&&!asksCustomer&&!asksPayment)){
+          add('محصولات پرفروش',top.length?top.map(([n,c])=>`${n} (${c} عدد)`).join('، '):'هنوز دادهٔ قلم سفارش در دسترس نیست');
+        }
+        if(asksCustomer){
+          add('مشتریان یکتا',customerCount.toLocaleString('fa-IR'));
+          add('توضیح','خلاصه مشتریان بر اساس شماره تماس سفارش‌ها محاسبه می‌شود.');
+        }
+        if(asksPayment){
+          add('پرداخت‌های در انتظار بررسی',pendingPayments.length.toLocaleString('fa-IR'));
+          add('یادآوری','وضعیت پرداخت قطعی باید با بررسی دستی رسید/تراکنش تأیید شود.');
+        }
+        if(asksSales||(!asksStock&&!asksTop&&!asksCustomer&&!asksPayment)){
+          add('مبلغ سفارش‌های امروز',money(todaySales));
+          add('مبلغ سفارش‌های ۷ روز اخیر',money(weekSales));
+          add('مبلغ سفارش‌های ماه جاری',money(monthSales));
+          add('تعداد سفارش‌های امروز',todayOrders.length.toLocaleString('fa-IR'));
+          add('کل سفارش‌ها',orders.length.toLocaleString('fa-IR'));
+          add('سفارش‌های لغوشده',orders.filter(o=>o.status==='cancelled').length.toLocaleString('fa-IR'));
+        }
+        lines.push('');
+        lines.push('این گزارش با محاسبات داخلی و بدون ارسال اطلاعات به سرویس خارجی ساخته شده است.');
+        lines.push('مبالغ، مجموع سفارش‌های غیرلغوشده‌اند و لزوماً معادل مبالغ پرداخت‌شده نیستند.');
+        answer.textContent=lines.join('\n');
+      }catch(error){
+        answer.textContent='تحلیل اطلاعات انجام نشد: '+(error?.message||error);
+      }finally{button.disabled=false;}
     }
     async function loadMardisAnalyticsItems(){
       const {data,error}=await db.from('order_items').select('order_id,product_name,quantity,unit_price');
@@ -1333,12 +1389,12 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       const top=document.createElement('div'); top.className='admin-topline'; top.innerHTML='<div><h2>پنل مدیریت مردیس‌شاپ</h2><p>مدیریت فروشگاه، سفارش‌ها و ویترین در یک نگاه</p></div><div class="admin-alert-tools"><span id="adminRealtimeStatus" class="admin-live">در حال اتصال اعلان زنده…</span><button type="button" id="enableBrowserAlerts" class="secondary">فعال‌سازی اعلان مرورگر</button></div>';
       main.appendChild(top);
       const dashboard=document.createElement('section'); dashboard.className='admin-view active'; dashboard.dataset.adminView='dashboard';
-      dashboard.innerHTML='<div class="admin-stats"><div class="admin-stat"><span>کل سفارش‌ها</span><strong id="adminOrdersMetric">۰</strong></div><div class="admin-stat"><span>سفارش‌های در جریان</span><strong id="adminPendingMetric">۰</strong></div><div class="admin-stat"><span>تعداد محصولات</span><strong id="adminProductsMetric">۰</strong></div><div class="admin-stat"><span>محصولات ناموجود</span><strong id="adminStockMetric">۰</strong></div></div><div class="admin-analytics-grid"><div class="admin-analytics-card"><span>مبلغ سفارش‌های امروز</span><strong id="mardisSalesToday">۰ تومان</strong></div><div class="admin-analytics-card"><span>مبلغ سفارش‌های ۷ روز اخیر</span><strong id="mardisSalesWeek">۰ تومان</strong></div><div class="admin-analytics-card"><span>مبلغ سفارش‌های ماه جاری</span><strong id="mardisSalesMonth">۰ تومان</strong></div><div class="admin-analytics-card"><span>سفارش‌های امروز</span><strong id="mardisOrdersToday">۰</strong></div><div class="admin-analytics-card"><span>مشتریان یکتا</span><strong id="mardisCustomerCount">۰</strong></div><div class="admin-analytics-card"><span>پرداخت‌های در انتظار بررسی</span><strong id="mardisPaymentsPending">۰</strong></div></div><div class="admin-panel-card"><h3>روند مبلغ سفارش‌های ۷ روز اخیر</h3><div id="mardisSalesChart" class="admin-chart"><p class="muted">در حال آماده‌سازی نمودار…</p></div></div><div class="admin-panel-card"><h3>محصولات پرفروش</h3><div id="mardisTopProducts" class="muted">پس از دریافت اطلاعات سفارش‌ها نمایش داده می‌شود.</div></div><div class="admin-stat"><span>سفارش‌های جدید دریافت‌شده در این نشست</span><strong id="adminNewOrderMetric">۰</strong><p class="muted">برای دریافت اعلان زنده، صفحه پنل باید باز باشد و قابلیت Realtime جدول orders در Supabase فعال باشد.</p></div>';
+      dashboard.innerHTML='<div class="admin-stats"><div class="admin-stat"><span>کل سفارش‌ها</span><strong id="adminOrdersMetric">۰</strong></div><div class="admin-stat"><span>سفارش‌های در جریان</span><strong id="adminPendingMetric">۰</strong></div><div class="admin-stat"><span>تعداد محصولات</span><strong id="adminProductsMetric">۰</strong></div><div class="admin-stat"><span>محصولات ناموجود</span><strong id="adminStockMetric">۰</strong></div><div class="admin-stat"><span>محصولات کم‌موجود</span><strong id="adminLowStockMetric">۰</strong></div></div><div class="admin-analytics-grid"><div class="admin-analytics-card"><span>مبلغ سفارش‌های امروز</span><strong id="mardisSalesToday">۰ تومان</strong></div><div class="admin-analytics-card"><span>مبلغ سفارش‌های ۷ روز اخیر</span><strong id="mardisSalesWeek">۰ تومان</strong></div><div class="admin-analytics-card"><span>مبلغ سفارش‌های ماه جاری</span><strong id="mardisSalesMonth">۰ تومان</strong></div><div class="admin-analytics-card"><span>سفارش‌های امروز</span><strong id="mardisOrdersToday">۰</strong></div><div class="admin-analytics-card"><span>مشتریان یکتا</span><strong id="mardisCustomerCount">۰</strong></div><div class="admin-analytics-card"><span>پرداخت‌های در انتظار بررسی</span><strong id="mardisPaymentsPending">۰</strong></div></div><div class="admin-panel-card"><h3>روند مبلغ سفارش‌های ۷ روز اخیر</h3><div id="mardisSalesChart" class="admin-chart"><p class="muted">در حال آماده‌سازی نمودار…</p></div></div><div class="admin-panel-card"><h3>محصولات پرفروش</h3><div id="mardisTopProducts" class="muted">پس از دریافت اطلاعات سفارش‌ها نمایش داده می‌شود.</div></div><div class="admin-stat"><span>سفارش‌های جدید دریافت‌شده در این نشست</span><strong id="adminNewOrderMetric">۰</strong><p class="muted">برای دریافت اعلان زنده، صفحه پنل باید باز باشد و قابلیت Realtime جدول orders در Supabase فعال باشد.</p></div>';
       main.appendChild(dashboard);
       const views={orders:document.createElement('section'),customers:document.createElement('section'),ai:document.createElement('section'),products:document.createElement('section'),settings:document.createElement('section')};
       Object.entries(views).forEach(([key,el])=>{el.className='admin-view';el.dataset.adminView=key;main.appendChild(el);});
       views.customers.innerHTML='<div class="admin-panel-card"><h3>مدیریت ارتباط با مشتریان</h3><p class="muted">خلاصه خرید هر مشتری بر اساس شماره تماس سفارش‌ها محاسبه می‌شود.</p><div class="admin-customer-search"><input id="mardisCustomerSearch" type="search" placeholder="جست‌وجو با نام یا شماره تماس"></div><div id="mardisCustomersTable">در حال آماده‌سازی اطلاعات مشتریان…</div></div>';
-      views.ai.innerHTML='<div class="admin-panel-card"><h3>دستیار هوشمند مردیس</h3><p class="muted">درباره فروش، سفارش‌ها، موجودی و عملکرد محصولات سؤال بپرسید.</p><div class="admin-ai-box"><textarea id="mardisAiQuestion" maxlength="1200" placeholder="مثلاً: وضعیت فروش این ماه چطور بوده و چه محصولاتی نیاز به توجه دارند؟"></textarea><button type="button" id="mardisAiAsk">پرسیدن از دستیار</button><div id="mardisAiAnswer" class="admin-ai-answer" aria-live="polite">برای فعال شدن دستیار، ابتدا تابع امن Edge Function را طبق راهنمای همراه فایل در Supabase منتشر کنید.</div><p class="admin-ai-note">اطلاعات هویتی مشتریان برای مدل هوش مصنوعی ارسال نمی‌شود. کلید API فقط باید در Secretهای سمت سرور ذخیره شود.</p></div></div>';
+      views.ai.innerHTML='<div class="admin-panel-card"><h3>دستیار هوشمند مردیس</h3><p class="muted">درباره فروش، سفارش‌ها، موجودی و عملکرد محصولات سؤال بپرسید.</p><div class="admin-ai-box"><textarea id="mardisAiQuestion" maxlength="1200" placeholder="مثلاً: وضعیت فروش این ماه چطور بوده و چه محصولاتی نیاز به توجه دارند؟"></textarea><button type="button" id="mardisAiAsk">پرسیدن از دستیار</button><div id="mardisAiAnswer" class="admin-ai-answer" aria-live="polite">دستیار تحلیلی داخلی آماده است؛ بدون کلید API و بدون ارسال داده به سرویس خارجی.</div><p class="admin-ai-note">این دستیار با آمار موجود فروشگاه تحلیل‌های قاعده‌محور می‌سازد و به API خارجی متصل نیست.</p></div></div>';
       cards.forEach(card=>{
         const title=(card.querySelector('h2')?.textContent||'').trim();
         let target='settings';
