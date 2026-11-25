@@ -336,6 +336,10 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
     .order-new-badge{display:inline-block;background:#f4c45e;color:#503600;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:900;margin-top:5px}
     .order-row-reviewed{background:#f2faf6!important}
     .order-row-cancelled{background:#fff4f2!important}
+
+/* تحلیل فروش، ارتباط مشتری و دستیار هوشمند */
+.admin-analytics-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}.admin-analytics-card,.admin-panel-card{background:#fff;border:1px solid #eee5eb;border-radius:16px;padding:16px;box-shadow:0 5px 18px #39253d0a}.admin-analytics-card span{display:block;color:#766a73;font-size:13px}.admin-analytics-card strong{display:block;font-size:22px;margin-top:8px;color:#432e43}.admin-panel-card{margin-top:14px}.admin-panel-card h3{margin:0 0 12px}.admin-data-table{width:100%;border-collapse:collapse;min-width:520px}.admin-data-table th,.admin-data-table td{padding:10px;border-bottom:1px solid #f0eaf0;text-align:right;font-size:13px}.admin-data-table th{background:#fbf7fa;color:#59465a}.admin-chart{display:flex;align-items:end;gap:10px;height:150px;padding:12px 4px 0;overflow:hidden}.admin-chart-col{flex:1;min-width:24px;display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:6px}.admin-chart-bar{width:min(100%,32px);min-height:3px;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,#0b7d80,#633b58)}.admin-chart-col small{font-size:10px;color:#766a73;white-space:nowrap}.admin-ai-box{display:grid;gap:10px}.admin-ai-box textarea{width:100%;min-height:82px;border:1px solid #ded2dc;border-radius:12px;padding:12px;font:inherit;resize:vertical}.admin-ai-answer{white-space:pre-wrap;line-height:1.9;background:#f8f4f7;border-radius:12px;padding:13px;min-height:48px}.admin-ai-note{font-size:12px;color:#786c76}.admin-customer-search{max-width:360px;margin:8px 0 12px}.admin-customer-search input{width:100%;padding:10px;border:1px solid #ded2dc;border-radius:10px;font:inherit}
+@media(max-width:800px){.admin-analytics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-chart{gap:5px}}
 </style>
 
 <style id="admin-toggle-feedback">
@@ -1274,21 +1278,67 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       const badge=$('adminNewOrdersBadge');
       if(badge){badge.textContent=newOrderCount.toLocaleString('fa-IR');badge.classList.toggle('hidden',newOrderCount===0);}
     }
+    function mardisDateKey(date){const d=new Date(date);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+    function mardisOrderRevenue(order){return order.status==='cancelled'?0:Number(order.total_amount||0);}
+    function updateMardisAnalytics(){
+      const orders=window.__mardisOrders||[], products=window.__mardisProducts||[], items=window.__mardisOrderItems||[];
+      const now=new Date(), today=mardisDateKey(now), month=now.getMonth(), year=now.getFullYear();
+      const weekStart=new Date(now);weekStart.setHours(0,0,0,0);weekStart.setDate(weekStart.getDate()-6);
+      const valid=orders.filter(o=>o.status!=='cancelled');
+      const sum=list=>list.reduce((n,o)=>n+mardisOrderRevenue(o),0);
+      const set=(id,value)=>{const el=$(id);if(el)el.textContent=value;};
+      set('mardisSalesToday',money(sum(valid.filter(o=>mardisDateKey(o.created_at)===today))));
+      set('mardisSalesWeek',money(sum(valid.filter(o=>new Date(o.created_at)>=weekStart))));
+      set('mardisSalesMonth',money(sum(valid.filter(o=>{const d=new Date(o.created_at);return d.getMonth()===month&&d.getFullYear()===year;}))));
+      set('mardisOrdersToday',orders.filter(o=>mardisDateKey(o.created_at)===today).length.toLocaleString('fa-IR'));
+      set('mardisPaymentsPending',orders.filter(o=>['pending_review','pending'].includes(o.payment_status)).length.toLocaleString('fa-IR'));
+      const customers=new Set(orders.map(o=>String(o.phone||'').replace(/\D/g,'')).filter(Boolean));
+      set('mardisCustomerCount',customers.size.toLocaleString('fa-IR'));
+      const days=[];for(let n=6;n>=0;n--){const d=new Date(now);d.setDate(d.getDate()-n);const key=mardisDateKey(d);days.push({key,label:d.toLocaleDateString('fa-IR',{weekday:'short'}),value:sum(valid.filter(o=>mardisDateKey(o.created_at)===key))});}
+      const max=Math.max(1,...days.map(d=>d.value));const chart=$('mardisSalesChart');if(chart)chart.innerHTML=days.map(d=>`<div class="admin-chart-col" title="${safe(d.key)} · ${safe(money(d.value))}"><div class="admin-chart-bar" style="height:${Math.max(3,Math.round(d.value/max*100))}%"></div><small>${safe(d.label)}</small></div>`).join('');
+      const activeOrderIds=new Set(valid.map(o=>String(o.id)));const totals=new Map();items.filter(i=>activeOrderIds.has(String(i.order_id))).forEach(i=>{const name=String(i.product_name||'محصول');const old=totals.get(name)||{qty:0,revenue:0};old.qty+=Number(i.quantity||0);old.revenue+=Number(i.quantity||0)*Number(i.unit_price||0);totals.set(name,old);});
+      const top=[...totals.entries()].sort((a,b)=>b[1].qty-a[1].qty).slice(0,5);const topBox=$('mardisTopProducts');if(topBox)topBox.innerHTML=top.length?`<div style="overflow-x:auto"><table class="admin-data-table"><thead><tr><th>محصول</th><th>تعداد فروش</th><th>مبلغ اقلام</th></tr></thead><tbody>${top.map(([name,v])=>`<tr><td>${safe(name)}</td><td>${v.qty.toLocaleString('fa-IR')}</td><td>${money(v.revenue)}</td></tr>`).join('')}</tbody></table></div>`:'هنوز قلم سفارشی برای تحلیل ثبت نشده است.';
+      renderMardisCustomers();
+    }
+    function renderMardisCustomers(){
+      const holder=$('mardisCustomersTable');if(!holder)return;
+      const orders=window.__mardisOrders||[], groups=new Map();
+      orders.forEach(o=>{const phone=String(o.phone||'').trim();if(!phone)return;const key=phone.replace(/\D/g,'');if(!key)return;const c=groups.get(key)||{name:o.customer_name||'مشتری',phone,count:0,total:0,last:null};c.count++;c.total+=mardisOrderRevenue(o);if(!c.last||new Date(o.created_at)>new Date(c.last))c.last=o.created_at;if(o.customer_name)c.name=o.customer_name;groups.set(key,c);});
+      const q=String($('mardisCustomerSearch')?.value||'').trim().toLowerCase();const rows=[...groups.values()].filter(c=>(c.name+' '+c.phone).toLowerCase().includes(q)).sort((a,b)=>b.total-a.total);
+      holder.innerHTML=rows.length?`<div style="overflow-x:auto"><table class="admin-data-table"><thead><tr><th>مشتری</th><th>شماره تماس</th><th>تعداد سفارش</th><th>ارزش سفارش‌های ثبت‌شده</th><th>آخرین سفارش</th></tr></thead><tbody>${rows.map(c=>`<tr><td>${safe(c.name)}</td><td dir="ltr">${safe(c.phone)}</td><td>${c.count.toLocaleString('fa-IR')}</td><td>${money(c.total)}</td><td>${c.last?new Date(c.last).toLocaleDateString('fa-IR'):'—'}</td></tr>`).join('')}</tbody></table></div>`:'مشتری‌ای با این مشخصات پیدا نشد.';
+    }
+    async function askMardisAI(){
+      const input=$('mardisAiQuestion'),button=$('mardisAiAsk'),answer=$('mardisAiAnswer');const question=String(input?.value||'').trim();if(!question){adminToast('ابتدا سؤال خود را بنویسید.');return;}
+      button.disabled=true;answer.textContent='در حال دریافت پاسخ…';
+      try{const {data:{session}}=await db.auth.getSession();if(!session?.access_token)throw new Error('نشست مدیر معتبر نیست؛ دوباره وارد پنل شوید.');
+        const orders=window.__mardisOrders||[],products=window.__mardisProducts||[],items=window.__mardisOrderItems||[];
+        const payload={question,analytics:{orders_count:orders.length,active_orders:orders.filter(o=>!['delivered','cancelled'].includes(o.status)).length,cancelled_orders:orders.filter(o=>o.status==='cancelled').length,order_value:orders.reduce((n,o)=>n+mardisOrderRevenue(o),0),pending_payment_count:orders.filter(o=>['pending_review','pending'].includes(o.payment_status)).length,product_count:products.length,out_of_stock:products.filter(p=>Number(p.stock||0)<1).length,low_stock:products.filter(p=>!p.is_unique&&Number(p.stock||0)>0&&Number(p.stock||0)<=3).length,top_products:(()=>{const m=new Map();items.forEach(i=>m.set(i.product_name,(m.get(i.product_name)||0)+Number(i.quantity||0)));return [...m.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5).map(([name,quantity])=>({name,quantity}));})()}};
+        const response=await fetch(`${SUPABASE_URL}/functions/v1/mardis-ai-assistant`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${session.access_token}`},body:JSON.stringify(payload)});
+        const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||`خطای سرویس (${response.status})`);answer.textContent=String(result.answer||'پاسخی دریافت نشد.');
+      }catch(error){answer.textContent='اتصال دستیار انجام نشد: '+(error?.message||error)+'\n\nمطمئن شوید تابع mardis-ai-assistant در Supabase منتشر شده و Secretهای سرویس تنظیم شده‌اند.';}finally{button.disabled=false;}
+    }
+    async function loadMardisAnalyticsItems(){
+      const {data,error}=await db.from('order_items').select('order_id,product_name,quantity,unit_price');
+      if(error){console.warn('Mardis analytics items unavailable:',error.message);window.__mardisOrderItems=[];}else window.__mardisOrderItems=data||[];
+      updateMardisAnalytics();
+    }
     function buildAdminWorkspace() {
       if(adminWorkspaceBuilt) return;
       const panel=$('adminPanel'); if(!panel) return;
       const cards=[...panel.querySelectorAll(':scope > .card')];
       const header=cards.shift(); if(!header) return;
       const sidebar=document.createElement('aside'); sidebar.className='admin-sidebar';
-      sidebar.innerHTML='<div class="admin-brand">✦ مدیریت مردیس</div><button type="button" data-admin-tab="dashboard" class="active">نمای کلی</button><button type="button" data-admin-tab="orders">سفارش‌ها <span id="adminNewOrdersBadge" class="admin-count hidden">0</span></button><button type="button" data-admin-tab="products">محصولات و موجودی</button><button type="button" data-admin-tab="settings">تنظیمات فروشگاه</button>';
+      sidebar.innerHTML='<div class="admin-brand">✦ مدیریت مردیس</div><button type="button" data-admin-tab="dashboard" class="active">نمای کلی</button><button type="button" data-admin-tab="orders">سفارش‌ها <span id="adminNewOrdersBadge" class="admin-count hidden">0</span></button><button type="button" data-admin-tab="customers">مشتریان (CRM)</button><button type="button" data-admin-tab="ai">دستیار هوشمند</button><button type="button" data-admin-tab="products">محصولات و موجودی</button><button type="button" data-admin-tab="settings">تنظیمات فروشگاه</button>';
       const main=document.createElement('div'); main.className='admin-main';
       const top=document.createElement('div'); top.className='admin-topline'; top.innerHTML='<div><h2>پنل مدیریت مردیس‌شاپ</h2><p>مدیریت فروشگاه، سفارش‌ها و ویترین در یک نگاه</p></div><div class="admin-alert-tools"><span id="adminRealtimeStatus" class="admin-live">در حال اتصال اعلان زنده…</span><button type="button" id="enableBrowserAlerts" class="secondary">فعال‌سازی اعلان مرورگر</button></div>';
       main.appendChild(top);
       const dashboard=document.createElement('section'); dashboard.className='admin-view active'; dashboard.dataset.adminView='dashboard';
-      dashboard.innerHTML='<div class="admin-stats"><div class="admin-stat"><span>کل سفارش‌ها</span><strong id="adminOrdersMetric">۰</strong></div><div class="admin-stat"><span>سفارش‌های در جریان</span><strong id="adminPendingMetric">۰</strong></div><div class="admin-stat"><span>تعداد محصولات</span><strong id="adminProductsMetric">۰</strong></div><div class="admin-stat"><span>محصولات ناموجود</span><strong id="adminStockMetric">۰</strong></div></div><div class="admin-stat"><span>سفارش‌های جدید دریافت‌شده در این نشست</span><strong id="adminNewOrderMetric">۰</strong><p class="muted">برای دریافت اعلان زنده، صفحه پنل باید باز باشد و قابلیت Realtime جدول orders در Supabase فعال باشد.</p></div>';
+      dashboard.innerHTML='<div class="admin-stats"><div class="admin-stat"><span>کل سفارش‌ها</span><strong id="adminOrdersMetric">۰</strong></div><div class="admin-stat"><span>سفارش‌های در جریان</span><strong id="adminPendingMetric">۰</strong></div><div class="admin-stat"><span>تعداد محصولات</span><strong id="adminProductsMetric">۰</strong></div><div class="admin-stat"><span>محصولات ناموجود</span><strong id="adminStockMetric">۰</strong></div></div><div class="admin-analytics-grid"><div class="admin-analytics-card"><span>مبلغ سفارش‌های امروز</span><strong id="mardisSalesToday">۰ تومان</strong></div><div class="admin-analytics-card"><span>مبلغ سفارش‌های ۷ روز اخیر</span><strong id="mardisSalesWeek">۰ تومان</strong></div><div class="admin-analytics-card"><span>مبلغ سفارش‌های ماه جاری</span><strong id="mardisSalesMonth">۰ تومان</strong></div><div class="admin-analytics-card"><span>سفارش‌های امروز</span><strong id="mardisOrdersToday">۰</strong></div><div class="admin-analytics-card"><span>مشتریان یکتا</span><strong id="mardisCustomerCount">۰</strong></div><div class="admin-analytics-card"><span>پرداخت‌های در انتظار بررسی</span><strong id="mardisPaymentsPending">۰</strong></div></div><div class="admin-panel-card"><h3>روند مبلغ سفارش‌های ۷ روز اخیر</h3><div id="mardisSalesChart" class="admin-chart"><p class="muted">در حال آماده‌سازی نمودار…</p></div></div><div class="admin-panel-card"><h3>محصولات پرفروش</h3><div id="mardisTopProducts" class="muted">پس از دریافت اطلاعات سفارش‌ها نمایش داده می‌شود.</div></div><div class="admin-stat"><span>سفارش‌های جدید دریافت‌شده در این نشست</span><strong id="adminNewOrderMetric">۰</strong><p class="muted">برای دریافت اعلان زنده، صفحه پنل باید باز باشد و قابلیت Realtime جدول orders در Supabase فعال باشد.</p></div>';
       main.appendChild(dashboard);
-      const views={orders:document.createElement('section'),products:document.createElement('section'),settings:document.createElement('section')};
+      const views={orders:document.createElement('section'),customers:document.createElement('section'),ai:document.createElement('section'),products:document.createElement('section'),settings:document.createElement('section')};
       Object.entries(views).forEach(([key,el])=>{el.className='admin-view';el.dataset.adminView=key;main.appendChild(el);});
+      views.customers.innerHTML='<div class="admin-panel-card"><h3>مدیریت ارتباط با مشتریان</h3><p class="muted">خلاصه خرید هر مشتری بر اساس شماره تماس سفارش‌ها محاسبه می‌شود.</p><div class="admin-customer-search"><input id="mardisCustomerSearch" type="search" placeholder="جست‌وجو با نام یا شماره تماس"></div><div id="mardisCustomersTable">در حال آماده‌سازی اطلاعات مشتریان…</div></div>';
+      views.ai.innerHTML='<div class="admin-panel-card"><h3>دستیار هوشمند مردیس</h3><p class="muted">درباره فروش، سفارش‌ها، موجودی و عملکرد محصولات سؤال بپرسید.</p><div class="admin-ai-box"><textarea id="mardisAiQuestion" maxlength="1200" placeholder="مثلاً: وضعیت فروش این ماه چطور بوده و چه محصولاتی نیاز به توجه دارند؟"></textarea><button type="button" id="mardisAiAsk">پرسیدن از دستیار</button><div id="mardisAiAnswer" class="admin-ai-answer" aria-live="polite">برای فعال شدن دستیار، ابتدا تابع امن Edge Function را طبق راهنمای همراه فایل در Supabase منتشر کنید.</div><p class="admin-ai-note">اطلاعات هویتی مشتریان برای مدل هوش مصنوعی ارسال نمی‌شود. کلید API فقط باید در Secretهای سمت سرور ذخیره شود.</p></div></div>';
       cards.forEach(card=>{
         const title=(card.querySelector('h2')?.textContent||'').trim();
         let target='settings';
@@ -1314,6 +1364,8 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
         const permission=await Notification.requestPermission();
         adminToast(permission==='granted'?'اعلان مرورگر فعال شد.':'اجازه اعلان داده نشد.');
       });
+      $('mardisCustomerSearch')?.addEventListener('input',renderMardisCustomers);
+      $('mardisAiAsk')?.addEventListener('click',askMardisAI);
       adminWorkspaceBuilt=true;
     }
     function startOrdersRealtime() {
@@ -1343,6 +1395,7 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       $('adminPanel').classList.remove('hidden'); $('adminToggle').classList.add('hidden');
       buildAdminWorkspace();
       await Promise.all([loadProducts(), loadManageProducts(), loadOrders(), loadSocialLinks(), loadPaymentSettings()]);
+      await loadMardisAnalyticsItems();
       updateAdminMetrics(); startOrdersRealtime();
     }
     async function loadManageProducts() {
@@ -1351,6 +1404,7 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       const rows = data || [];
       window.__mardisProducts = rows;
       if (typeof updateAdminMetrics === 'function') updateAdminMetrics();
+      if (typeof updateMardisAnalytics === 'function') updateMardisAnalytics();
       const lowStockCount = rows.filter(p => !p.is_unique && Number(p.stock || 0) > 0 && Number(p.stock || 0) <= 3).length;
       const outOfStockCount = rows.filter(p => Number(p.stock || 0) < 1).length;
       $('manageProducts').innerHTML = rows.length
@@ -1730,6 +1784,7 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
       const rows = data || [];
       window.__mardisOrders = rows;
       if (typeof updateAdminMetrics === 'function') updateAdminMetrics();
+      if (typeof updateMardisAnalytics === 'function') updateMardisAnalytics();
       window.__mardisOrderFilter = window.__mardisOrderFilter || 'all';
       const filter = window.__mardisOrderFilter;
       const confirmedCount = rows.filter(o => o.status === 'confirmed').length;
@@ -1761,7 +1816,7 @@ nav[aria-label="منوی اصلی"] a:hover{filter:brightness(1.12);transform:tr
           </tr>
           <tr><td colspan="6"><div id="order-details-${safe(o.id)}" class="hidden"></div></td></tr>
         `).join('')}</tbody></table></div>`
-        : (rows.length ? 'در این دسته‌بندی سفارشی وجود ندارد.' : 'هنوز سفارشی ثبت نشده است.');
+        : (rows.length ? 'در این دسته‌بندی سفارشی وجود ندارد.' : 'هنوز سفارشی ثبت نشده است.'));
 
       // Delegated events: reliable even after the orders table is re-rendered.
       const ordersContainer = $('orders');
